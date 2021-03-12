@@ -42,6 +42,8 @@ class AppTheme extends StatelessWidget {
   static const Color colorGreen = const Color(0xFF28a745);
   static const Color colorRed = const Color(0xFFdc3545);
   static const Color colorYellow = const Color(0xFFffc107);
+  static const Color colorBorder = const Color(0xFFE27547);
+  static const Color colorFont = const Color(0xFFD43333);
 
   /*Theme Indio
   static const Color primaryLightColor = const Color(0xFF9fa8da);

@@ -18,7 +18,6 @@ class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -39,18 +38,20 @@ class _SettingState extends State<Setting> {
         ],
       ),
       body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         child: Stack(
           children: [
             Container(
+              height: appStyle.getHeight100(),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("lib/images/collection_motor/bg.png"),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
               child:  Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // profile, change pin , logout
                   buildChangePin(context, appStyle),
@@ -64,24 +65,9 @@ class _SettingState extends State<Setting> {
     );
   }
 
-  Widget buildProfile(BuildContext context, AppStyle appStyle) {
-    return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(right: 5, left: 5, top: 3),
-      child: Column(
-        children: [
-          Container(
-            height: appStyle.getHeight(percent: 0.1),
-            width: appStyle.getWidth100(),
-            color: AppTheme.colorGrey,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget buildChangePin(BuildContext context, AppStyle appStyle) {
     return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(right: 5, left: 5, top: 3),
+      margin: appStyle.getEdgeInsetsFromRatio(right: 5, left: 5,top: 6),
       child: Column(
         children: [
           InkWell(
@@ -107,39 +93,6 @@ class _SettingState extends State<Setting> {
             width: appStyle.getWidth100(),
             color: AppTheme.colorBackgroundWhite
             ,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildChangePassword(BuildContext context, AppStyle appStyle) {
-    return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(right: 5, left: 5, top: 3),
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, '/settingPassword');
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'เปลี่ยนรหัสผ่าน',
-                  style: appStyle.getTextStyle('normalBlack'),
-                ),
-                Icon(
-                  Icons.keyboard_arrow_right_rounded,
-                  color: AppTheme.colorFontWhite,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: appStyle.getHeight(percent: 0.1),
-            width: appStyle.getWidth100(),
-            color: AppTheme.colorGrey,
           ),
         ],
       ),
@@ -200,5 +153,53 @@ class _SettingState extends State<Setting> {
     } catch (error) {
       Utilities.defaultHandler(error, context);
     }
+  }
+
+  Widget buildChangePassword(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(right: 5, left: 5, top: 8),
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, '/settingPassword');
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'เปลี่ยนรหัสผ่าน',
+                  style: appStyle.getTextStyle('normalBlack'),
+                ),
+                Icon(
+                  Icons.keyboard_arrow_right_rounded,
+                  color: AppTheme.colorFontWhite,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: appStyle.getHeight(percent: 0.1),
+            width: appStyle.getWidth100(),
+            color: AppTheme.colorGrey,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildProfile(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(right: 5, left: 5, top: 3),
+      child: Column(
+        children: [
+          Container(
+            height: appStyle.getHeight(percent: 0.1),
+            width: appStyle.getWidth100(),
+            color: AppTheme.colorGrey,
+          ),
+        ],
+      ),
+    );
   }
 }

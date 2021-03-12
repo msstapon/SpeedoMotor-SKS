@@ -47,6 +47,8 @@ dependency_overrides:
   dio: ^3.0.10
   mask_text_input_formatter: ^1.1.0
   fl_chart: ^0.20.1
+  syncfusion_flutter_gauges: ^18.2.44
+  flutter_glow: ^0.1.2
   kbt_flutter_package:
     git:
       url: https://git.kabintech.co.th/KabinTech/KBT-Flutter-Package.git
@@ -111,6 +113,9 @@ flutter:
       fonts:
         - asset: ./lib/fonts/CSChatThai.ttf
           weight: 400
+    - family: digital
+      fonts:
+        - asset: ./lib/fonts/digital-7.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

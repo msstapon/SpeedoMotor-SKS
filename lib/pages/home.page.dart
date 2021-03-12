@@ -8,6 +8,7 @@ import 'package:th.go.dms.cancer.anywhere/config/app.sharedpreferences.config.da
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/collection.motor.page.dart';
+import 'package:th.go.dms.cancer.anywhere/pages/gps.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/login/login.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/setting/setting.page.dart';
 import 'package:th.go.dms.cancer.anywhere/widgets/dialog/confirm.dialog.widget.dart';
@@ -34,7 +35,8 @@ class _HomePageState extends State<HomePage> {
      screen = [
       CollectionMotor(type: 'menu1',step: 'คำนวณ CC',),
        CollectionMotor(type: 'menu1',step: 'คำนวณองศาแคม',),
-       CollectionMotor(type: 'menu1',step: 'GPS',),
+       // CollectionMotor(type: 'menu1',step: 'GPS',),
+       GPSPage(),
        CollectionMotor(type: 'menu1',step: 'คำนวณอัตราทดเกียร์',),
        Setting(),
     ];
@@ -66,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                   'lib/images/-ico/sks_speedometer.png',
                   width: 30.0,
                   height: 30.0,
-                  color: AppTheme.colorBackgroundWhite
+                  color: AppTheme.colorRed
               ),
               icon: new Image.asset(
                 'lib/images/-ico/sks_speedometer.png',
@@ -85,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                   'lib/images/-ico/sks_square_ruler.png',
                   width: 30.0,
                   height: 30.0,
-                  color: AppTheme.colorBackgroundWhite
+                  color: AppTheme.colorRed
               ),
               icon: new Image.asset(
                   'lib/images/-ico/sks_square_ruler.png',
@@ -102,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               activeIcon:  Icon(
                 Icons.gps_fixed,
-                color: AppTheme.colorBackgroundWhite,
+                color: AppTheme.colorRed,
                 size: 30.0,
               ),
               icon: Icon(
@@ -121,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                   'lib/images/-ico/sks_calculator.png',
                   width: 30.0,
                   height: 30.0,
-                  color: AppTheme.colorBackgroundWhite
+                  color: AppTheme.colorRed
               ),
               icon: new Image.asset(
                   'lib/images/-ico/sks_calculator.png',
@@ -140,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                   'lib/images/-ico/sks_settings.png',
                   width: 30.0,
                   height: 30.0,
-                  color: AppTheme.colorBackgroundWhite
+                  color: AppTheme.colorRed
               ),
               icon: new Image.asset(
                   'lib/images/-ico/sks_settings.png',
