@@ -37,19 +37,18 @@ class _SettingState extends State<Setting> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: Stack(
-          children: [
-            Container(
-              height: appStyle.getHeight100(),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("lib/images/collection_motor/bg.png"),
-                  fit: BoxFit.fill,
-                ),
+      body: Stack(
+        children: [
+          Container(
+            height: appStyle.getHeight100(),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("lib/images/collection_motor/bg.png"),
+                fit: BoxFit.cover,
               ),
-              child:  Column(
+            ),
+            child:  SingleChildScrollView(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -59,8 +58,8 @@ class _SettingState extends State<Setting> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

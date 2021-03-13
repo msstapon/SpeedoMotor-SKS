@@ -85,6 +85,12 @@ class AppStyle {
 
   _buildCustomTextStyle() {
 
+    _textStyle['titleSP'] = TextStyle(
+        fontSize: Theme.of(_context).textTheme.headline4.fontSize,
+        fontWeight: Theme.of(_context).textTheme.bodyText1.fontWeight,
+        fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
+        color: AppTheme.colorFontWhite);
+
     _textStyle['titleText'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.headline6.fontSize,
         fontWeight: Theme.of(_context).textTheme.bodyText1.fontWeight,

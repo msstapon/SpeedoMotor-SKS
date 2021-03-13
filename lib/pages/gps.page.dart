@@ -38,7 +38,7 @@ class _GPSPageState extends State<GPSPage> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 image: AssetImage("lib/images/collection_motor/bg.png"),
               )
             ),
