@@ -34,7 +34,6 @@ class BarChartSample2State extends State<BarChartSample2> {
       barGroup4,
       barGroup5,
       barGroup6,
-//      barGroup7,
     ];
 
     rawBarGroups = items;
@@ -140,9 +139,9 @@ class BarChartSample2State extends State<BarChartSample2> {
                           getTitles: (double value) {
                             switch (value.toInt()) {
                               case 0:
-                                return 'C91';
+                                return 'G91';
                               case 1:
-                                return 'C95';
+                                return 'G95';
                               case 2:
                                 return 'B95';
                               case 3:
@@ -150,7 +149,7 @@ class BarChartSample2State extends State<BarChartSample2> {
                               case 4:
                                 return 'E85';
                               case 5:
-                                return 'OT';
+                                return 'AVG';
 
                               default:
                                 return '';
@@ -171,7 +170,7 @@ class BarChartSample2State extends State<BarChartSample2> {
                             } else if (value == 19) {
                               return '12';
                             } else {
-                              return '14';
+                              return '';
                             }
                           },
                         ),

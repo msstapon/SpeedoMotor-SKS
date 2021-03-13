@@ -65,7 +65,7 @@ class _GPSPageState extends State<GPSPage> {
                   //   ),
                   // ),
                   Container(
-                    margin: appStyle.getEdgeInsetsFromRatio(top: 3),
+                    margin: appStyle.getEdgeInsetsFromRatio(top: 7),
                     child: SfRadialGauge(
                       axes: <RadialAxis>[
                         RadialAxis(
@@ -130,7 +130,7 @@ class _GPSPageState extends State<GPSPage> {
                     ),
                   ),
                   Container(
-                    padding: appStyle.getEdgeInsetsFromRatio(left: 2,right: 2),
+                    padding: appStyle.getEdgeInsetsFromRatio(top: 5,left: 2,right: 2),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -205,7 +205,7 @@ class _GPSPageState extends State<GPSPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Avg. Speed',
+                                  'Avg Speed',
                                   style: appStyle.getTextStyle('normalText'),
                                 ),
                                 Text(
@@ -219,280 +219,7 @@ class _GPSPageState extends State<GPSPage> {
                       ],
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    margin: appStyle.getEdgeInsetsFromRatio(left: 4,top: 1),
-                    child: Text(
-                      'Engine Capacity',
-                      style: appStyle.getTextStyle('titleText'),
-                    ),
-                  ),
-                  Container(
-                    padding: appStyle.getEdgeInsetsFromRatio(left: 4,right: 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'ขนาดลูก',
-                              style: appStyle.getTextStyle('normalTitle'),
-                            ),
-                            Container(
-                              margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                              decoration: appStyle.getCardStype('noShadow'),
-                              height: appStyle.getHeight(percent: 5),
-                              width: appStyle.getWidth(percent: 30),
-                              child: TextFormField(
-                                validator: (val){
-                                  if(val.isEmpty){
-                                    return 'กรุณากรอกขนาดลูก';
-                                  }else{
-                                    return null;
-                                  }
-                                },
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                controller: txtSizeChild,
-                                textAlignVertical: TextAlignVertical.bottom,
-                                style: appStyle.getTextStyle('normalTextBlack'),
-                                keyboardType: TextInputType.numberWithOptions(decimal: false),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
-                                ],
-                                decoration: InputDecoration(
-                                  hintText: '0',
-                                  // isCollapsed: true,
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(3),
-                                    borderSide: BorderSide(
-                                        color: AppTheme.colorBackgroundWhite,
-                                        width: 1,
-                                        style: BorderStyle.solid
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'ช่วงชัก',
-                              style: appStyle.getTextStyle('normalTitle'),
-                            ),
-                            Container(
-                              margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                              decoration: appStyle.getCardStype('noShadow'),
-                              height: appStyle.getHeight(percent: 5),
-                              width: appStyle.getWidth(percent: 30),
-                              child: TextFormField(
-                                validator: (val){
-                                  if(val.isEmpty){
-                                    return 'กรุณากรอกช่วงชัก';
-                                  }else{
-                                    return null;
-                                  }
-                                },
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                controller: txtRange,
-                                textAlignVertical: TextAlignVertical.bottom,
-                                style: appStyle.getTextStyle('normalTextBlack'),
-                                keyboardType: TextInputType.numberWithOptions(decimal: false),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
-                                ],
-                                decoration: InputDecoration(
-                                  hintText: '0',
-                                  // isCollapsed: true,
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(3),
-                                    borderSide: BorderSide(
-                                        color: AppTheme.colorBackgroundWhite,
-                                        width: 1,
-                                        style: BorderStyle.solid
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            //todo
-                            log('fuck');
-                          },
-                          child: Container(
-                            margin: appStyle.getEdgeInsetsFromRatio(top: 4),
-                            width: appStyle.getWidth(percent: 30),
-                            height: appStyle.getHeight(percent: 5),
-                            decoration: BoxDecoration(
-                              color: AppTheme.colorFont,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'ผลลัพธ์',
-                              style: appStyle.getTextStyle('normalText'),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: appStyle.getEdgeInsetsFromRatio(top: 1,left: 4),
-                    child: Text(
-                      'CC เครื่องยนต์ : 300',
-                      style: appStyle.getTextStyle('normalText'),
-                    ),
-                  ),
-                  Container(
-                    margin: appStyle.getEdgeInsetsFromRatio(left: 4,right: 4,top: 2,bottom: 2),
-                    child: Divider(
-                      height: appStyle.getHeight(percent: 1),
-                      color: AppTheme.colorBackgroundWhite,
-                      thickness: 1.1,
-                    ),
-                  ),
-                  Container(
-                    margin: appStyle.getEdgeInsetsFromRatio(left: 4),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Engine Compression Ratio',
-                      style: appStyle.getTextStyle('titleText'),
-                    ),
-                  ),
-                  Container(
-                    margin: appStyle.getEdgeInsetsFromRatio(left: 4,right: 4,bottom: 4),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'CC เครื่องยนต์',
-                              style: appStyle.getTextStyle('normalTitle'),
-                            ),
-                            Container(
-                              margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                              decoration: appStyle.getCardStype('noShadow'),
-                              height: appStyle.getHeight(percent: 5),
-                              width: appStyle.getWidth(percent: 30),
-                              child: TextFormField(
-                                validator: (val){
-                                  if(val.isEmpty){
-                                    return 'กรุณากรอก CCเครื่องยนต์';
-                                  }else{
-                                    return null;
-                                  }
-                                },
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                controller: txtCCEngine,
-                                textAlignVertical: TextAlignVertical.bottom,
-                                style: appStyle.getTextStyle('normalTextBlack'),
-                                keyboardType: TextInputType.numberWithOptions(decimal: false),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
-                                ],
-                                decoration: InputDecoration(
-                                  hintText: '0',
-                                  // isCollapsed: true,
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(3),
-                                    borderSide: BorderSide(
-                                        color: AppTheme.colorBackgroundWhite,
-                                        width: 1,
-                                        style: BorderStyle.solid
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'CC น้ำที่วัดได้',
-                              style: appStyle.getTextStyle('normalTitle'),
-                            ),
-                            Container(
-                              margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                              decoration: appStyle.getCardStype('noShadow'),
-                              height: appStyle.getHeight(percent: 5),
-                              width: appStyle.getWidth(percent: 30),
-                              child: TextFormField(
-                                validator: (val){
-                                  if(val.isEmpty){
-                                    return 'กรุณากรอก CCน้ำที่วัดได้';
-                                  }else{
-                                    return null;
-                                  }
-                                },
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                controller: txtCCWater,
-                                textAlignVertical: TextAlignVertical.bottom,
-                                style: appStyle.getTextStyle('normalTextBlack'),
-                                keyboardType: TextInputType.numberWithOptions(decimal: false),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
-                                ],
-                                decoration: InputDecoration(
-                                  hintText: '0',
-                                  // isCollapsed: true,
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(3),
-                                    borderSide: BorderSide(
-                                        color: AppTheme.colorBackgroundWhite,
-                                        width: 1,
-                                        style: BorderStyle.solid
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            //todo
-                            log('fuck');
-                          },
-                          child: Container(
-                            margin: appStyle.getEdgeInsetsFromRatio(top: 4),
-                            width: appStyle.getWidth(percent: 30),
-                            height: appStyle.getHeight(percent: 5),
-                            decoration: BoxDecoration(
-                              color: AppTheme.colorFont,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'ผลลัพธ์',
-                              style: appStyle.getTextStyle('normalText'),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+
                 ],
               ),
             ),

@@ -1,18 +1,10 @@
-import 'dart:developer';
 
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:kbt_flutter_package/utilities/shared.preferences.util.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.sharedpreferences.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/collection.motor.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/gps.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/login/login.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/setting/setting.page.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/dialog/confirm.dialog.widget.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/dialog/message.dialog.widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -33,11 +25,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
      screen = [
-      CollectionMotor(type: 'menu1',step: 'คำนวณ CC',),
-       CollectionMotor(type: 'menu1',step: 'คำนวณองศาแคม',),
+      CollectionMotor(type: '1',step: 'คำนวณ CC',),
+       CollectionMotor(type: '2',step: 'คำนวณองศาแคม',),
        // CollectionMotor(type: 'menu1',step: 'GPS',),
        GPSPage(),
-       CollectionMotor(type: 'menu1',step: 'คำนวณอัตราทดเกียร์',),
+       CollectionMotor(type: '4',step: 'คำนวณอัตราทดเกียร์',),
        Setting(),
     ];
     showScreen = screen[0];
@@ -66,8 +58,8 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               activeIcon: new Image.asset(
                   'lib/images/-ico/sks_speedometer.png',
-                  width: 30.0,
-                  height: 30.0,
+                  width: 33.0,
+                  height: 33.0,
                   color: AppTheme.colorRed
               ),
               icon: new Image.asset(
@@ -85,8 +77,8 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               activeIcon: new Image.asset(
                   'lib/images/-ico/sks_square_ruler.png',
-                  width: 30.0,
-                  height: 30.0,
+                  width: 33.0,
+                  height: 33.0,
                   color: AppTheme.colorRed
               ),
               icon: new Image.asset(
@@ -105,7 +97,7 @@ class _HomePageState extends State<HomePage> {
               activeIcon:  Icon(
                 Icons.gps_fixed,
                 color: AppTheme.colorRed,
-                size: 30.0,
+                size: 33.0,
               ),
               icon: Icon(
                 Icons.gps_fixed,
@@ -121,8 +113,8 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               activeIcon: new Image.asset(
                   'lib/images/-ico/sks_calculator.png',
-                  width: 30.0,
-                  height: 30.0,
+                  width: 33.0,
+                  height: 33.0,
                   color: AppTheme.colorRed
               ),
               icon: new Image.asset(
@@ -140,8 +132,8 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               activeIcon: new Image.asset(
                   'lib/images/-ico/sks_settings.png',
-                  width: 30.0,
-                  height: 30.0,
+                  width: 33.0,
+                  height: 33.0,
                   color: AppTheme.colorRed
               ),
               icon: new Image.asset(

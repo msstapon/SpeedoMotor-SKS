@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/calculator-cc/calculator.page.dart';
+import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/calculator_gear.page.dart';
 
 class CollectionMotor extends StatefulWidget {
   final String type;
@@ -30,7 +31,6 @@ class _CollectionMotorState extends State<CollectionMotor> {
         backgroundColor: AppTheme.colorPrimaryDark,
         actions: [
           Container(
-            margin: appStyle.getEdgeInsetsFromRatio(right: 1.5,top: 0.5,bottom: 0.5),
             child: Image.asset(
               'lib/images/collection_motor/logo.png',
               fit: BoxFit.cover,
@@ -51,17 +51,26 @@ class _CollectionMotorState extends State<CollectionMotor> {
           child: GridView.builder(
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 1, crossAxisSpacing: 1, mainAxisSpacing: 1),
-              itemCount: myProducts.length,
+              itemCount: widget.type == '4' ? 3 : widget.type == '1' ?   myProducts.length : 0,
               itemBuilder: (BuildContext ctx, index) {
                 return InkWell(
                   onTap: () async {
-//                    AppTheme(child: PincodePage(),));
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AppTheme(child: CalculatorCCPage(),),
-                      ),
-                    );
+                    if(widget.type == '1'){
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AppTheme(child: CalculatorCCPage(),),
+                        ),
+                      );
+                    }else if(widget.type == '4'){
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AppTheme(child: CalculatorGearPage(),),
+                        ),
+                      );
+                    }
+
                   },
                   child: Container(
                       margin: appStyle.getEdgeInsetsFromRatio(all: 1),
