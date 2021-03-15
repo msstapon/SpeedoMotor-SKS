@@ -6,6 +6,8 @@ import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
+import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
+import 'package:geolocator/geolocator.dart';
 
 
 class GPSPage extends StatefulWidget {
@@ -21,6 +23,19 @@ class _GPSPageState extends State<GPSPage> {
   TextEditingController txtCCEngine = TextEditingController();
   TextEditingController txtCCWater = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  getSpeed() async {
+    var geoLocator = Geolocator();
+    Geolocator.getPositionStream(
+      forceAndroidLocationManager: true,
+      intervalDuration: Duration(milliseconds: 100),
+      distanceFilter: 2,
+      desiredAccuracy: LocationAccuracy.bestForNavigation
+    ).listen((position){
+      var speedInMps = position.speed;
+      log(' Speed In Maps ' + speedInMps.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +234,11 @@ class _GPSPageState extends State<GPSPage> {
                       ],
                     ),
                   ),
-
+                  RaisedButton(
+                    onPressed: (){
+                      getSpeed();
+                    },
+                  )
                 ],
               ),
             ),

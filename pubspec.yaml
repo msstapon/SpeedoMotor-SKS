@@ -49,6 +49,7 @@ dependency_overrides:
   fl_chart: ^0.20.1
   syncfusion_flutter_gauges: ^18.2.44
   flutter_glow: ^0.1.2
+  geolocator: ^6.2.1
   kbt_flutter_package:
     git:
       url: https://git.kabintech.co.th/KabinTech/KBT-Flutter-Package.git
