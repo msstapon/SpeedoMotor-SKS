@@ -32,7 +32,7 @@ class _SettingState extends State<Setting> {
             margin: appStyle.getEdgeInsetsFromRatio(right: 1.5, top: 0.5, bottom: 0.5),
             child: Image.asset(
               'lib/images/collection_motor/logo.png',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           )
         ],

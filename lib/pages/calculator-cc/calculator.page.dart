@@ -4,7 +4,7 @@ import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/bar_chart/samples/bar_chart_sample2.dart';
 import "package:intl/intl.dart";
-
+import 'package:th.go.dms.cancer.anywhere/widgets/other/loading.widget.dart';
 
 class CalculatorCCPage extends StatefulWidget {
   @override
@@ -25,7 +25,8 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
   String answerCC = "79.1";
   double answerRatio;
   String answerAll = "9.0";
-
+  bool checkAll = true;
+  bool isProcess = false;
 
   @override
   void initState() {
@@ -59,6 +60,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
+          height: appStyle.getHeight100(),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("lib/images/collection_motor/bg.png"),
@@ -70,7 +72,9 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // profile, change pin , logout
-              buildContent(context, appStyle),
+              isProcess
+                  ? Container(height: appStyle.getHeight100(), child: AppTheme(child: LoadingWidget().createLoadingDialog(context)))
+                  : buildContent(context, appStyle),
             ],
           ), /* add child content here */
         ),
@@ -236,7 +240,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
                 Container(
                   height: appStyle.getHeight(percent: 1),
                 ),
-                buildContent2(context,appStyle),
+                buildContent2(context, appStyle),
                 Container(
                   height: appStyle.getHeight(percent: 1),
                 ),
@@ -251,45 +255,62 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
                     style: appStyle.getTextStyle('normalText'),
                   ),
                 ),
-                new Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                        child:  Container(
-                          margin: appStyle.getEdgeInsetsFromRatio(
-                            right: 2,
-                            left: 2,
+                checkAll
+                    ? new Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: appStyle.getEdgeInsetsFromRatio(
+                                right: 2,
+                                left: 2,
+                              ),
+                              width: appStyle.getWidth100(),
+                              child: Text(
+                                'อัตราส่วนกําลังอัด ${answerAll} ต่อ 1',
+                                style: appStyle.getTextStyle('normalText'),
+                              ),
+                            ),
                           ),
-                          width: appStyle.getWidth100(),
-                          child: Text(
-                            'อัตราส่วนกําลังอัด ${answerAll} ต่อ 1',
-                            style: appStyle.getTextStyle('normalText'),
+                        ],
+                      )
+                    : new Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: appStyle.getEdgeInsetsFromRatio(
+                                right: 2,
+                                left: 2,
+                              ),
+                              width: appStyle.getWidth100(),
+                              child: Text(
+                                'ใส่ค่า CC น้ำที่วัดเพิื่อหาอัตราส่วนกําลังอัด',
+                                style: appStyle.getTextStyle('normalText'),
+                              ),
+                            ),
                           ),
-                        ),
-                    ),
-
-                  ],
-                ),
+                        ],
+                      ),
                 Container(
-                  margin: appStyle.getEdgeInsetsFromRatio(
-                      right: 2,
-                      left: 2,
-                      bottom: 2
-                  ),
+                  margin: appStyle.getEdgeInsetsFromRatio(right: 2, left: 2, bottom: 2),
                   height: appStyle.getHeight(percent: 0.5),
                   width: appStyle.getWidth100(),
                   color: AppTheme.colorBackgroundWhite,
                 ),
-
-                Container(
-                  color: const Color(0xff132240),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(28.0),
-                      child: AppTheme(child: BarChartSample2(),),
-                    ),
-                  ),
-                )
+                checkAll
+                    ? Container(
+                        color: const Color(0xff132240),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(28.0),
+                            child: AppTheme(
+                              child: BarChartSample2(),
+                            ),
+                          ),
+                        ),
+                      )
+                    : new Container()
               ],
             ),
           ),
@@ -300,7 +321,10 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
 
   Widget buildContent2(BuildContext context, AppStyle appStyle) {
     return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(right: 3, left: 3,),
+      margin: appStyle.getEdgeInsetsFromRatio(
+        right: 3,
+        left: 3,
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -379,11 +403,14 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
           Expanded(
             flex: 1,
             child: InkWell(
-              onTap: (){
+              onTap: () {
                 calculatorCC();
               },
               child: Container(
-                margin: appStyle.getEdgeInsetsFromRatio(left: 1,right: 1,),
+                margin: appStyle.getEdgeInsetsFromRatio(
+                  left: 1,
+                  right: 1,
+                ),
                 height: appStyle.getHeight(percent: 6),
                 decoration: BoxDecoration(
                   color: AppTheme.colorFont,
@@ -402,26 +429,42 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
     );
   }
 
-  calculatorCC() async{
-    var input1 = double.parse(txtControllerInput1.text)/10;
-    var input2 = double.parse(txtControllerInput2.text)/10;
-    var water = double.parse(txtFR.text);
-
-    var cc1 = input1*input1;
-    var cc2 = (cc1*3.14*input2)/4;
-    var water1 = water+cc2;
-    print('${water1}');
-    var water2 = water1/water;
-
-    var f = NumberFormat("###.00#", "en_US");
-    var cc3 = f.format(cc2);
-    var all = f.format(water2);
+  calculatorCC() async {
     setState(() {
-      answerCC = cc3;
-      answerAll = all;
+      isProcess = true;
     });
-    print("${cc2}");
+    try {
+      FocusScope.of(context).requestFocus(FocusNode());
+      var f = NumberFormat("###.00#", "en_US");
+      // All คือ คำตอบของ อัตราส่่วนกำลังอัด
+      var input1 = double.parse(txtControllerInput1.text) / 10;
+      var input2 = double.parse(txtControllerInput2.text) / 10;
+      var cc1 = input1 * input1;
+      var cc2 = (cc1 * 3.14 * input2) / 4;
+      if (txtFR.text != "") {
+        var water = double.parse(txtFR.text);
+        var water1 = water + cc2;
+        var water2 = water1 / water;
+        var all = f.format(water2);
+        setState(() {
+          answerAll = all;
+          checkAll = true;
+        });
+      } else {
+        var cc3 = f.format(cc2);
+        setState(() {
+          checkAll = false;
+          answerCC = cc3;
+          answerAll = "-";
+        });
+        setState(() {
+          isProcess = false;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        isProcess = false;
+      });
+    }
   }
-
-
 }

@@ -33,7 +33,7 @@ class _CollectionMotorState extends State<CollectionMotor> {
           Container(
             child: Image.asset(
               'lib/images/collection_motor/logo.png',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
         ],
