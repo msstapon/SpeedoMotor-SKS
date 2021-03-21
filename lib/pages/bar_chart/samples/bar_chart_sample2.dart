@@ -1,7 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class BarChartSample2 extends StatefulWidget {
+   double compressionRatio;
+  BarChartSample2({Key key, @required this.compressionRatio,}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => BarChartSample2State();
 }
@@ -19,27 +23,35 @@ class BarChartSample2State extends State<BarChartSample2> {
   @override
   void initState() {
     super.initState();
-    final barGroup1 = makeGroupData(0, 10, 12);
-    final barGroup2 = makeGroupData(1, 15, 12);
-    final barGroup3 = makeGroupData(2, 16, 5);
-    final barGroup4 = makeGroupData(3, 17, 16);
-    final barGroup5 = makeGroupData(4, 18, 6);
-    final barGroup6 = makeGroupData(5, 19, 1.5);
+    setValue();
 
-    final items = [
-      barGroup1,
-      barGroup2,
-      barGroup3,
-      barGroup4,
-      barGroup5,
-      barGroup6,
-    ];
-
-    rawBarGroups = items;
-
-    showingBarGroups = rawBarGroups;
   }
 
+  setValue() async{
+    if(widget.compressionRatio >= 20.0){
+      setState(() {
+        widget.compressionRatio = 20.0;
+      });
+    }
+      setState(() {
+        var barGroup1 = makeGroupData(0, 11, widget.compressionRatio);
+        var  barGroup2 = makeGroupData(1, 12,  widget.compressionRatio);
+        var  barGroup3 = makeGroupData(2, 12.7,  widget.compressionRatio);
+        var  barGroup4 = makeGroupData(3, 13,  widget.compressionRatio);
+        var  barGroup5 = makeGroupData(4, 14.5,  widget.compressionRatio);
+        var  barGroup6 = makeGroupData(5, 13.5,  widget.compressionRatio);
+        var  items = [
+          barGroup1,
+          barGroup2,
+          barGroup3,
+          barGroup4,
+          barGroup5,
+          barGroup6,
+        ];
+        rawBarGroups = items;
+        showingBarGroups = rawBarGroups;
+      });
+  }
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -158,17 +170,20 @@ class BarChartSample2State extends State<BarChartSample2> {
                         leftTitles: SideTitles(
                           showTitles: true,
                           getTextStyles: (value) => const TextStyle(
-                              color: Color(0xff7589a2), fontWeight: FontWeight.bold, fontSize: 14),
-                          margin: 32,
-                          reservedSize: 14,
+                              color: Color(0xff7589a2), fontWeight: FontWeight.bold, fontSize: 13),
+                          margin: 20,
+                          reservedSize: 21,
                           getTitles: (value) {
-                            if (value == 0) {
-                              return '9';
-                            } else if (value == 10) {
-                              return '10';
-                            } else if (value == 19) {
-                              return '12';
-                            } else {
+                            if (value == 9) {
+                              return '9.0';
+                            } else if (value == 13) {
+                              return '13.0';
+                            } else if (value == 17) {
+                              return '17.0';
+                            } else if (value >= 20) {
+                              return '19.0+';
+                            }
+                            else {
                               return '';
                             }
                           },

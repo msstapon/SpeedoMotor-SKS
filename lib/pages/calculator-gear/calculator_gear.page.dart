@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/bar_chart/samples/bar_chart_sample2.dart';
-
+import "package:intl/intl.dart";
 import '../../config/app.style.config.dart';
 import '../../config/app.style.config.dart';
 import '../../config/app.style.config.dart';
@@ -49,7 +49,12 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
   List<Map> gear4;
 
   List<Map> myProducts = List.generate(12, (index) => {"id": index, "name": "Motor", "image": "motor${index.toString()}.png"}).toList();
-
+  double answerGear1;
+  double answerGear2;
+  double answerGear3;
+  double answerGear4;
+  List<String> answerAll = ["0","0","0","0"];
+  final formatter = new NumberFormat("#,###.00");
   @override
   void initState() {
     // TODO: implement initState
@@ -62,7 +67,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
   setFirstText() async {
     //เกียร์ 1
     setState(() {
-      txtRPM1.text = "10,500";
+      txtRPM1.text = "10500";
       txtL1.text = "1.670";
       txtRP1.text = "3.350";
       txtM1.text = "12";
@@ -70,28 +75,30 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
     });
     //เกียร์ 2
     setState(() {
-      txtRPM2.text = "10,500";
+      txtRPM2.text = "10500";
       txtL2.text = "1.670";
       txtRP2.text = "3.350";
-      txtM2.text = "12";
-      txtC2.text = "37";
+      txtM2.text = "17";
+      txtC2.text = "32";
     });
     //เกียร์ 3
     setState(() {
-      txtRPM3.text = "10,500";
+      txtRPM3.text = "10500";
       txtL3.text = "1.670";
       txtRP3.text = "3.350";
-      txtM3.text = "12";
-      txtC3.text = "37";
+      txtM3.text = "18";
+      txtC3.text = "25";
     });
     //เกียร์ 4
     setState(() {
-      txtRPM4.text = "10,500";
+      txtRPM4.text = "10500";
       txtL4.text = "1.670";
       txtRP4.text = "3.350";
-      txtM4.text = "12";
-      txtC4.text = "37";
+      txtM4.text = "21";
+      txtC4.text = "23";
     });
+
+
   }
 
   setFirstData() async {
@@ -102,13 +109,14 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
     gear3 = List.generate(1, (index) => {"RPM": txtRPM3.text, "L": txtL3.text, "RP": txtRP3.text, "M": txtM3.text, "C": txtC3.text}).toList();
 
     gear4 = List.generate(1, (index) => {"RPM": txtRPM4.text, "L": txtL4.text, "RP": txtRP4.text, "M": txtM4.text, "C": txtC4.text}).toList();
+
+//    answerAll = List.generate(1, (index) => {"RPM": txtRPM4.text, "L": txtL4.text, "RP": txtRP4.text, "M": txtM4.text, "C": txtC4.text}).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
     return Scaffold(
-
       appBar: AppBar(
         title: Text(
           'GEAR W100',
@@ -157,8 +165,8 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                   ),
                 ),
                 buildContent(context, appStyle),
-                buildHeadProcess2(context,appStyle),
-                buildHeadProcess3(context,appStyle),
+                buildHeadProcess2(context, appStyle),
+                buildHeadProcess3(context, appStyle),
               ],
             ), /* add child content here */
           ),
@@ -478,7 +486,10 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
 
   Widget buildContent(BuildContext context, AppStyle appStyle) {
     return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(right: 3, left: 3,),
+      margin: appStyle.getEdgeInsetsFromRatio(
+        right: 3,
+        left: 3,
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -577,7 +588,10 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                       children: <Widget>[
                         Container(
                           height: appStyle.getHeight(percent: 6),
-                          margin: appStyle.getEdgeInsetsFromRatio(left: 2, right: 2,),
+                          margin: appStyle.getEdgeInsetsFromRatio(
+                            left: 2,
+                            right: 2,
+                          ),
                           child: TextFormField(
                             maxLines: 1,
                             validator: (value) {
@@ -628,8 +642,11 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
           Expanded(
             flex: 1,
             child: RaisedButton(
-
               onPressed: () {
+                calculatorGear1();
+                calculatorGear2();
+                calculatorGear3();
+                calculatorGear4();
               },
               child: Text(
                 'คำนวณ',
@@ -643,10 +660,9 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
     );
   }
 
-
   Widget buildHeadProcess(BuildContext context, AppStyle appStyle) {
     return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(top: 2,left: 5),
+      margin: appStyle.getEdgeInsetsFromRatio(top: 2, left: 5),
       child: GridView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -661,129 +677,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                     children: [
                       Container(
                         child: Text(
-                          index == 0
-                              ? 'เกียร์'
-                              : 'MAX Speed',
-                          style: appStyle.getTextStyle('normalBlack'),
-                        ),
-                      )
-                    ],
-                  ),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5))),
-            );
-          }),
-    );
-  }
-  Widget buildProcessGear1(BuildContext context, AppStyle appStyle){
-    return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(left: 5,bottom: 0.5),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3, crossAxisSpacing: 9, mainAxisSpacing: 1),
-          itemCount: 2,
-          itemBuilder: (BuildContext ctx, index) {
-            return InkWell(
-              child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          index == 0
-                              ? '1'
-                              : '50',
-                          style: appStyle.getTextStyle('normalText'),
-                        ),
-                      )
-                    ],
-                  ),
-                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(5))),
-            );
-          }),
-    );
-  }
-  Widget buildProcessGear2(BuildContext context, AppStyle appStyle){
-    return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(left: 5,bottom: 0.5),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3, crossAxisSpacing: 9, mainAxisSpacing: 1),
-          itemCount: 2,
-          itemBuilder: (BuildContext ctx, index) {
-            return InkWell(
-              child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          index == 0
-                              ? '2'
-                              : '60',
-                          style: appStyle.getTextStyle('normalBlack'),
-                        ),
-                      )
-                    ],
-                  ),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5))),
-            );
-          }),
-    );
-  }
-  Widget buildProcessGear3(BuildContext context, AppStyle appStyle){
-    return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(left: 5,bottom: 1),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3, crossAxisSpacing: 9, mainAxisSpacing: 1),
-          itemCount: 2,
-          itemBuilder: (BuildContext ctx, index) {
-            return InkWell(
-              child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          index == 0
-                              ? '3'
-                              : '70',
-                          style: appStyle.getTextStyle('normalText'),
-                        ),
-                      )
-                    ],
-                  ),
-                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(5))),
-            );
-          }),
-    );
-  }
-  Widget buildProcessGear4(BuildContext context, AppStyle appStyle){
-    return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(left: 5,bottom: 1),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3, crossAxisSpacing: 9, mainAxisSpacing: 1),
-          itemCount: 2,
-          itemBuilder: (BuildContext ctx, index) {
-            return InkWell(
-              child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          index == 0
-                              ? '4'
-                              : '80',
+                          index == 0 ? 'เกียร์' : 'MAX Speed',
                           style: appStyle.getTextStyle('normalBlack'),
                         ),
                       )
@@ -795,10 +689,128 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
     );
   }
 
+  Widget buildProcessGear1(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(left: 5, bottom: 0.5),
+      child: GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3, crossAxisSpacing: 9, mainAxisSpacing: 1),
+          itemCount: 2,
+          itemBuilder: (BuildContext ctx, index) {
+            return InkWell(
+              child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          index == 0 ? '1' : '50',
+                          style: appStyle.getTextStyle('normalText'),
+                        ),
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(5))),
+            );
+          }),
+    );
+  }
+
+  Widget buildProcessGear2(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(left: 5, bottom: 0.5),
+      child: GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3, crossAxisSpacing: 9, mainAxisSpacing: 1),
+          itemCount: 2,
+          itemBuilder: (BuildContext ctx, index) {
+            return InkWell(
+              child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          index == 0 ? '2' : '60',
+                          style: appStyle.getTextStyle('normalBlack'),
+                        ),
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5))),
+            );
+          }),
+    );
+  }
+
+  Widget buildProcessGear3(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(left: 5, bottom: 1),
+      child: GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3, crossAxisSpacing: 9, mainAxisSpacing: 1),
+          itemCount: 2,
+          itemBuilder: (BuildContext ctx, index) {
+            return InkWell(
+              child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          index == 0 ? '3' : '70',
+                          style: appStyle.getTextStyle('normalText'),
+                        ),
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(5))),
+            );
+          }),
+    );
+  }
+
+  Widget buildProcessGear4(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(left: 5, bottom: 1),
+      child: GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3, crossAxisSpacing: 9, mainAxisSpacing: 1),
+          itemCount: 2,
+          itemBuilder: (BuildContext ctx, index) {
+            return InkWell(
+              child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          index == 0 ? '4' : '80',
+                          style: appStyle.getTextStyle('normalBlack'),
+                        ),
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5))),
+            );
+          }),
+    );
+  }
 
   Widget buildHeadProcess2(BuildContext context, AppStyle appStyle) {
     return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(top: 2,left: 5,),
+      margin: appStyle.getEdgeInsetsFromRatio(
+        top: 2,
+        left: 5,
+      ),
       child: GridView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -812,7 +824,8 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        child: Text('gear ${index+1}',
+                        child: Text(
+                          'gear ${index + 1}',
                           style: appStyle.getTextStyle('normalBlack'),
                         ),
                       )
@@ -826,12 +839,12 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
 
   Widget buildHeadProcess3(BuildContext context, AppStyle appStyle) {
     return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(top: 0.5,left: 5,bottom: 25),
+      margin: appStyle.getEdgeInsetsFromRatio(top: 0.5, left: 5, bottom: 25),
       child: GridView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, childAspectRatio: 2, crossAxisSpacing: 5, mainAxisSpacing: 1),
-          itemCount: 4,
+          itemCount: answerAll.length,
           itemBuilder: (BuildContext ctx, index) {
             return InkWell(
               child: Container(
@@ -840,7 +853,8 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        child: Text('${(index+1)*50}',
+                        child: Text(
+                          '${answerAll[index]}',
                           style: appStyle.getTextStyle('normalBlack'),
                         ),
                       )
@@ -853,7 +867,110 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
   }
 
 
+  calculatorGear1() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    double tempRpm1 = double.parse(txtRPM1.text); //TODO รอบ
+    var tempL1 = double.parse(txtL1.text); //TODO รอบยางหลัง
+    var tempRp1 = double.parse(txtRP1.text); //TODO อัตราทดเกียร์
+    var tempM1 = double.parse(txtM1.text); //TODO M
+    var tempC1 = double.parse(txtC1.text); //TODO C
+    var tempFR = double.parse(txtFR.text); //TODO FR
+    var tempRR = double.parse(txtRR.text);
+    var equation1 = (tempRpm1*60)/1000;
+    var equation2 = equation1*tempL1;
 
+    var equation3 = tempC1/tempM1;
+
+    var equation4 = tempRR/tempFR;
+
+    var equation5 = tempRp1*equation3*equation4;
+
+    var equation6 = equation2/equation5;
+
+    print('Gear1 =>');
+    setState(() {
+//      answerGear1 = equation6;
+      answerAll[0] = formatter.format(equation6);
+    });
+  }
+
+  calculatorGear2() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    double tempRpm1 = double.parse(txtRPM2.text); //TODO รอบ
+    var tempL1 = double.parse(txtL2.text); //TODO รอบยางหลัง
+    var tempRp1 = double.parse(txtRP2.text); //TODO อัตราทดเกียร์
+    var tempM1 = double.parse(txtM2.text); //TODO M
+    var tempC1 = double.parse(txtC2.text); //TODO C
+    var tempFR = double.parse(txtFR.text); //TODO FR
+    var tempRR = double.parse(txtRR.text);
+    var equation1 = (tempRpm1*60)/1000;
+    var equation2 = equation1*tempL1;
+
+    var equation3 = tempC1/tempM1;
+
+    var equation4 = tempRR/tempFR;
+
+    var equation5 = tempRp1*equation3*equation4;
+
+    var equation6 = equation2/equation5;
+
+    print('Gear1 =>');
+    setState(() {
+      answerAll[1] = formatter.format(equation6);
+    });
+  }
+
+  calculatorGear3() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    double tempRpm1 = double.parse(txtRPM3.text); //TODO รอบ
+    var tempL1 = double.parse(txtL3.text); //TODO รอบยางหลัง
+    var tempRp1 = double.parse(txtRP3.text); //TODO อัตราทดเกียร์
+    var tempM1 = double.parse(txtM3.text); //TODO M
+    var tempC1 = double.parse(txtC3.text); //TODO C
+    var tempFR = double.parse(txtFR.text); //TODO FR
+    var tempRR = double.parse(txtRR.text);
+    var equation1 = (tempRpm1*60)/1000;
+    var equation2 = equation1*tempL1;
+
+    var equation3 = tempC1/tempM1;
+
+    var equation4 = tempRR/tempFR;
+
+    var equation5 = tempRp1*equation3*equation4;
+
+    var equation6 = equation2/equation5;
+
+    print('Gear1 =>');
+    setState(() {
+      answerAll[2] = formatter.format(equation6);
+    });
+  }
+
+  calculatorGear4() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    double tempRpm1 = double.parse(txtRPM4.text); //TODO รอบ
+    var tempL1 = double.parse(txtL4.text); //TODO รอบยางหลัง
+    var tempRp1 = double.parse(txtRP4.text); //TODO อัตราทดเกียร์
+    var tempM1 = double.parse(txtM4.text); //TODO M
+    var tempC1 = double.parse(txtC4.text); //TODO C
+    var tempFR = double.parse(txtFR.text); //TODO FR
+    var tempRR = double.parse(txtRR.text);
+    var equation1 = (tempRpm1*60)/1000;
+    var equation2 = equation1*tempL1;
+
+    var equation3 = tempC1/tempM1;
+
+    var equation4 = tempRR/tempFR;
+
+    var equation5 = tempRp1*equation3*equation4;
+
+    var equation6 = equation2/equation5;
+
+    print('Gear1 =>');
+    setState(() {
+      answerAll[3] = formatter.format(equation6);
+    });
+  }
 
 
 }

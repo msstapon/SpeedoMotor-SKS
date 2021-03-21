@@ -7,6 +7,12 @@ import "package:intl/intl.dart";
 import 'package:th.go.dms.cancer.anywhere/widgets/other/loading.widget.dart';
 
 class CalculatorCCPage extends StatefulWidget {
+  final String input1;
+  final String input2;
+  final String cc;
+  final String peroid;
+  final String nameCar;
+  CalculatorCCPage({Key key, @required this.input1, @required this.input2,@required this.cc,@required this.peroid,this.nameCar}) : super(key: key);
   @override
   _CalculatorCCPageState createState() => _CalculatorCCPageState();
 }
@@ -22,7 +28,9 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
   TextEditingController txtControllerService = new TextEditingController();
   FocusNode myFocusNode;
   bool focus = true;
-  String answerCC = "79.1";
+  String input1Stand = "";
+  String input2Stand = "";
+  String answerCC = "";
   double answerRatio;
   String answerAll = "9.0";
   bool checkAll = true;
@@ -31,17 +39,24 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
   @override
   void initState() {
     // TODO: implement initState
-
+    setFirstText();
     super.initState();
   }
 
+  setFirstText()async{
+    setState(() {
+
+      answerAll = widget.peroid;
+      answerCC = widget.cc;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'CC W100',
+          '${widget.nameCar}',
           style: appStyle.getTextStyle('titleText'),
           // style: appStyle.getTextStyle('titleText'),
         ),
@@ -128,7 +143,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
                                     Icons.two_wheeler,
                                     color: AppTheme.colorBackgroundWhite,
                                   ),
-                                  labelText: 'ขนาดลูกมาตรฐาน 50 mm.',
+                                  labelText: 'ขนาดลูกมาตรฐาน ${widget.input1} mm.',
                                   labelStyle: appStyle.getTextStyle('normalText'),
                                   fillColor: AppTheme.colorGreybang,
                                   filled: true,
@@ -201,7 +216,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
                                     Icons.speed,
                                     color: AppTheme.colorBackgroundWhite,
                                   ),
-                                  labelText: 'ระยะชักมาตรฐาน 49.5',
+                                  labelText: 'ระยะชักมาตรฐาน ${widget.input2}',
                                   labelStyle: appStyle.getTextStyle('normalText'),
                                   fillColor: AppTheme.colorGreybang,
                                   filled: true,
@@ -305,7 +320,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(28.0),
                             child: AppTheme(
-                              child: BarChartSample2(),
+                              child: BarChartSample2(compressionRatio: double.parse(answerAll),),
                             ),
                           ),
                         ),
@@ -441,6 +456,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
       var input2 = double.parse(txtControllerInput2.text) / 10;
       var cc1 = input1 * input1;
       var cc2 = (cc1 * 3.14 * input2) / 4;
+      var cc3 = f.format(cc2);
       if (txtFR.text != "") {
         var water = double.parse(txtFR.text);
         var water1 = water + cc2;
@@ -448,22 +464,27 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
         var all = f.format(water2);
         setState(() {
           answerAll = all;
+          answerCC = cc3;
           checkAll = true;
+
         });
       } else {
-        var cc3 = f.format(cc2);
         setState(() {
           checkAll = false;
           answerCC = cc3;
           answerAll = "-";
         });
+      }
+      Future.delayed(const Duration(seconds: 1), () {
         setState(() {
           isProcess = false;
         });
-      }
+      });
     } catch (error) {
-      setState(() {
-        isProcess = false;
+      Future.delayed(const Duration(seconds: 1), () {
+        setState(() {
+          isProcess = false;
+        });
       });
     }
   }
