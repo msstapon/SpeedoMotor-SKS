@@ -19,6 +19,7 @@ class _SettingState extends State<Setting> {
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
     return Scaffold(
+      backgroundColor: AppTheme.colorBlack,
       appBar: AppBar(
         title: Text(
           'ตั้งค่า',
@@ -29,7 +30,7 @@ class _SettingState extends State<Setting> {
         backgroundColor: AppTheme.colorPrimaryDark,
         actions: [
           Container(
-            margin: appStyle.getEdgeInsetsFromRatio(right: 1.5, top: 0.5, bottom: 0.5),
+            // margin: appStyle.getEdgeInsetsFromRatio(right: 1.5, top: 0.5, bottom: 0.5),
             child: Image.asset(
               'lib/images/collection_motor/logo.png',
               fit: BoxFit.fill,
@@ -53,7 +54,7 @@ class _SettingState extends State<Setting> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // profile, change pin , logout
-                  buildChangePin(context, appStyle),
+                  // buildChangePin(context, appStyle),
                   buildLogout(context, appStyle)
                 ],
               ),

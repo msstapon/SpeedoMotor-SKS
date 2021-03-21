@@ -1,10 +1,16 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
+import 'package:th.go.dms.cancer.anywhere/pages/home.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/login/login.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/sign_up_and_forgot/forgot.page.dart';
+import 'package:th.go.dms.cancer.anywhere/services/login.model.dart';
+import 'package:th.go.dms.cancer.anywhere/services/register.services.dart';
+import 'package:th.go.dms.cancer.anywhere/utilities/utilities.dart';
+import 'package:th.go.dms.cancer.anywhere/widgets/dialog/message.dialog.widget.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -16,8 +22,41 @@ class _SignUpState extends State<SignUp> {
   final keyForm = new GlobalKey<FormState>();
   TextEditingController txtUserName = new TextEditingController();
   TextEditingController txtPassword = new TextEditingController();
-  TextEditingController txtConfirmPassword = new TextEditingController();
-  TextEditingController txtEmail = new TextEditingController();
+  TextEditingController txtFirstName = new TextEditingController();
+  TextEditingController txtLastName = new TextEditingController();
+  TextEditingController txtPhone = new TextEditingController();
+
+  signUp() async {
+    String userName = txtUserName.text.trim().toString();
+    String passWord = txtPassword.text.trim().toString();
+    String firstName = txtFirstName.text.trim().toString();
+    String lastName = txtLastName.text.trim().toString();
+    String phone = txtPhone.text.trim().toString();
+
+    try{
+      LoginModel model = await RegisterServices().registerServicesApi(
+          username: userName,
+          password: passWord,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone
+      );
+      log('ress ${model.toString()}');
+      if(model.status != 200){
+        MessageDialogWidget(
+          title: 'แจ้งเตือน !!!',
+          message: 'ชื่อผู้ใช้นี้ได้ถูกใช้แล้ว \nกรุณาลองใหม่',
+          btnOkOnPress: () {
+            Navigator.pop(context);
+          },).showMessageDialog(context);
+      }else{
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>HomePage()), (route) => false);
+      }
+    }catch(error){
+      Utilities.defaultHandler(error, context);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,75 +157,7 @@ class _SignUpState extends State<SignUp> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: appStyle.getEdgeInsetsFromRatio(top: 2),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Email',
-                            style: appStyle.getTextStyle('normalText'),
-                          ),
-                        ),
-                        Container(
-                          margin: appStyle.getEdgeInsets(top: 4),
-                          decoration: appStyle.getCardStype('noShadow'),
-                          height: appStyle.getHeight(percent: 6.5),
-                          child: TextFormField(
-                            maxLines: 1,
-                            controller: txtEmail,
-                            validator: (val){
-                              if(val.isEmpty){
-                                return '*** กรุณากรอกข้อมูล';
-                              }else{
-                                return null;
-                              }
-                            },
-                            obscureText: true,
-                            textAlignVertical: TextAlignVertical.bottom,
-                            style: appStyle.getTextStyle('normalBlack'),
-                            decoration: InputDecoration(
-                              // prefixIcon: Is
-                              hintText: 'Email@gmail.com',
-                              hintStyle: TextStyle(
-                                color: AppTheme.colorGrey,
-                              ),
-                              // isCollapsed: true,
-                              // filled: true,
-                              fillColor: AppTheme.colorBackgroundWhite,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
-                                borderSide: BorderSide(
-                                    color: AppTheme.colorBackgroundWhite,
-                                    width: 1,
-                                    style: BorderStyle.solid
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
-                                borderSide: BorderSide(
-                                    color: AppTheme.colorBackgroundWhite,
-                                    width: 1,
-                                    style: BorderStyle.solid
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
-                                borderSide: BorderSide(
-                                    color: AppTheme.colorBackgroundWhite,
-                                    width: 1,
-                                    style: BorderStyle.solid
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(top: 2),
                     child: Column(
@@ -256,6 +227,7 @@ class _SignUpState extends State<SignUp> {
                       ],
                     ),
                   ),
+
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(top: 2),
                     child: Column(
@@ -265,7 +237,7 @@ class _SignUpState extends State<SignUp> {
                         Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Confirm Password',
+                            'FirstName',
                             style: appStyle.getTextStyle('normalText'),
                           ),
                         ),
@@ -275,7 +247,7 @@ class _SignUpState extends State<SignUp> {
                           height: appStyle.getHeight(percent: 6.5),
                           child: TextFormField(
                             maxLines: 1,
-                            controller: txtConfirmPassword,
+                            controller: txtFirstName,
                             validator: (val){
                               if(val.isEmpty){
                                 return '*** กรุณากรอกข้อมูล';
@@ -283,12 +255,152 @@ class _SignUpState extends State<SignUp> {
                                 return null;
                               }
                             },
-                            obscureText: true,
                             textAlignVertical: TextAlignVertical.bottom,
                             style: appStyle.getTextStyle('normalBlack'),
                             decoration: InputDecoration(
                               // prefixIcon: Is
-                              hintText: 'Confirm Password',
+                              hintText: 'First Name',
+                              hintStyle: TextStyle(
+                                color: AppTheme.colorGrey,
+                              ),
+                              // isCollapsed: true,
+                              // filled: true,
+                              fillColor: AppTheme.colorBackgroundWhite,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(3),
+                                borderSide: BorderSide(
+                                    color: AppTheme.colorBackgroundWhite,
+                                    width: 1,
+                                    style: BorderStyle.solid
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(3),
+                                borderSide: BorderSide(
+                                    color: AppTheme.colorBackgroundWhite,
+                                    width: 1,
+                                    style: BorderStyle.solid
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(3),
+                                borderSide: BorderSide(
+                                    color: AppTheme.colorBackgroundWhite,
+                                    width: 1,
+                                    style: BorderStyle.solid
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(top: 2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'LastName',
+                            style: appStyle.getTextStyle('normalText'),
+                          ),
+                        ),
+                        Container(
+                          margin: appStyle.getEdgeInsets(top: 4),
+                          decoration: appStyle.getCardStype('noShadow'),
+                          height: appStyle.getHeight(percent: 6.5),
+                          child: TextFormField(
+                            maxLines: 1,
+                            controller: txtLastName,
+                            validator: (val){
+                              if(val.isEmpty){
+                                return '*** กรุณากรอกข้อมูล';
+                              }else{
+                                return null;
+                              }
+                            },
+                            textAlignVertical: TextAlignVertical.bottom,
+                            style: appStyle.getTextStyle('normalBlack'),
+                            decoration: InputDecoration(
+                              // prefixIcon: Is
+                              hintText: 'Last Name',
+                              hintStyle: TextStyle(
+                                color: AppTheme.colorGrey,
+                              ),
+                              // isCollapsed: true,
+                              // filled: true,
+                              fillColor: AppTheme.colorBackgroundWhite,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(3),
+                                borderSide: BorderSide(
+                                    color: AppTheme.colorBackgroundWhite,
+                                    width: 1,
+                                    style: BorderStyle.solid
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(3),
+                                borderSide: BorderSide(
+                                    color: AppTheme.colorBackgroundWhite,
+                                    width: 1,
+                                    style: BorderStyle.solid
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(3),
+                                borderSide: BorderSide(
+                                    color: AppTheme.colorBackgroundWhite,
+                                    width: 1,
+                                    style: BorderStyle.solid
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(top: 2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Phone Number',
+                            style: appStyle.getTextStyle('normalText'),
+                          ),
+                        ),
+                        Container(
+                          margin: appStyle.getEdgeInsets(top: 4),
+                          decoration: appStyle.getCardStype('noShadow'),
+                          height: appStyle.getHeight(percent: 6.5),
+                          child: TextFormField(
+                            maxLines: 1,
+                            controller: txtPhone,
+                            validator: (val){
+                              if(val.isEmpty){
+                                return '*** กรุณากรอกข้อมูล';
+                              }else{
+                                return null;
+                              }
+                            },
+                            keyboardType: TextInputType.phone,
+                            textAlignVertical: TextAlignVertical.bottom,
+                            style: appStyle.getTextStyle('normalBlack'),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10)
+                            ],
+                            decoration: InputDecoration(
+                              // prefixIcon: Is
+                              hintText: 'Phone Number',
                               hintStyle: TextStyle(
                                 color: AppTheme.colorGrey,
                               ),
@@ -331,6 +443,44 @@ class _SignUpState extends State<SignUp> {
                     child: GestureDetector(
                       onTap: (){
                         log('tappp');
+                        if(txtUserName.text.trim().toString() == null || txtUserName.text.trim().toString() == ''){
+                          MessageDialogWidget(
+                            title: 'แจ้งเตือน !!!',
+                            message: 'กรุณากรอก username',
+                            btnOkOnPress: (){
+                              Navigator.pop(context);
+                            },).showMessageDialog(context);
+                        }else if(txtPassword.text.trim().toString() == null || txtPassword.text.trim().toString() == ''){
+                          MessageDialogWidget(
+                            title: 'แจ้งเตือน !!!',
+                            message: 'กรุณากรอก password',
+                            btnOkOnPress: (){
+                              Navigator.pop(context);
+                            },).showMessageDialog(context);
+                        }else if(txtFirstName.text.trim().toString() == null || txtFirstName.text.trim().toString() == ''){
+                          MessageDialogWidget(
+                            title: 'แจ้งเตือน !!!',
+                            message: 'กรุณากรอก First Name',
+                            btnOkOnPress: (){
+                              Navigator.pop(context);
+                            },).showMessageDialog(context);
+                        }else if(txtLastName.text.trim().toString() == null || txtLastName.text.trim().toString() == ''){
+                          MessageDialogWidget(
+                            title: 'แจ้งเตือน !!!',
+                            message: 'กรุณากรอก Last Name',
+                            btnOkOnPress: (){
+                              Navigator.pop(context);
+                            },).showMessageDialog(context);
+                        }else if(txtPhone.text.trim().toString() == null || txtPhone.text.trim().toString() == '' || txtPhone.text.trim().length != 10){
+                          MessageDialogWidget(
+                            title: 'แจ้งเตือน !!!',
+                            message: 'กรุณากรอก Phone Number',
+                            btnOkOnPress: (){
+                              Navigator.pop(context);
+                            },).showMessageDialog(context);
+                        }else{
+                          signUp();
+                        }
                       },
                       child: Expanded(
                         flex: 1,
@@ -358,7 +508,7 @@ class _SignUpState extends State<SignUp> {
                         Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginPage()));
                       },
                       child: Text(
-                        'Already have account ?',
+                        'มีบัญชีผู้ใช้แล้ว ?',
                         style: appStyle.getTextStyle('normalText'),
                       ),
                     ),
