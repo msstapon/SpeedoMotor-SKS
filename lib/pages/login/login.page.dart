@@ -1,10 +1,17 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:th.go.dms.cancer.anywhere/config/app.sharedpreferences.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
+import 'package:th.go.dms.cancer.anywhere/pages/home.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/sign_up_and_forgot/forgot.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/sign_up_and_forgot/sign.up.page.dart';
+import 'package:th.go.dms.cancer.anywhere/services/login.model.dart';
+import 'package:th.go.dms.cancer.anywhere/services/login.services.dart';
+import 'package:th.go.dms.cancer.anywhere/utilities/utilities.dart';
+import 'package:th.go.dms.cancer.anywhere/widgets/dialog/message.dialog.widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,6 +23,36 @@ class _LoginPageState extends State<LoginPage> {
   final keyForm = new GlobalKey<FormState>();
   TextEditingController txtUserName = new TextEditingController();
   TextEditingController txtPassword = new TextEditingController();
+
+  void loginFunction() async {
+    String username = txtUserName.text.trim().toString();
+    String password = txtPassword.text.trim().toString();
+    // log('user '+username);
+    // log('pass ' +password);
+    try{
+        LoginModel model = await LoginServices().loginServicesApi(
+            username: username,
+            password: password
+        );
+        log('data ${model.status}');
+        if(model.status != 200) {
+          MessageDialogWidget(
+            title: 'แจ้งเตือน !!!',
+            message: 'Username หรือ password \nไม่ถูกต้อง',
+            btnOkOnPress: () {
+              Navigator.pop(context);
+            },).showMessageDialog(context);
+        }else{
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>HomePage()), (route) => false);
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          pref.setBool(AppSharedPreferences.login, true);
+        }
+        log('data login ${model.status}');
+    }catch(error){
+      Utilities.defaultHandler(error, context);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,11 +229,29 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
+
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(top: 3),
                     child: GestureDetector(
                       onTap: (){
-                        log('tappp');
+                        // log('tappp');
+                        if(txtUserName.text.trim().toString() == null || txtUserName.text.trim().toString() == ''){
+                          MessageDialogWidget(
+                            title: 'แจ้งเตือน !!!',
+                            message: 'กรุณากรอก username',
+                            btnOkOnPress: (){
+                              Navigator.pop(context);
+                            },).showMessageDialog(context);
+                        }else if(txtPassword.text.trim().toString() == null || txtPassword.text.trim().toString() == ''){
+                          MessageDialogWidget(
+                            title: 'แจ้งเตือน !!!',
+                            message: 'กรุณากรอก password',
+                            btnOkOnPress: (){
+                              Navigator.pop(context);
+                            },).showMessageDialog(context);
+                        }else{
+                          loginFunction();
+                        }
                       },
                       child: Expanded(
                         flex: 1,
@@ -217,19 +272,19 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  Container(
-                    margin: appStyle.getEdgeInsetsFromRatio(top: 2),
-                    child: InkWell(
-                      onTap: (){
-                        log('forgot');
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>ForgotPassword()));
-                      },
-                      child: Text(
-                        'Forgot your password ?',
-                        style: appStyle.getTextStyle('normalText'),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   margin: appStyle.getEdgeInsetsFromRatio(top: 2),
+                  //   child: InkWell(
+                  //     onTap: (){
+                  //       log('forgot');
+                  //       Navigator.push(context, MaterialPageRoute(builder: (_)=>ForgotPassword()));
+                  //     },
+                  //     child: Text(
+                  //       'Forgot your password ?',
+                  //       style: appStyle.getTextStyle('normalText'),
+                  //     ),
+                  //   ),
+                  // ),
 
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(top: 2),
