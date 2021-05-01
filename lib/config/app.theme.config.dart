@@ -30,10 +30,10 @@ class AppTheme extends StatelessWidget {
 
   static const Color colorTransparent = const Color(0x00000000);
 
-  static const Color colorWarning = const Color(0xFF00DCBA);
-  static const Color colorError = const Color(0xFF00DCBA);
+  static const Color colorWarning = const Color(0xFFffc107);
+  static const Color colorError = const Color(0xFFda292f);
   static const Color colorInfo = const Color(0xFF17a2b8);
-  static const Color colorSuccess = const Color(0xFF00DCBA);
+  static const Color colorSuccess = const Color(0xFF28a745);
 
   static const Color colorCard = const Color(0xFFda292f);
   static const Color colorCardGreen = const Color(0xFFddffdd);

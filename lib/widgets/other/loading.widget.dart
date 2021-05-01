@@ -15,7 +15,7 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppTheme.colorPrimaryDark,
+        backgroundColor: AppTheme.colorBackgroundWhite,
         body: createLoadingDialog(context)
     );
   }
@@ -28,19 +28,19 @@ class LoadingWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center ,
               children:
               [
-                CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.colorPrimaryDark)),
+                CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.colorBackgroundWhite)),
                 Container(
                     margin: EdgeInsets.only(left: 0, top: 20),
                     child: Text("Loading",
                         style: TextStyle(
                             fontSize: Theme.of(context).textTheme.bodyText2.fontSize ,
-                            color: AppTheme.colorPrimaryDark)
+                            color: AppTheme.colorBackgroundWhite)
                     )
                 ),
               ]
           )
       ),
-      color: Colors.white.withOpacity(0.8),
+      color: Colors.white.withOpacity(0.6),
     );
   }
 }

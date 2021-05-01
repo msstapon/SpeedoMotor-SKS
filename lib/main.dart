@@ -3,6 +3,7 @@ import 'package:th.go.dms.cancer.anywhere/config/app.sharedpreferences.config.da
 import 'package:kbt_flutter_package/utilities/shared.preferences.util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:th.go.dms.cancer.anywhere/pages/gps.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/home.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/login/login.page.dart';
 //import 'package:th.go.dms.cancer.anywhere/pages/login/condition.page.dart';

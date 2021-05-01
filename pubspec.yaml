@@ -77,6 +77,7 @@ flutter:
     - ./lib/images/-ico/
     - ./lib/images/-img/
     - ./lib/images/collection_motor/
+    - ./lib/images/collection_motor/new_icon/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -105,10 +106,10 @@ flutter:
   fonts:
     - family: Kanit
       fonts:
-        - asset: ./lib/fonts/Kanit-Regular.ttf
+        - asset: ./lib/fonts/Kanit-Light.ttf
         - asset: ./lib/fonts/Kanit-Italic.ttf
           style: italic
-        - asset: ./lib/fonts/Kanit-Bold.ttf
+        - asset: ./lib/fonts/Kanit-Light.ttf
           weight: 200
     - family: CSChatThai
       fonts:
@@ -117,6 +118,9 @@ flutter:
     - family: digital
       fonts:
         - asset: ./lib/fonts/digital-7.ttf
+    - family: grandsportlaserital
+      fonts:
+        - asset: ./lib/fonts/grandsportlaserital.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
