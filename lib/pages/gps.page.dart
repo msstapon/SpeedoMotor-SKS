@@ -31,7 +31,7 @@ class _GPSPageState extends State<GPSPage> {
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
     return Scaffold(
-<<<<<<< Updated upstream
+
       appBar: AppBar(
         backgroundColor: AppTheme.colorBlack,
         centerTitle: true,
@@ -48,7 +48,7 @@ class _GPSPageState extends State<GPSPage> {
           )
         ],
       ),
-=======
+
 //      appBar: AppBar(
 //        centerTitle: true,
 //        title: Text(
@@ -56,7 +56,7 @@ class _GPSPageState extends State<GPSPage> {
 //          style: appStyle.getTextStyle('newTitle'),
 //        ),
 //      ),
->>>>>>> Stashed changes
+
       body: Stack(
         fit: StackFit.expand,
         children: [

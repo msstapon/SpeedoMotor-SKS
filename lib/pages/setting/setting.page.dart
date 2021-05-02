@@ -19,7 +19,7 @@ class _SettingState extends State<Setting> {
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
     return Scaffold(
-<<<<<<< Updated upstream
+
       backgroundColor: AppTheme.colorBlack,
       appBar: AppBar(
         title: Text(
@@ -39,7 +39,6 @@ class _SettingState extends State<Setting> {
           )
         ],
       ),
-=======
 //      appBar: AppBar(
 //        title: Text(
 //          'ตั้งค่า',
@@ -58,7 +57,6 @@ class _SettingState extends State<Setting> {
 //          ),
 //        ],
 //      ),
->>>>>>> Stashed changes
       body: Stack(
         children: [
           Container(
@@ -75,10 +73,7 @@ class _SettingState extends State<Setting> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // profile, change pin , logout
-<<<<<<< Updated upstream
                   // buildChangePin(context, appStyle),
-=======
->>>>>>> Stashed changes
                   buildLogout(context, appStyle)
                 ],
               ),
