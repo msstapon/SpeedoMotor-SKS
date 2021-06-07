@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
               if(snapshot.data){
                 return AppTheme(child: HomePage());
               }else {
-                return AppTheme(child: LoginPage());//AppTheme(child: Loginpage()); TODO LOGINPAGE
+                return AppTheme(child: HomePage());//AppTheme(child: Loginpage()); TODO LOGINPAGE
               }
             } else {
               return AppTheme(child: LoadingWidget());

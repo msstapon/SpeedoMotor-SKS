@@ -20,9 +20,9 @@ class RegisterServices{
 
     var body = json.encode(data);
     log(body);
-
+//    final response = await http.post(Uri.parse(AppConfig.hostApi+"Auth/login"),
     try{
-      final response = await http.post(AppConfig.hostApi + 'Users',
+      final response = await http.post(Uri.parse(AppConfig.hostApi+"Users"),
           headers: {
             // 'Username' : username ,
             // 'Password' : password,

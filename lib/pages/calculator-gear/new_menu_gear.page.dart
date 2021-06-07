@@ -12,18 +12,18 @@ import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.ve
 import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.yamaha.page.dart';
 import 'package:th.go.dms.cancer.anywhere/widgets/dialog/message.dialog.widget.dart';
 
-class CollectionBrand extends StatefulWidget {
+class MenuGear extends StatefulWidget {
   final String type;
   final String step;
   final String brand;
 
-  CollectionBrand({Key key, @required this.type, @required this.step,this.brand}) : super(key: key);
+  MenuGear({Key key, @required this.type, @required this.step,this.brand}) : super(key: key);
 
   @override
-  _CollectionBrandState createState() => _CollectionBrandState();
+  _MenuGearState createState() => _MenuGearState();
 }
 
-class _CollectionBrandState extends State<CollectionBrand> {
+class _MenuGearState extends State<MenuGear> {
   List<String> nameCar = [
     'Yamaha',
     'Honda',
@@ -113,11 +113,11 @@ class _CollectionBrandState extends State<CollectionBrand> {
   setFirstText() async {
     setState(() {
       myProducts = List.generate(
-          5,
+          1,
               (index) => {
             "id": index,
-            "name": nameCar[index],
-            "image": image[index],
+            "name": nameCar[1],
+            "image": image[1],
           }).toList();
     });
   }
@@ -139,64 +139,27 @@ class _CollectionBrandState extends State<CollectionBrand> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: appStyle.getHeight(percent: 50),
+              height: appStyle.getHeight(percent: 60),
               child: Padding(
                 padding: appStyle.getEdgeInsetsFromRatio(top: 15,left: 4,right: 4),
                 child: GridView.builder(
                     gridDelegate:
                     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 1, crossAxisSpacing: 1, mainAxisSpacing: 1),
-                    itemCount: 5,
+                    itemCount: 1,
                     itemBuilder: (BuildContext ctx, index) {
                       return InkWell(
                         onTap: () async {
-                            if(index == 0){
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AppTheme(
-                                    child: NewCollectionYamaha(type: widget.type,),
-                                  ),
-                                ),
-                              );
-                            }else if(index == 1){
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AppTheme(
-                                    child: CollectionHonda(type: widget.type,),
-                                  ),
-                                ),
-                              );
-                            }else if(index == 2){
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AppTheme(
-                                    child: CollectionKawazaki(type: widget.type,),
-                                  ),
-                                ),
-                              );
-                            }else if(index == 3){
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AppTheme(
-                                    child: CollectionSuzuki(type: widget.type,),
-                                  ),
-                                ),
-                              );
-                            }else if(index == 4){
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AppTheme(
-                                    child: CollectionVespa(type: widget.type,),
-                                  ),
-                                ),
-                              );
-                            }
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AppTheme(
+                                child: CollectionHonda(type: widget.type,),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
+//                          height: appStyle.getHeight(percent: 30),
                             margin: appStyle.getEdgeInsetsFromRatio(all: 1),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -204,12 +167,10 @@ class _CollectionBrandState extends State<CollectionBrand> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-//                                  padding:  appStyle.getEdgeInsetsFromRatio(top: 1),
                                   child: Image.asset(
-                                    'lib/images/collection_motor/Artboard_${index+1}.png',
+                                    'lib/images/collection_motor/Artboard_2.png',
                                     width: appStyle.getWidth(percent: 26),
                                     fit: BoxFit.fill,
-//                                    color: index ==4 ? AppTheme.colorBackgroundWhite: null,
                                   ),
                                 ),
 //                                index == 3  || index == 4 ? new Container() :

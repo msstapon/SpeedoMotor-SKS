@@ -380,8 +380,8 @@ class AppStyle {
     );
 
     _cardStyle['noShadow'] = BoxDecoration(
-      color: AppTheme.colorBackgroundWhite,
-      borderRadius: BorderRadius.all(Radius.circular(3.0)),
+      color: AppTheme.colorBlack,
+      borderRadius: BorderRadius.all(Radius.circular(8.0)),
       boxShadow: [
         BoxShadow(
           color: AppTheme.colorGrey.withOpacity(0.3),

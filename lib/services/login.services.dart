@@ -18,9 +18,10 @@ class LoginServices{
 
     var body = json.encode(data);
     // log('login body '+body);
+    //    final response = await http.post(Uri.parse(AppConfig.hostApi+"Auth/login"),
     final String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
     // try{
-      final response = await http.post(AppConfig.hostApi + 'Auth/login',
+      final response = await http.post(Uri.parse(AppConfig.hostApi+"Auth/login"),
           headers: {
             // 'Authorization' : basicAuth,
             "Content-Type": "application/json",

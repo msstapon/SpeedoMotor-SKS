@@ -4,7 +4,6 @@ import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
 import 'package:th.go.dms.cancer.anywhere/widgets/other/loading.widget.dart';
 import 'package:flutter/services.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 import "package:intl/intl.dart";
 
 class CamshaftPage extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'numpad.widget.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:underline_otp_text_field/underline_otp_text_field.dart';
+//import 'package:underline_otp_text_field/underline_otp_text_field.dart';
 
 class PinCodeWidget extends StatefulWidget {
   final int pinLength;
@@ -299,14 +299,14 @@ class ShowOfOTP extends StatelessWidget {
       width: appStyle.getWidth100(),
       margin: appStyle.getEdgeInsets(left: 22,right: 22),
       alignment: Alignment.center,
-      child: UnderlineOtpTextField(
-        controller: TextEditingController(text: text),
-        fieldCount: length,
-        lineSpacing: 2,
-        underLineColor: AppTheme.colorBackgroundWhite,
-        enabled: false,
-        textColor: AppTheme.colorBackgroundWhite,
-      ),
+//      child: UnderlineOtpTextField(
+//        controller: TextEditingController(text: text),
+//        fieldCount: length,
+//        lineSpacing: 2,
+//        underLineColor: AppTheme.colorBackgroundWhite,
+//        enabled: false,
+//        textColor: AppTheme.colorBackgroundWhite,
+//      ),
       padding: appStyle.getEdgeInsets(top: 12,bottom: 32),
     );
   }

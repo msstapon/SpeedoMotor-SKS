@@ -33,23 +33,27 @@ dependency_overrides:
   cupertino_icons: ^1.0.2
   flutter_svg: ^0.20.0-nullsafety.3
   path_provider: ^1.6.24
-  gallery_saver: ^2.0.1
-  underline_otp_text_field: ^0.0.1
+#  gallery_saver: ^2.0.1
+#  underline_otp_text_field: ^0.0.1
   shared_preferences: ^0.5.3+1
-  http: ^0.12.0+2
-  date_format: ^1.0.6
+  http: ^0.13.3
+  date_format: ^2.0.2
   device_info: ^0.4.2+7
-  loading_overlay: ^0.2.1
+#  loading_overlay: ^0.2.1
   flutter_form_builder: ^3.7.3
-  flutter_datetime_picker: ^1.4.0
-  bottom_navy_bar: ^5.5.0
+#  flutter_datetime_picker: ^1.4.0
+  bottom_navy_bar: ^6.0.0
   flutter_masked_text: ^0.8.0
-  dio: ^3.0.10
-  mask_text_input_formatter: ^1.1.0
+#  dio: ^3.0.10
+#  mask_text_input_formatter: ^1.1.0
   fl_chart: ^0.20.1
-  syncfusion_flutter_gauges: ^18.2.44
+#  syncfusion_flutter_gauges: ^18.2.44
   flutter_glow: ^0.1.2
   geolocator: ^6.2.1
+  duration: ^3.0.6
+  dio: ^4.0.0
+  speedometer:
+    path: speedometer
   kbt_flutter_package:
     git:
       url: https://git.kabintech.co.th/KabinTech/KBT-Flutter-Package.git
@@ -121,6 +125,13 @@ flutter:
     - family: grandsportlaserital
       fonts:
         - asset: ./lib/fonts/grandsportlaserital.ttf
+    - family: spyagency3cond
+      fonts:
+        - asset: ./lib/fonts/spyagency3cond.ttf
+    - family: spyagency3condital
+      fonts:
+        - asset: ./lib/fonts/spyagency3condital.ttf
+
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

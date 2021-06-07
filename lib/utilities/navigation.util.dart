@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/home.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/login/login.page.dart';
 //import 'package:th.go.dms.cancer.anywhere/pages/login/condition.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/login/old.login.page.dart';
 //import 'package:th.go.dms.cancer.anywhere/pages/otp/otp.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/pincode/pincode.page.dart';
 

@@ -32,7 +32,6 @@ class _CollectionHondaState extends State<CollectionHonda> {
     'Forza300',
     'CBR250rr',
     'CBR300',
-    'MIO115',
   ];
 
   List<String> cc = [
@@ -48,7 +47,6 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '279.17',
     '249',
     '286',
-    '113.7',
   ];
   List<String> peroid = [
     '9.3',
@@ -63,7 +61,6 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '10.5',
     '11.5',
     '11.5',
-    '8.8',
   ];
   List<String> input1 = [
     '50',
@@ -78,7 +75,6 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '72',
     '62',
     '62',
-    '50',
   ];
   List<String> input2 = [
     '55.597',
@@ -93,7 +89,6 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '68.567',
     '68.567',
     '41.3',
-    '57.9',
   ];
 
 
@@ -157,7 +152,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
       child: Container(
         margin: appStyle.getEdgeInsetsFromRatio(top: 2,bottom: 2),
         child: Column(
-          children: List.generate(nameCar.length,(index) {
+          children: List.generate(widget.type == "4" ?  3 : nameCar.length,(index) {
             return  InkWell(
               onTap: () async {
                 if (widget.type == '1') {

@@ -22,41 +22,36 @@ class _CollectionKawazakiState extends State<CollectionKawazaki> {
   List<String> nameCar = [
     'Cheer110',
     'Kr150',
-    'KSR',
     'Ninja250',
     'Ninja300',
 
   ];
 
   List<String> cc = [
-    '109.17',
-    '124.7',
-    '124.89',
-    '124.8',
-    '79.1',
+    '112',
+    '148',
+    '249',
+    '296',
   ];
   List<String> peroid = [
-    '9.3',
-    '11',
-    '9.3',
-    '9.3',
-    '9.0',
+    '9.5',
+    '7.2',
+    '11.3',
+    '10.6',
 
   ];
   List<String> input1 = [
-    '50',
-    '58',
-    '52.4',
-    '52.4',
-    '50',
+    '53',
+    '59',
+    '62',
+    '62',
 
   ];
   List<String> input2 = [
-    '55.597',
-    '47.2',
-    '57.913',
-    '57.9',
-    '49.5',
+    '50.6',
+    '54.4',
+    '41.2',
+    '49',
   ];
 
 

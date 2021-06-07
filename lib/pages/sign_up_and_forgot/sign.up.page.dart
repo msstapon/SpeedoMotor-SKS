@@ -64,6 +64,14 @@ class _SignUpState extends State<SignUp> {
     AppStyle appStyle = new AppStyle(context);
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+            'REGISTER',
+          style: appStyle.getTextStyle('titleSP'),
+        ),
+        centerTitle: true,
+        backgroundColor: AppTheme.colorBlack,
+      ),
       body: Stack(
         children: [
           Container(
@@ -82,11 +90,14 @@ class _SignUpState extends State<SignUp> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(top: 10),
+                    width: appStyle.getWidth(percent: 100),
+                    height: appStyle.getHeight(percent: 18),
                     alignment: Alignment.center,
-                    margin: appStyle.getEdgeInsetsFromRatio(top: 14),
-                    child: Text(
-                      'SIGN UP',
-                      style: appStyle.getTextStyle('titleSP'),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('lib/images/collection_motor/logo.png'),
+                        )
                     ),
                   ),
                   Container(
@@ -128,7 +139,7 @@ class _SignUpState extends State<SignUp> {
                               // filled: true,
                               fillColor: AppTheme.colorBackgroundWhite,
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -136,7 +147,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -144,7 +155,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -198,7 +209,7 @@ class _SignUpState extends State<SignUp> {
                               // filled: true,
                               fillColor: AppTheme.colorBackgroundWhite,
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -206,7 +217,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -214,7 +225,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -267,7 +278,7 @@ class _SignUpState extends State<SignUp> {
                               // filled: true,
                               fillColor: AppTheme.colorBackgroundWhite,
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -275,7 +286,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -283,7 +294,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -335,7 +346,7 @@ class _SignUpState extends State<SignUp> {
                               // filled: true,
                               fillColor: AppTheme.colorBackgroundWhite,
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -343,7 +354,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -351,7 +362,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -408,7 +419,7 @@ class _SignUpState extends State<SignUp> {
                               // filled: true,
                               fillColor: AppTheme.colorBackgroundWhite,
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -416,7 +427,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -424,7 +435,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
                                     color: AppTheme.colorBackgroundWhite,
                                     width: 1,
@@ -490,7 +501,13 @@ class _SignUpState extends State<SignUp> {
                           height: appStyle.getHeight(percent: 6),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
-                            color: AppTheme.colorBorder,
+                            gradient: LinearGradient(
+                              stops: [0.1,0.4],
+                              colors: [
+                                Colors.red.shade500,
+                                Colors.red.shade900,
+                              ],
+                            ),
                           ),
                           child: Text(
                             'SIGN UP',
@@ -502,16 +519,6 @@ class _SignUpState extends State<SignUp> {
                   ),
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(top: 2),
-                    child: InkWell(
-                      onTap: (){
-                        log('already');
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginPage()));
-                      },
-                      child: Text(
-                        'มีบัญชีผู้ใช้แล้ว ?',
-                        style: appStyle.getTextStyle('normalText'),
-                      ),
-                    ),
                   ),
                 ],
               ),

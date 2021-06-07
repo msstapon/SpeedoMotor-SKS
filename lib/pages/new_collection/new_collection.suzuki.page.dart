@@ -27,27 +27,27 @@ class _CollectionSuzukiState extends State<CollectionSuzuki> {
   ];
 
   List<String> cc = [
-    '109.17',
-    '124.7',
-    '124.89',
+    '126.7',
+    '147',
+    '80',
 
   ];
   List<String> peroid = [
-    '9.3',
-    '11',
-    '9.3',
+    '9.5',
+    '11.5',
+    '11.3',
 
   ];
   List<String> input1 = [
-    '50',
-    '58',
-    '52.4',
+    '57.5',
+    '62',
+    '62',
 
   ];
   List<String> input2 = [
-    '55.597',
-    '47.2',
-    '57.913',
+    '48.8',
+    '48.8',
+    '41.2',
 
   ];
 

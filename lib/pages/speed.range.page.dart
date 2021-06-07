@@ -1,355 +1,166 @@
-import 'dart:async';
-import 'dart:developer' as log;
-import 'dart:ffi';
-import 'dart:math';
-import 'package:intl/intl.dart';
-import 'package:duration/duration.dart';
-
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.size.config.dart';
+import 'package:th.go.dms.cancer.anywhere/config/app.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:speedometer/speedometer.dart';
-import 'package:th.go.dms.cancer.anywhere/getGPS.dart' as durationGPS;
+import 'package:th.go.dms.cancer.anywhere/pages/calculator-cc/calculator.page.dart';
+import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/calculator_gear.page.dart';
+import 'package:th.go.dms.cancer.anywhere/pages/gps.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/home.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/speed.range.page.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/other/loading.widget.dart';
-import 'package:dio/dio.dart';
+import 'package:th.go.dms.cancer.anywhere/utilities/utilities.dart';
+import 'package:th.go.dms.cancer.anywhere/widgets/dialog/confirm.dialog.widget.dart';
+import 'package:kbt_flutter_package/utilities/shared.preferences.util.dart';
 
-class GPSPage extends StatefulWidget {
+class SpeedRang extends StatefulWidget {
+  final String sixtyFeetTime;
+  final String twoHundredTime;
+  final String threeHundredTime;
+  final String fourHundredTime;
+  final String fiveHundredTime;
+  final String sixHundredTime;
+  final String sevenHundredTime;
+  final String eightHundredTime;
+  final String nineHundredTime;
+  final String oneThousandTime;
+  final String oneThousand1Time;
+  final String oneThousand2Time;
+  final String oneThousand3Time;
+  final String oneThousand4Time;
+  final String oneThousand5Time;
+  final String oneThousand6Time;
+  final String oneThousand7Time;
+  final String oneThousand8Time;
+  final String oneThousand9Time;
+  final String twoThousandTime;
+  final String sixtyFeetTime1;
+  final String twoHundredTime1;
+  final String threeHundredTime1;
+  final String fourHundredTime1;
+  final String fiveHundredTime1;
+  final String sixHundredTime1;
+  final String sevenHundredTime1;
+  final String eightHundredTime1;
+  final String nineHundredTime1;
+  final String oneThousandTime1;
+  final String oneThousand1Time1;
+  final String oneThousand2Time1;
+  final String oneThousand3Time1;
+  final String oneThousand4Time1;
+  final String oneThousand5Time1;
+  final String oneThousand6Time1;
+  final String oneThousand7Time1;
+  final String oneThousand8Time1;
+  final String oneThousand9Time1;
+  final String twoThousandTime1;
+  final String maxSpeed;
+  final String avgSpeed;
+  final String totalKm;
+
+  SpeedRang({
+    Key key,
+    this.sixtyFeetTime,
+    this.twoHundredTime,
+    this.threeHundredTime,
+    this.fourHundredTime,
+    this.fiveHundredTime,
+    this.sixHundredTime,
+    this.sevenHundredTime,
+    this.eightHundredTime,
+    this.nineHundredTime,
+    this.oneThousandTime,
+    this.oneThousand1Time,
+    this.oneThousand2Time,
+    this.oneThousand3Time,
+    this.oneThousand4Time,
+    this.oneThousand5Time,
+    this.oneThousand6Time,
+    this.oneThousand7Time,
+    this.oneThousand8Time,
+    this.oneThousand9Time,
+    this.twoThousandTime,
+    this.sixtyFeetTime1,
+    this.twoHundredTime1,
+    this.threeHundredTime1,
+    this.fourHundredTime1,
+    this.fiveHundredTime1,
+    this.sixHundredTime1,
+    this.sevenHundredTime1,
+    this.eightHundredTime1,
+    this.nineHundredTime1,
+    this.oneThousandTime1,
+    this.oneThousand1Time1,
+    this.oneThousand2Time1,
+    this.oneThousand3Time1,
+    this.oneThousand4Time1,
+    this.oneThousand5Time1,
+    this.oneThousand6Time1,
+    this.oneThousand7Time1,
+    this.oneThousand8Time1,
+    this.oneThousand9Time1,
+    this.twoThousandTime1,
+    this.maxSpeed,
+    this.avgSpeed,
+    this.totalKm,
+  }) : super(key: key);
+
   @override
-  _GPSPageState createState() => _GPSPageState();
+  _SpeedRangState createState() => _SpeedRangState();
 }
 
-class _GPSPageState extends State<GPSPage> {
-  double _value = 199.0;
-  TextEditingController txtSizeChild = TextEditingController();
-  TextEditingController txtRange = TextEditingController();
-  TextEditingController txtCCEngine = TextEditingController();
-  TextEditingController txtCCWater = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  double speedInMps = 0.0;
-  double _lowerValue = 0.0;
-  double _upperValue = 0.0;
-  int start = 20;
-  int end = 360;
-  int counter = 0;
-  ThemeData somTheme;
-  bool isProcess = false;
-  Timer _timer;
-  Timer _timerSpeedTest;
-  Timer _timeSet;
-  int _start = 3;
-  String _start2 = "3";
-  bool checkStartSpeedTest = false;
-  List<double> speedAll = [];
-  Timer _timerCountTime;
-  double countTime;
-  String countTimeDuration;
-  double countDistance = 0.0;
-  Timer _timerForStart; // ตอนกดปุ่ม start;
-  Timer _timeDistance;
-  Timer _timeDistance2; // ตอนคิดระยะทาง;
+Future<bool> _onBackPressed() async {
+  return false;
+  // return showDialog(
+  //   context: context,
+  //   builder: (context) => new AlertDialog(
+  //     title: new Text('ยืนยัน?'),
+  //     content: new Text('คุณต้องการออกจากแอพหรือไม่'),
+  //     actions: <Widget>[
+  //       new GestureDetector(
+  //         onTap: () => Navigator.of(context).pop(false),
+  //         child: Text("ไม่"),
+  //       ),
+  //       SizedBox(height: 16),
+  //       new GestureDetector(
+  //         onTap: () async {
+  //           await prefs.setBool("isExitApp", true);
+  //           Navigator.of(context).pop(true);
+  //         },
+  //         child: Text("ใช่"),
+  //       ),
+  //     ],
+  //   ),
+  // ) ??
+  //     false;
+}
 
-  double firstLongitude = 0.0;
-  double firstLat = 0.0;
-
-  double lastLongitude = 0.0;
-  double lastLat = 0.0;
-
-  String sixtyFeetTime = "-";
-  String twoHundredTime = "-";
-  String threeHundredTime = "-";
-  String fourHundredTime = "-";
-  String fiveHundredTime = "-";
-  String sixHundredTime = "-";
-  String sevenHundredTime = "-";
-  String eightHundredTime = "-";
-  String nineHundredTime = "-";
-  String oneThousandTime = "-";
-  String oneThousand1Time = "-";
-  String oneThousand2Time = "-";
-  String oneThousand3Time = "-";
-  String oneThousand4Time = "-";
-  String oneThousand5Time = "-";
-  String oneThousand6Time = "-";
-  String oneThousand7Time = "-";
-  String oneThousand8Time = "-";
-  String oneThousand9Time = "-";
-  String twoThousandTime = "-";
-
-  String sixtyFeetTime1 = "-";
-  String twoHundredTime1 = "-";
-  String threeHundredTime1 = "-";
-  String fourHundredTime1 = "-";
-  String fiveHundredTime1 = "-";
-  String sixHundredTime1 = "-";
-  String sevenHundredTime1 = "-";
-  String eightHundredTime1 = "-";
-  String nineHundredTime1 = "-";
-  String oneThousandTime1 = "-";
-  String oneThousand1Time1 = "-";
-  String oneThousand2Time1 = "-";
-  String oneThousand3Time1 = "-";
-  String oneThousand4Time1 = "-";
-  String oneThousand5Time1 = "-";
-  String oneThousand6Time1 = "-";
-  String oneThousand7Time1 = "-";
-  String oneThousand8Time1 = "-";
-  String oneThousand9Time1 = "-";
-  String twoThousandTime1 = "-";
-
-  List<String> sixtyFeetTimeList = ["-"];
-  List<String> twoHundredTimeList = ["-"];
-  List<String> threeHundredTimeList = ["-"];
-  List<String> fourHundredTimeList = ["-"];
-  List<String> fiveHundredTimeList = ["-"];
-  List<String> sixHundredTimeList = ["-"];
-  List<String> sevenHundredTimeList = ["-"];
-  List<String> eightHundredTimeList = ["-"];
-  List<String> nineHundredTimeList = ["-"];
-  List<String> oneThousandTimeList = ["-"];
-  List<String> oneThousand1TimeList = ["-"];
-  List<String> oneThousand2TimeList = ["-"];
-  List<String> oneThousand3TimeList = ["-"];
-  List<String> oneThousand4TimeList = ["-"];
-  List<String> oneThousand5TimeList = ["-"];
-  List<String> oneThousand6TimeList = ["-"];
-  List<String> oneThousand7TimeList = ["-"];
-  List<String> oneThousand8TimeList = ["-"];
-  List<String> oneThousand9TimeList = ["-"];
-  List<String> twoThousandTimeList = ["-"];
-
-  // ignore: cancel_subscriptions
-  StreamSubscription<Position> positionStream;
-
-  // ignore: cancel_subscriptions
-  StreamSubscription<Position> positionStream2;
-  StreamSubscription<Position> positionStream3;
-
-//  StreamSubscription<Position> locator;
-  // ignore: close_sinks
-  PublishSubject<double> eventObservable = new PublishSubject();
-
-  /// Geolocator is used to find velocity
-  GeolocatorPlatform locator = GeolocatorPlatform.instance;
-  double _velocity;
-
-  /// Highest recorded velocity so far in m/s.
-  double _highestVelocity;
-
-  /// Velocity in m/s to km/hr converter
-  double mpstokmph(double mps) => mps * 18 / 5;
-
-  double avgSpeed = 0.0;
-  Timer _timer2;
-
-  StreamController<double> _velocityUpdatedStreamController = StreamController<double>();
-  StreamController<double> _velocityUpdatedStreamController2 = StreamController<double>();
-  StreamController<double> _velocityUpdatedStreamController3 = StreamController<double>();
-  StreamController<double> _velocityUpdatedStreamController4 = StreamController<double>();
-  StreamController<double> _velocityUpdatedStreamController5 = StreamController<double>();
-  LocationPermission permission;
-  bool checkRefresh = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _velocity = 0;
-    _highestVelocity = 0.0;
-//    startCountOnTime();
-    setState(() {
-//      _velocityUpdatedStreamController = BehaviorSubject();
-//      _velocityUpdatedStreamController2 = BehaviorSubject();
-      somTheme = new ThemeData(primaryColor: Colors.blue, accentColor: Colors.black, backgroundColor: Colors.grey);
-    });
-    checkPermissionGPS();
-//    setData();
-  }
-
-  void startCountOnTime() async {
-    const oneSec = const Duration(seconds: 1);
-    _timer2 = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        countOnTime();
-        _timer2.cancel();
-      },
-    );
-  }
-
-  void setData() async {
-    const oneSec = const Duration(seconds: 1);
-    _timeSet = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        eventObservable.add(0);
-        if (timer.tick == 1) {
-          _timeSet.cancel();
-        }
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _velocityUpdatedStreamController.done;
-    _velocityUpdatedStreamController2.done;
-    _velocityUpdatedStreamController3.done;
-    _velocityUpdatedStreamController.close();
-    _velocityUpdatedStreamController2.close();
-    _velocityUpdatedStreamController3.close();
-    positionStream2.cancel();
-
-
-//    _timeSet.isActive ? _timeSet.cancel() : print('out');
-    _timerSpeedTest == null ? print('out2') : _timerSpeedTest.cancel();
-    _timer != null ? _timer.cancel() : print('out3');
-    _timer2 != null ? _timer2.cancel() : print('out4');
-
-    super.dispose();
-  }
-
-  checkPermissionGPS() async {
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
-      } else {
-        print("getSpeed");
-        getSpeed();
-      }
-    } else {
-      getSpeed();
-    }
-  }
-
+class _SpeedRangState extends State<SpeedRang> {
   @override
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
-    return Scaffold(
-//      appBar: AppBar(
-//        backgroundColor: AppTheme.colorBlack,
-//        centerTitle: true,
-//        title: Text(
-//            'SPEEDOMETER',
-//          style: appStyle.getTextStyle('titleText'),),
-//        actions: [
-//          Container(
-//            // margin: appStyle.getEdgeInsetsFromRatio(right: 1.5, top: 0.5, bottom: 0.5),
-//            child: Image.asset(
-//              'lib/images/collection_motor/logo.png',
-//              fit: BoxFit.fill,
-//            ),
-//          )
-//        ],f
-//      ),
-
-//      appBar: AppBar(
-//        centerTitle: true,
-//        title: Text(
-//          'SKS RACING',
-//          style: appStyle.getTextStyle('newTitle'),
-//        ),
-//      ),
-        body: SingleChildScrollView(
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              height: appStyle.getHeight100(),
+              decoration: BoxDecoration(
                 image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage("lib/images/collection_motor/new_icon/sks-page-01-04.png"),
-            )),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage("lib/images/collection_motor/new_icon/sks-page-01-05.png"),
-                    ),
-                  ),
-                  margin: appStyle.getEdgeInsetsFromRatio(top: 13),
-                  child: new Column(
-//                  mainAxisAlignment : MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      new Padding(
-                          padding: new EdgeInsets.all(40.0),
-                          child: StreamBuilder<Object>(
-                              stream: _velocityUpdatedStreamController3.stream,
-                              builder: (context, snapshot) {
-                                return new SpeedOMeter(
-                                    start: start,
-                                    end: end,
-                                    themeData: somTheme,
-                                    highlightStart: (0),
-                                    highlightEnd: (0),
-                                    eventObservable: this.eventObservable);
-                              })),
-                    ],
-                  ),
+                  image: AssetImage("lib/images/collection_motor/new_icon/newBg.png"),
+                  fit: BoxFit.fill,
                 ),
-                !checkStartSpeedTest
-                    ? Container(
-                        color: Colors.black,
-                        width: appStyle.getWidth(percent: 100),
-                        height: appStyle.getHeight(percent: 8),
-                        child: InkWell(
-                          onTap: () {
-                            startTimer();
-                          },
-                          child: Container(
-                            child: Image.asset(
-                              "lib/images/collection_motor/new_icon/sks-page-01-07.png",
-                              width: appStyle.getWidth(percent: 30),
-                            ),
-                          ),
-                        ),
-                      )
-                    : checkRefresh
-                        ? Container(
-                            color: Colors.black,
-                            width: appStyle.getWidth(percent: 100),
-                            height: appStyle.getHeight(percent: 8),
-                            margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                            child: FlatButton(
-                              color: AppTheme.colorBlack,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: appStyle.getWidth(percent: 27),
-                                    height: appStyle.getHeight(percent: 5),
-                                    alignment: Alignment.center,
-                                    child: new Text(
-                                      'Refresh',
-                                      style:
-                                          TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorRed),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.colorBlack,
-                                      borderRadius: BorderRadius.all(Radius.circular(4.0) //                 <--- border radius here
-                                          ),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              onPressed: () async {
+              ),
+              child: SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // profile, change pin , logout
+                      Row(
+                        children: [
+                          InkWell(
+                              onTap: () {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -358,678 +169,170 @@ class _GPSPageState extends State<GPSPage> {
                                     ),
                                   ),
                                 );
-//                                setState(() {
-//                                  checkStartSpeedTest = false;
-//                                });
                               },
-                            ),
-                          )
-                        : Container(
-                            color: Colors.black,
-                            width: appStyle.getWidth(percent: 100),
-                            height: appStyle.getHeight(percent: 8),
-                            margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                            child: FlatButton(
-                              color: AppTheme.colorBlack,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: appStyle.getWidth(percent: 27),
-                                    height: appStyle.getHeight(percent: 5),
-                                    padding: appStyle.getEdgeInsetsFromRatio(left: 1),
-                                    alignment: Alignment.center,
-                                    child: new Text(
-                                      'STOP',
-                                      style: TextStyle(
-                                          fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3condital', color: AppTheme.colorRed),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.colorBlack,
-                                      borderRadius: BorderRadius.all(Radius.circular(4.0) //                 <--- border radius here
-                                          ),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              onPressed: () async {
-                                calculatorDistance();
-                              },
+                              child: new Container(
+                                margin: appStyle.getEdgeInsetsFromRatio(top: 6, left: 5),
+                                height: appStyle.getHeight(percent: 7),
+                                width: appStyle.getWidth(percent: 10),
+                                child: new Image.asset(
+                                  'lib/images/collection_motor/new_icon/sks-page-07-117.png',
+                                ),
+                              )),
+                          Container(
+                            margin: appStyle.getEdgeInsetsFromRatio(top: 6, left: 5),
+//                          width: appStyle.getWidth(percent: 43),
+                            child: Text(
+                              'SPEED RANGE ',
+                              style: TextStyle(fontSize: appStyle.getWidth(percent: 8), fontFamily: 'spyagency3condital', color: AppTheme.colorGrey),
                             ),
                           ),
-                new Container(
-                  color: Colors.black,
-                  child: Column(
-                    children: [
-                      Container(
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                  height: appStyle.getHeight(percent: 5),
-                                  alignment: Alignment.bottomCenter,
-                                  child: Text(
-                                    ' ${convertTimeCount(countTimeDuration == null ? "0" : countTimeDuration)}',
-                                    style:
-                                        TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            StreamBuilder<Object>(
-                                stream: _velocityUpdatedStreamController.stream,
-                                builder: (context, snapshot) {
-                                  return Container(
-                                    child: Text(
-                                      ' ${mpstokmph(_velocity).toStringAsFixed(2)}',
-                                      style: TextStyle(
-                                          fontSize: appStyle.getWidth(percent: 13),
-                                          fontFamily: 'spyagency3cond',
-                                          color: AppTheme.colorBackgroundWhite),
-                                    ),
-                                  );
-                                }),
-                            Container(
-                              height: appStyle.getHeight(percent: 4),
-                              alignment: Alignment.bottomCenter,
-                              child: Text(
-                                ' KM/H.',
-                                style:
-                                    TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3condital', color: AppTheme.colorGrey),
-                              ),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
-
-                      Container(
-                        color: Colors.black,
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
-                        child: new Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  'MAX.SPEED ',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: StreamBuilder<Object>(
-                                  stream: _velocityUpdatedStreamController2.stream,
-                                  builder: (context, snapshot) {
-                                    return Container(
-                                      alignment: Alignment.bottomRight,
-//                            decoration: BoxDecoration(
-//                              color: AppTheme.colorPrimaryDark,
-//                              borderRadius: BorderRadius.all(
-//                                  Radius.circular(3.0)),
-//                            ),
-                                      child: Text(
-                                        '${mpstokmph(_highestVelocity).toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                            fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorAccent),
-                                      ),
-                                    );
-                                  }),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  ' KM/H',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
-                        child: new Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  'AVG.SPEED ',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                child: Text(
-                                  '${avgSpeed.toStringAsFixed(2)}',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorAccent),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  ' KM/H',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
-                        child: new Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  'TOTAL ',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                child: Text(
-                                  '${countDistance.toStringAsFixed(2)}',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorAccent),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  ' KM    ',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                      buildCenter(context, appStyle),
+                      buildCenter2(context, appStyle),
+                      buildDistance(context, appStyle),
                     ],
                   ),
                 ),
-                checkStartSpeedTest ? buildDistance(context, appStyle) : new Container()
-              ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildCenter(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(
+        top: 3,
+      ),
+      child: new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: appStyle.getHeight(percent: 4),
+            alignment: Alignment.topCenter,
+            child: Text(
+              'TOTAL ',
+              style: TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3condital', color: AppTheme.colorGrey),
             ),
           ),
-          Positioned(
-            width: appStyle.getWidth100(),
-            height: appStyle.getHeight100(),
-            child: isProcess
-                ? createLoadingDialog(context)
-                : Container(
-              width: 0.0,
-              height: 0.0,
+          Container(
+            child: Text(
+              '${widget.totalKm}',
+              style: TextStyle(fontSize: appStyle.getWidth(percent: 13), fontFamily: 'spyagency3cond', color: AppTheme.colorBackgroundWhite),
+            ),
+          ),
+          Container(
+            height: appStyle.getHeight(percent: 4),
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              ' KM',
+              style: TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3condital', color: AppTheme.colorGrey),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget buildCenter2(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(all: 3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              Text(
+                'MAX.SPEED',
+                style: TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
+              ),
+              Container(
+                width: appStyle.getWidth(percent: 30),
+                height: appStyle.getHeight(percent: 5),
+                decoration: BoxDecoration(
+                  color: AppTheme.colorBlack,
+                  borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                      ),
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 0.5,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                      child: Text(
+                        '${widget.maxSpeed}',
+                        style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Container(
+            height: appStyle.getHeight(percent: 7),
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              'KM/H',
+              style: TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
+            ),
+          ),
+          Container(
+            width: appStyle.getWidth(percent: 2),
+          ),
+          Column(
+            children: [
+              Text(
+                'AVG.SPEED',
+                style: TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
+              ),
+              Container(
+                width: appStyle.getWidth(percent: 30),
+                height: appStyle.getHeight(percent: 5),
+                decoration: BoxDecoration(
+                  color: AppTheme.colorBlack,
+                  borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                      ),
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 0.5,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                      child: Text(
+                        '${widget.avgSpeed}',
+                        style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Container(
+            height: appStyle.getHeight(percent: 7),
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              'KM/H',
+              style: TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
             ),
           ),
         ],
       ),
-    ));
-  }
-
-  Widget createLoadingDialog(BuildContext context) {
-    AppSizeConfig appSizeConfig = new AppSizeConfig(context);
-    AppStyle appStyle = new AppStyle(context);
-    return Container(
-      child: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.colorBackgroundWhite)),
-        Container(
-            margin: EdgeInsets.only(left: 0, top: 20),
-            child: Text(
-              "${this._start2}",
-              style: TextStyle(fontSize: appStyle.getWidth(percent: 13), fontFamily: 'spyagency3condital', color: AppTheme.colorBlack),
-            )),
-      ])),
-      color: Colors.white.withOpacity(0.6),
     );
-  }
-
-  void startTimer() async {
-    setState(() {
-      isProcess = true;
-    });
-    const oneSec = const Duration(seconds: 1);
-    _timerForStart = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (timer.tick == 5) {
-          _timerForStart.cancel();
-          setState(() {
-            _start = 3;
-            isProcess = false;
-          });
-        } else if (timer.tick == 4) {
-//          getSpeed();
-          setState(() {
-            checkStartSpeedTest = true;
-          });
-          startCountOnTime();
-          countOnPosition();
-        } else {
-          if (_start == 0) {
-            setState(() {
-              _start2 = "Go";
-            });
-          } else {
-            setState(() {
-              _start--;
-              _start2 = _start.toString();
-            });
-          }
-        }
-      },
-    );
-  }
-
-  void countOnTime() async {
-    const oneSec = const Duration(milliseconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        setState(() {
-          countTimeDuration = timer.tick.toString();
-        });
-//          if(timer.tick > 1000 && timer.tick <= 1100){
-//            _onDistance();
-//          }
-      },
-    );
-  }
-
-  void calculatorDistance() async {
-    try {
-      print("int");
-//      _timeSet.isActive ? _timeSet.cancel() : print('out2');
-      _timerSpeedTest == null ? print('out22') : _timerSpeedTest.cancel();
-      _timer != null ? _timer.cancel() : print('out3');
-      _timeDistance != null ? _timeDistance.cancel() : print("out4");
-//      positionStream.cancel();
-      positionStream2.cancel();
-//      _timerSpeedTest.cancel();
-//      _timeDistance.cancel();
-      print("sixtyFeetTime ${this.sixtyFeetTime}");
-      setState(() {
-        checkRefresh = true;
-        countTimeDuration = null;
-        countDistance = 0.0;
-      });
-
-
-//      await Navigator.pushReplacement(
-//        context,
-//        MaterialPageRoute(
-//          builder: (context) => AppTheme(
-//            child: SpeedRang(
-//              sixtyFeetTime: this.sixtyFeetTime,
-//              twoHundredTime: this.twoHundredTime,
-//              threeHundredTime: this.threeHundredTime,
-//              fourHundredTime: this.fourHundredTime,
-//              fiveHundredTime: this.fiveHundredTime,
-//              sixHundredTime: this.sixHundredTime,
-//              sevenHundredTime: this.sevenHundredTime,
-//              eightHundredTime: this.eightHundredTime,
-//              oneThousandTime: this.oneThousandTime,
-//              twoThousandTime: this.twoThousandTime,
-//              sixtyFeetTime1: this.sixtyFeetTime1,
-//              twoHundredTime1: this.twoHundredTime1,
-//              threeHundredTime1: this.threeHundredTime1,
-//              fourHundredTime1: this.fourHundredTime1,
-//              fiveHundredTime1: this.fiveHundredTime1,
-//              sixHundredTime1: this.sixHundredTime1,
-//              sevenHundredTime1: this.sevenHundredTime1,
-//              eightHundredTime1: this.eightHundredTime1,
-//              nineHundredTime: this.nineHundredTime,
-//              oneThousandTime1: this.oneThousandTime1,
-//              oneThousand1Time1: this.oneThousand1Time1,
-//              oneThousand2Time1: this.oneThousand2Time1,
-//              oneThousand3Time1: this.oneThousand3Time1,
-//              oneThousand4Time1: this.oneThousand4Time1,
-//              oneThousand5Time1: this.oneThousand5Time1,
-//              oneThousand6Time1: this.oneThousand6Time1,
-//              oneThousand7Time1: this.oneThousand7Time1,
-//              oneThousand8Time1: this.oneThousand8Time1,
-//              oneThousand9Time1: this.oneThousand9Time1,
-//              twoThousandTime1: this.twoThousandTime1,
-//                oneThousand1Time : this.oneThousand1Time,
-//              oneThousand2Time : this.oneThousand2Time,
-//              oneThousand3Time : this.oneThousand3Time,
-//              oneThousand4Time : this.oneThousand4Time,
-//              oneThousand5Time : this.oneThousand5Time,
-//              oneThousand6Time : this.oneThousand6Time,
-//              oneThousand7Time : this.oneThousand7Time,
-//              oneThousand8Time : this.oneThousand8Time,
-//              oneThousand9Time : this.oneThousand9Time,
-//                nineHundredTime1 : this.nineHundredTime1,
-//              maxSpeed: mpstokmph(_highestVelocity).toStringAsFixed(2),
-//              avgSpeed: this.avgSpeed.toStringAsFixed(2),
-//              totalKm: this.countDistance.toStringAsFixed(2),
-//            ),
-//          ),
-//        ),
-//      );
-    } catch (error) {}
-  }
-
-  getSpeed() async {
-//    print("ijnt");
-    positionStream2 = locator
-        .getPositionStream(
-          desiredAccuracy: LocationAccuracy.bestForNavigation,
-        )
-        .listen(
-          (Position position) => _onAccelerate(position.speed),
-        );
-  }
-
-//  getDistance() async {
-////    positionStream3 =  locator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation)
-//    const oneSec = const Duration(seconds: 1);
-//    _timeDistance2 = new Timer.periodic(
-//      oneSec,
-//          (Timer timer) async {
-//            Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-//            _velocityUpdatedStreamController3.add(position.latitude);
-//      },
-//    );
-//  }
-
-  void countOnPosition() async {
-    const oneSec = const Duration(milliseconds: 500);
-    _timeDistance = new Timer.periodic(
-      oneSec,
-      (Timer timer) async {
-        if (timer.tick % 2 != 0) {
-          final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-          print("position1 ${position.toJson()}");
-          setState(() {
-            firstLat = position.latitude;
-            firstLongitude = position.longitude;
-          });
-        } else {
-          final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-          print("position2 ${position.toJson()}");
-          setState(() {
-            lastLat = position.latitude;
-            lastLongitude = position.longitude;
-          });
-        }
-        _onDistance();
-      },
-    );
-  }
-
-  void _onDistance() async {
-//    13.5732539,100.3572538 แถวบ้าน
-
-//    13.5898637,100.779927 โรงงานพี่ตั้ม
-  //  13.5722651,100.373688 บ้านมอส
-    if (lastLat != 0.0) {
-      double distanceInMeters = Geolocator.distanceBetween(firstLat, firstLongitude, lastLat, lastLongitude);
-      double avg1 = double.parse(countTimeDuration) / 1000;
-      var a1 = distanceInMeters / 1000.00;
-      var a2 = a1 + countDistance;
-      setState(() {
-        countDistance = a2;
-      });
-      var avg2 = avg1 * 0.000277777777778;
-      var avg3 = a2 / avg2;
-      var avg4 = 0.0;
-      if (avg3 > 500.0) {
-        avg4 = 0.0;
-      } else {
-        avg4 = avg3;
-      }
-      setState(() {
-        avgSpeed = avg4;
-      });
-//        print("avg ${avgSpeed.toString()}");
-      print("countDistance ${countDistance}");
-      if (this.countDistance > 0.09 && this.countDistance < 0.19) {
-        print("int");
-        sixtyFeetTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(sixtyFeetTime == "-"){
-          setState(() {
-            this.sixtyFeetTime = convertTimeCount(countTimeDuration);
-            this.sixtyFeetTime1 = sixtyFeetTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.19 && this.countDistance < 0.29) {
-        twoHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(twoHundredTime == "-"){
-          setState(() {
-            this.twoHundredTime = convertTimeCount(countTimeDuration);
-            this.twoHundredTime1 = twoHundredTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.29 && this.countDistance < 0.39) {
-        threeHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(threeHundredTime == "-"){
-          setState(() {
-            this.threeHundredTime = convertTimeCount(countTimeDuration);
-            this.threeHundredTime1 = threeHundredTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.39 && this.countDistance < 0.49) {
-        fourHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(fourHundredTime == "-"){
-          setState(() {
-            this.fourHundredTime = convertTimeCount(countTimeDuration);
-            this.fourHundredTime1 = fourHundredTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.49 && this.countDistance < 0.59) {
-        fiveHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(fiveHundredTime == "-"){
-          setState(() {
-            this.fiveHundredTime = convertTimeCount(countTimeDuration);
-            this.fiveHundredTime1 = fiveHundredTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.59 && this.countDistance < 0.69) {
-        sixHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(sixHundredTime == "-"){
-          setState(() {
-            this.sixHundredTime = convertTimeCount(countTimeDuration);
-            this.sixHundredTime1 = sixHundredTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.69 && this.countDistance < 0.79) {
-        sevenHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(sevenHundredTime == "-"){
-          setState(() {
-            this.sevenHundredTime = convertTimeCount(countTimeDuration);
-            this.sevenHundredTime1 = sevenHundredTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.79 && this.countDistance < 0.89) {
-        eightHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(eightHundredTime == "-"){
-          setState(() {
-            this.eightHundredTime = convertTimeCount(countTimeDuration);
-            this.eightHundredTime1 = eightHundredTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.89 && this.countDistance < 0.99) {
-        nineHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(nineHundredTime == "-"){
-          setState(() {
-            this.nineHundredTime = convertTimeCount(countTimeDuration);
-            this.nineHundredTime1 = nineHundredTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 0.99 && this.countDistance < 1.09) {
-        oneThousandTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousandTime == "-"){
-          setState(() {
-            this.oneThousandTime = convertTimeCount(countTimeDuration);
-            this.oneThousandTime1 = oneThousandTimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.09 && this.countDistance < 1.19) {
-        oneThousand1TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand1Time == "-"){
-          setState(() {
-            this.oneThousand1Time = convertTimeCount(countTimeDuration);
-            this.oneThousand1Time1 = oneThousand1TimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.19 && this.countDistance < 1.29) {
-        oneThousand2TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand2Time == "-"){
-          setState(() {
-            this.oneThousand2Time = convertTimeCount(countTimeDuration);
-            this.oneThousand2Time1 = oneThousand2TimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.29 && this.countDistance < 1.39) {
-        oneThousand3TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand3Time == "-"){
-          setState(() {
-            this.oneThousand3Time = convertTimeCount(countTimeDuration);
-            this.oneThousand3Time1 = oneThousand3TimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.39 && this.countDistance < 1.49) {
-        oneThousand4TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand4Time == "-"){
-          setState(() {
-            this.oneThousand4Time = convertTimeCount(countTimeDuration);
-            this.oneThousand4Time1 = oneThousand4TimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.49 && this.countDistance < 1.59999) {
-        oneThousand5TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand5Time == "-"){
-          setState(() {
-            this.oneThousand5Time = convertTimeCount(countTimeDuration);
-            this.oneThousand5Time1 = oneThousand5TimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.59 && this.countDistance < 1.69) {
-        oneThousand6TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand6Time == "-"){
-          setState(() {
-            this.oneThousand6Time = convertTimeCount(countTimeDuration);
-            this.oneThousand6Time1 = oneThousand6TimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.69 && this.countDistance < 1.79) {
-        oneThousand7TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand7Time == "-"){
-            setState(() {
-              this.oneThousand7Time = convertTimeCount(countTimeDuration);
-              this.oneThousand7Time1 = oneThousand7TimeList[1];
-            });
-        }
-
-      } else if (this.countDistance > 1.79 && this.countDistance < 1.89) {
-        oneThousand8TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand8Time == "-"){
-          setState(() {
-            this.oneThousand8Time = convertTimeCount(countTimeDuration);
-            this.oneThousand8Time1 = oneThousand8TimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.89 && this.countDistance < 1.99999) {
-        oneThousand9TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand9Time == "-"){
-          setState(() {
-            this.oneThousand9Time = convertTimeCount(countTimeDuration);
-            this.oneThousand9Time1 = oneThousand9TimeList[1];
-          });
-        }
-
-      } else if (this.countDistance > 1.9999 && this.countDistance < 2.99999) {
-          twoThousandTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-          if (twoThousandTime == "-") {
-            setState(() {
-              this.twoThousandTime = convertTimeCount(countTimeDuration);
-              this.twoThousandTime1 = twoThousandTimeList[1];
-            });
-          }
-        }
-
-      }
-    }
-
-  String convertTimeCount(String isTime) {
-    var a1 = Duration(milliseconds: int.parse(isTime)).toString();
-    var a2 = a1.substring(0, a1.length - 4);
-    return a2;
-  }
-
-
-
-  void _onAccelerate(double speed) {
-    print("Speed ${speed.toString()}");
-    locator.getCurrentPosition().then(
-      (Position updatedPosition) {
-        _velocity = (speed + updatedPosition.speed) / 2;
-        if (_velocity > 3) {
-          _velocity = _velocity - 0.6;
-        }
-        if (_velocity > _highestVelocity) {
-          _highestVelocity = _velocity;
-        }
-        _velocityUpdatedStreamController.add(_velocity);
-        _velocityUpdatedStreamController2.add(_velocity);
-        _velocityUpdatedStreamController3.add(_velocity);
-
-        if (mpstokmph(_velocity) > 280) {
-          eventObservable.add(mpstokmph(_velocity) + 30);
-        } else if (mpstokmph(_velocity) > 200) {
-          eventObservable.add(mpstokmph(_velocity));
-        } else {
-          eventObservable.add(mpstokmph(_velocity) - 16.5);
-        }
-      },
-    );
-//    print("_onAccelerate $_velocity");
   }
 
   Widget buildDistance(BuildContext context, AppStyle appStyle) {
@@ -1118,7 +421,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.sixtyFeetTime}',
+                      '${widget.sixtyFeetTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1128,7 +431,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.sixtyFeetTime1}',
+                  '${widget.sixtyFeetTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1189,7 +492,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.twoHundredTime}',
+                      '${widget.twoHundredTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1199,7 +502,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.twoHundredTime1}',
+                  '${widget.twoHundredTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1260,7 +563,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.threeHundredTime}',
+                      '${widget.threeHundredTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1270,7 +573,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.threeHundredTime1}',
+                  '${widget.threeHundredTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1331,7 +634,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.fourHundredTime}',
+                      '${widget.fourHundredTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1341,7 +644,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.fourHundredTime1}',
+                  '${widget.fourHundredTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1402,7 +705,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.fiveHundredTime}',
+                      '${widget.fiveHundredTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1412,7 +715,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.fiveHundredTime1}',
+                  '${widget.fiveHundredTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1473,7 +776,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.sixHundredTime}',
+                      '${widget.sixHundredTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1483,7 +786,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.sixHundredTime1}',
+                  '${widget.sixHundredTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1544,7 +847,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.sevenHundredTime}',
+                      '${widget.sevenHundredTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1554,7 +857,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.sevenHundredTime1}',
+                  '${widget.sevenHundredTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1615,7 +918,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.eightHundredTime}',
+                      '${widget.eightHundredTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1625,7 +928,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.eightHundredTime1}',
+                  '${widget.eightHundredTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1686,7 +989,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.nineHundredTime}',
+                      '${widget.nineHundredTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1696,7 +999,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.nineHundredTime1}',
+                  '${widget.nineHundredTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1757,7 +1060,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousandTime}',
+                      '${widget.oneThousandTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1767,7 +1070,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousandTime1}',
+                  '${widget.oneThousandTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1828,7 +1131,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand1Time}',
+                      '${widget.oneThousand1Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1838,7 +1141,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand1Time1}',
+                  '${widget.oneThousand1Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1899,7 +1202,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand2Time}',
+                      '${widget.oneThousand2Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1909,7 +1212,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand2Time1}',
+                  '${widget.oneThousand2Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -1970,7 +1273,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand3Time}',
+                      '${widget.oneThousand3Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -1980,7 +1283,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand3Time1}',
+                  '${widget.oneThousand3Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -2041,7 +1344,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand4Time}',
+                      '${widget.oneThousand4Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -2051,7 +1354,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand4Time1}',
+                  '${widget.oneThousand4Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -2112,7 +1415,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand5Time}',
+                      '${widget.oneThousand5Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -2122,7 +1425,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand5Time1}',
+                  '${widget.oneThousand5Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -2183,7 +1486,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand6Time}',
+                      '${widget.oneThousand6Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -2193,7 +1496,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand6Time1}',
+                  '${widget.oneThousand6Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -2254,7 +1557,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand7Time}',
+                      '${widget.oneThousand7Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -2264,7 +1567,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand7Time1}',
+                  '${widget.oneThousand7Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -2325,7 +1628,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand8Time}',
+                      '${widget.oneThousand8Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -2335,7 +1638,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand8Time1}',
+                  '${widget.oneThousand8Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -2396,7 +1699,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.oneThousand9Time}',
+                      '${widget.oneThousand9Time}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -2406,7 +1709,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.oneThousand9Time1}',
+                  '${widget.oneThousand9Time1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(
@@ -2467,7 +1770,7 @@ class _GPSPageState extends State<GPSPage> {
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
-                      '${this.twoThousandTime}',
+                      '${widget.twoThousandTime}',
                       style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
                     ),
                   ),
@@ -2477,7 +1780,7 @@ class _GPSPageState extends State<GPSPage> {
             Row(
               children: [
                 Text(
-                  '${this.twoThousandTime1}',
+                  '${widget.twoThousandTime1}',
                   style: appStyle.getTextStyle('normalText'),
                 ),
                 Container(

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
 import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
+import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/new_menu_gear.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/camshaft/camshaft.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/collection.brand.page.dart';
 import 'package:th.go.dms.cancer.anywhere/pages/collection.motor.page.dart';
@@ -36,11 +37,11 @@ class _HomePageState extends State<HomePage> {
 
     screen = [
       GPSPage(),
-      CollectionBrand(type: '4',step: 'คำนวณวความเร็ว',),
+      MenuGear(type: '4',step: 'คำนวณวความเร็ว',),
        CamshaftPage(),
       CollectionBrand(type: '1',step: 'คำนวณ CC',),
        // CollectionMotor(type: 'menu1',step: 'GPS',),
-       Setting(),
+//       Setting(),
     ];
     showScreen = screen[0];
     super.initState();

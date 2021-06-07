@@ -28,7 +28,7 @@ packages:
       name: basic_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.0-rc.2"
+    version: "2.7.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -42,7 +42,7 @@ packages:
       name: bottom_navy_bar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.6.0"
+    version: "6.0.0"
   characters:
     dependency: transitive
     description:
@@ -105,14 +105,14 @@ packages:
       name: date_format
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.9"
+    version: "2.0.2"
   date_range_picker:
     dependency: transitive
     description:
       name: date_range_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.7"
   datetime_picker_formfield:
     dependency: transitive
     description:
@@ -140,7 +140,14 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.10"
+    version: "4.0.0"
+  duration:
+    dependency: "direct overridden"
+    description:
+      name: duration
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.6"
   encrypt:
     dependency: transitive
     description:
@@ -168,14 +175,14 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.3"
+    version: "1.0.0"
   file:
     dependency: transitive
     description:
       name: file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.2.1"
+    version: "6.1.0"
   fl_chart:
     dependency: "direct overridden"
     description:
@@ -194,21 +201,14 @@ packages:
       name: flutter_chips_input
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.4"
+    version: "1.9.5"
   flutter_colorpicker:
     dependency: transitive
     description:
       name: flutter_colorpicker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.4"
-  flutter_datetime_picker:
-    dependency: "direct overridden"
-    description:
-      name: flutter_datetime_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.0"
+    version: "0.3.5"
   flutter_form_builder:
     dependency: "direct overridden"
     description:
@@ -229,7 +229,7 @@ packages:
       name: flutter_keyboard_visibility
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.2"
+    version: "4.0.6"
   flutter_keyboard_visibility_platform_interface:
     dependency: transitive
     description:
@@ -288,19 +288,12 @@ packages:
       name: flutter_typeahead
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.1"
+    version: "1.9.3"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
-  gallery_saver:
-    dependency: "direct overridden"
-    description:
-      name: gallery_saver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   geolocator:
     dependency: "direct overridden"
     description:
@@ -335,28 +328,28 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.2"
+    version: "0.13.3"
   http_parser:
     dependency: transitive
     description:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.4"
+    version: "4.0.0"
   image_picker:
     dependency: transitive
     description:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.7+14"
+    version: "0.6.7+22"
   image_picker_platform_interface:
     dependency: transitive
     description:
       name: image_picker_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.6"
   intl:
     dependency: "direct overridden"
     description:
@@ -377,23 +370,16 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.1"
   kbt_flutter_package:
     dependency: "direct overridden"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ce87bb7f8e6096c1708093b9045676cdaf49f3dd
+      resolved-ref: "8f4e8a29e091e1c1f2ba25871e08590224086f00"
       url: "https://git.kabintech.co.th/KabinTech/KBT-Flutter-Package.git"
     source: git
     version: "0.0.2"
-  loading_overlay:
-    dependency: "direct overridden"
-    description:
-      name: loading_overlay
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1"
   logging:
     dependency: transitive
     description:
@@ -401,13 +387,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.4"
-  mask_text_input_formatter:
-    dependency: "direct overridden"
-    description:
-      name: mask_text_input_formatter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   matcher:
     dependency: transitive
     description:
@@ -435,21 +414,21 @@ packages:
       name: path_drawing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0-nullsafety.0"
+    version: "0.5.0"
   path_parsing:
     dependency: transitive
     description:
       name: path_parsing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0-nullsafety.0"
+    version: "0.2.0"
   path_provider:
     dependency: "direct overridden"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.24"
+    version: "1.6.28"
   path_provider_linux:
     dependency: transitive
     description:
@@ -463,7 +442,7 @@ packages:
       name: path_provider_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+6"
+    version: "0.0.4+8"
   path_provider_platform_interface:
     dependency: transitive
     description:
@@ -477,7 +456,7 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+3"
+    version: "0.0.5"
   pedantic:
     dependency: transitive
     description:
@@ -491,7 +470,7 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.2"
+    version: "4.1.0"
   phone_number:
     dependency: transitive
     description:
@@ -505,7 +484,7 @@ packages:
       name: platform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "3.0.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -519,14 +498,14 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   process:
     dependency: transitive
     description:
       name: process
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.13"
+    version: "4.2.1"
   quiver:
     dependency: transitive
     description:
@@ -548,6 +527,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.26.0"
   shared_preferences:
     dependency: "direct overridden"
     description:
@@ -589,7 +575,7 @@ packages:
       name: shared_preferences_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+3"
+    version: "0.0.2+3"
   signature:
     dependency: transitive
     description:
@@ -609,20 +595,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  speedometer:
+    dependency: "direct overridden"
+    description:
+      path: speedometer
+      relative: true
+    source: path
+    version: "1.0.8"
   sqflite:
     dependency: transitive
     description:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0+2"
+    version: "2.0.0+3"
   sqflite_common:
     dependency: transitive
     description:
       name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0+1"
+    version: "2.0.0+2"
   stack_trace:
     dependency: transitive
     description:
@@ -644,20 +637,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  syncfusion_flutter_core:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "18.4.47"
-  syncfusion_flutter_gauges:
-    dependency: "direct overridden"
-    description:
-      name: syncfusion_flutter_gauges
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "18.4.47"
   synchronized:
     dependency: transitive
     description:
@@ -693,13 +672,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
-  underline_otp_text_field:
-    dependency: "direct overridden"
-    description:
-      name: underline_otp_text_field
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   utf:
     dependency: transitive
     description:
@@ -727,14 +699,14 @@ packages:
       name: vin_decoder
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2"
+    version: "0.1.3"
   win32:
     dependency: transitive
     description:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.4"
+    version: "2.0.5"
   xdg_directories:
     dependency: transitive
     description:
@@ -748,7 +720,7 @@ packages:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.2"
+    version: "5.1.0"
 sdks:
-  dart: ">=2.12.0-0.0 <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.24.0-10"

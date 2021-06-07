@@ -330,7 +330,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
                   alignment: Alignment.center,
                   width: appStyle.getWidth100(),
                   child: Text(
-                    'CC มาตรฐาน ${answerCC} cm.',
+                    '${widget.nameCar}  ซีซี  ${answerCC} ',
                     style: appStyle.getTextStyle('normalText'),
                   ),
                 ),
