@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'numpad.widget.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
 //import 'package:underline_otp_text_field/underline_otp_text_field.dart';
 
 class PinCodeWidget extends StatefulWidget {

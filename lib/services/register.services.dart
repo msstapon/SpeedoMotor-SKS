@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:th.go.dms.cancer.anywhere/config/app.config.dart';
-import 'package:th.go.dms.cancer.anywhere/services/login.model.dart';
+import 'package:th.go.sks.racing_2/config/app.config.dart';
+import 'package:th.go.sks.racing_2/services/login.model.dart';
 
 class RegisterServices{
   Future registerServicesApi({String username,String password, String firstName, String lastName, String phone}) async {

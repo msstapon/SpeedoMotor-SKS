@@ -1,5 +1,5 @@
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.size.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/config/app.size.config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -110,7 +110,7 @@ class AppStyle {
         color: AppTheme.colorFontBlack);
 
     _textStyle['normalText'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.bodyText1.fontSize,
+        fontSize: getWidth(percent: 4.5),
         fontWeight: Theme.of(_context).textTheme.bodyText1.fontWeight,
         fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
         color: AppTheme.colorFontWhite);
@@ -122,7 +122,7 @@ class AppStyle {
         color: AppTheme.colorFontWhite);
 
     _textStyle['normalBlack'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.bodyText1.fontSize,
+       fontSize: getWidth(percent: 4.5),
         fontWeight: Theme.of(_context).textTheme.bodyText1.fontWeight,
         fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
         color: AppTheme.colorFontBlack);

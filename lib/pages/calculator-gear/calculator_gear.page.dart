@@ -1,8 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/bar_chart/samples/bar_chart_sample2.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
 import "package:intl/intl.dart";
 import '../../config/app.style.config.dart';
 import '../../config/app.style.config.dart';
@@ -64,6 +63,14 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
   TextEditingController txtCM5 = new TextEditingController();
   TextEditingController txtDiff5 = new TextEditingController();
 
+  TextEditingController txtRPM6 = new TextEditingController();
+  TextEditingController txtL6 = new TextEditingController();
+  TextEditingController txtRP6 = new TextEditingController();
+  TextEditingController txtM6 = new TextEditingController();
+  TextEditingController txtC6 = new TextEditingController();
+  TextEditingController txtCM6 = new TextEditingController();
+  TextEditingController txtDiff6 = new TextEditingController();
+
   TextEditingController txtDiff0 = new TextEditingController();
 
   TextEditingController txtFR = new TextEditingController();
@@ -75,12 +82,15 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
   List<Map> gear3;
   List<Map> gear4;
   List<Map> gear5;
+  List<Map> gear6;
 
   List<Map> myProducts = List.generate(12, (index) => {"id": index, "name": "Motor", "image": "motor${index.toString()}.png"}).toList();
   double answerGear1;
   double answerGear2;
   double answerGear3;
   double answerGear4;
+  double answerGear5;
+  double answerGear6;
 
   TextEditingController txtL = new TextEditingController();
   TextEditingController txtRP = new TextEditingController();
@@ -88,8 +98,10 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
 
   List<String> answerAll = ["0", "0", "0", "0"];
   final formatter = new NumberFormat("#,###.00");
-  bool checkGear = false;
+  bool checkGear5= false;
+  bool checkGear6= false;
   int countGear = 4;
+
 
   @override
   void initState() {
@@ -108,6 +120,9 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
     await calculatorGear3();
     await calculatorGear4();
     await calculatorGear5();
+    if(checkGear6){
+      await calculatorGear6();
+    }
     await calculatorDiff();
   }
 
@@ -119,14 +134,16 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
     var C3;
     var C4;
     var C5;
+    var C6;
     var M1;
     var M2;
     var M3;
     var M4;
     var M5;
+    var M6;
     print('${widget.nameCar}');
     if (widget.nameCar == 'W110i') {
-      rom = '10000';
+      rom = '9800';
       C1 = 34;
       C2 = 28;
       C3 = 25;
@@ -136,15 +153,20 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
       M1 = 13;
       M2 = 18;
       M3 = 22;
-      M4 = 23;
+      M4 = 24;
       M5 = 24;
       setState(() {
         txtRP.text = "69";
         txtRP0.text = "17";
       });
+      setState(() {
+        txtL.text = "1.670";
+        txtFR.text = "14";
+        txtRR.text = '25';
+        txtDiff0.text = '0.00';
+      });
     } else if (widget.nameCar == 'Sonic') {
       rom = '10500';
-
       C1 = 37;
       C2 = 32;
       C3 = 25;
@@ -157,13 +179,19 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
       M4 = 21;
       M5 = 26;
       setState(() {
-        checkGear = true;
-        countGear = 5;
+        checkGear5 = true;
+        countGear= 5;
         answerAll.add('0');
         txtRP.text = "67";
         txtRP0.text = "20";
       });
-    } else {
+      setState(() {
+        txtL.text = "1.670";
+        txtFR.text = "14";
+        txtRR.text = '25';
+        txtDiff0.text = '0.00';
+      });
+    } else if(widget.nameCar ==  'W125i') {
       rom = '9300';
       C1 = 35;
       C2 = 31;
@@ -181,7 +209,181 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
         txtRP.text = "67";
         txtRP0.text = "20";
       });
+      setState(() {
+        txtL.text = "1.670";
+        txtFR.text = "14";
+        txtRR.text = '25';
+        txtDiff0.text = '0.00';
+      });
+    }else if(widget.nameCar == "Exciter150"){
+      rom = '10000';
+      C1 = 34;
+      C2 = 30;
+      C3 = 30;
+      C4 = 24;
+      C5 = 22;
+
+      M1 = 12;
+      M2 = 16;
+      M3 = 21;
+      M4 = 21;
+      M5 = 23;
+
+      setState(() {
+        checkGear5 = true;
+        countGear= 5;
+        answerAll.add('0');
+        txtRP.text = "72";
+        txtRP0.text = "24";
+      });
+      setState(() {
+        txtL.text = "1.700";
+        txtFR.text = "14";
+        txtRR.text = '30';
+        txtDiff0.text = '0.00';
+      });
+
+    }else if(widget.nameCar == "R15"){
+      rom = '10000';
+      C1 = 34;
+      C2 = 30;
+      C3 = 30;
+      C4 = 24;
+      C5 = 22;
+      C6 = 21;
+
+      M1 = 12;
+      M2 = 16;
+      M3 = 22;
+      M4 = 21;
+      M5 = 23;
+      M6 = 25;
+
+      setState(() {
+        checkGear5 = true;
+        checkGear6 = true;
+        countGear= 6;
+        answerAll.add('0');
+        answerAll.add('0');
+        txtRP.text = "67";
+        txtRP0.text = "20";
+      });
+      setState(() {
+        txtL.text = "1.670";
+        txtFR.text = "14";
+        txtRR.text = '49';
+        txtDiff0.text = '0.00';
+      });
+    }else if(widget.nameCar == "KR150"){
+      rom = '12500';
+      C1 = 27;
+      C2 = 29;
+      C3 = 26;
+      C4 = 24;
+      C5 = 20;
+      C6 = 19;
+
+      M1 = 10;
+      M2 = 17;
+      M3 = 20;
+      M4 = 22;
+      M5 = 21;
+      M6 = 22;
+
+      setState(() {
+        checkGear5 = true;
+        countGear= 6;
+        checkGear6 = true;
+        answerAll.add('0');
+        answerAll.add('0');
+        txtRP.text = "72";
+        txtRP0.text = "22";
+      });
+      setState(() {
+        txtL.text = "1.830";
+        txtFR.text = "13";
+        txtRR.text = '31';
+        txtDiff0.text = '0.00';
+      });
+    }else if(widget.nameCar == "Raider150"){
+      rom = '13200';
+      C1 = 38;
+      C2 = 29;
+      C3 = 31;
+      C4 = 28;
+      C5 = 23;
+      C6 = 25;
+
+      M1 = 13;
+      M2 = 15;
+      M3 = 21;
+      M4 = 23;
+      M5 = 22;
+      M6 = 27;
+
+      setState(() {
+        checkGear5 = true;
+        checkGear6 = true;
+        countGear= 6;
+        answerAll.add('0');
+        answerAll.add('0');
+        txtRP.text = "69";
+        txtRP0.text = "21";
+      });
+      setState(() {
+        txtL.text = "1.670";
+        txtFR.text = "14";
+        txtRR.text = '43';
+        txtDiff0.text = '0.00';
+      });
+    }else if(widget.nameCar == "Dream2021"){
+      rom = '9300';
+      C1 = 44;
+      C2 = 33;
+      C3 = 28;
+      C4 = 29;
+      C5 = 22;
+
+      M1 = 14;
+      M2 = 18;
+      M3 = 21;
+      M4 = 28;
+      M5 = 24;
+      setState(() {
+        txtRP.text = "65";
+        txtRP0.text = "19";
+      });
+      setState(() {
+        txtL.text = "1.670";
+        txtFR.text = "14";
+        txtRR.text = '25';
+        txtDiff0.text = '0.00';
+      });
+    }else if(widget.nameCar == "RC"){
+      rom = '9000';
+      C1 = 33;
+      C2 = 24;
+      C3 = 24;
+      C4 = 19;
+      C5 = 19;
+
+      M1 = 10;
+      M2 = 14;
+      M3 = 21;
+      M4 = 19;
+      M5 = 19;
+      setState(() {
+        txtRP.text = "69";
+        txtRP0.text = "20";
+      });
+      setState(() {
+        txtL.text = "1.670";
+        txtFR.text = "14";
+        txtRR.text = '32';
+        txtDiff0.text = '0.00';
+      });
     }
+
     setState(() {
       txtRPM1.text = rom;
       txtL1.text = "1.670";
@@ -192,6 +394,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
       txtDiff1.text = '-';
     });
     //เกียร์ 2
+
     setState(() {
       txtRPM2.text = rom;
       txtL2.text = "1.670";
@@ -201,6 +404,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
       txtCM2.text = (C2 / M2).toStringAsFixed(3).toString();
       txtDiff2.text = '-';
     });
+
     //เกียร์ 3
     setState(() {
       txtRPM3.text = rom;
@@ -231,13 +435,20 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
       txtCM5.text = (C5 / M5).toStringAsFixed(3).toString();
       txtDiff5.text = '-';
     });
+    //เกียร์ 6
 
-    setState(() {
-      txtL.text = "1.670";
-      txtFR.text = "14";
-      txtRR.text = '25';
-      txtDiff0.text = '0.00';
-    });
+    if(checkGear6){
+      setState(() {
+        txtRPM6.text = rom;
+        txtL6.text = "1.670";
+        txtRP6.text = "3.350";
+        txtM6.text = M6.toString();
+        txtC6.text = C6.toString();
+        txtCM6.text = (C6 / M6).toStringAsFixed(3).toString();
+        txtDiff6.text = '-';
+      });
+    }
+
   }
 
   setFirstData() async {
@@ -250,6 +461,8 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
     gear4 = List.generate(1, (index) => {"RPM": txtRPM4.text, "L": txtL4.text, "RP": txtRP4.text, "M": txtM4.text, "C": txtC4.text}).toList();
 
     gear5 = List.generate(1, (index) => {"RPM": txtRPM5.text, "L": txtL5.text, "RP": txtRP5.text, "M": txtM5.text, "C": txtC5.text}).toList();
+
+    gear6 = List.generate(1, (index) => {"RPM": txtRPM6.text, "L": txtL6.text, "RP": txtRP6.text, "M": txtM6.text, "C": txtC6.text}).toList();
 
 //    answerAll = List.generate(1, (index) => {"RPM": txtRPM4.text, "L": txtL4.text, "RP": txtRP4.text, "M": txtM4.text, "C": txtC4.text}).toList();
   }
@@ -304,10 +517,12 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                         buildGear2(context, appStyle),
                         buildGear3(context, appStyle),
                         buildGear4(context, appStyle),
+                        checkGear5 ? buildGear5(context, appStyle) : new Container(),
+                        checkGear6 ? buildGear6(context, appStyle) : new Container(),
                       ],
                     ),
                   ),
-                  checkGear ? buildGear5(context, appStyle) : new Container(),
+
                   Container(
                     margin: appStyle.getEdgeInsetsFromRatio(
                       right: 2,
@@ -315,7 +530,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                     ),
                     width: appStyle.getWidth100(),
                     child: Text(
-                      '* คำอธิบาย ตารางคือ  ${countGear} เกียร์ นับจาก บนลงล่าง\n* DIFF คือ ระยะห่างระหว่างเกียร์',
+                      '* คำอธิบาย ตารางคือ  ${countGear} เกียร์ นับจาก บนลงล่าง\n* DIFF คือ ระยะห่างระหว่างเกียร์ ของรถ ${widget.nameCar}',
                       style: appStyle.getTextStyle('normalText'),
                     ),
                   ),
@@ -340,6 +555,15 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                   ),
                   buildHeadProcess2(context, appStyle),
                   buildHeadProcess3(context, appStyle),
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'PowerBySuperV ',
+                      style:
+                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'grandsportlaserital', color: AppTheme.colorGrey),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -513,7 +737,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                         child: TextFormField(
                           onChanged: (value) {
                             if (index != 0) {
-                              changC(index, value);
+                              changC2(index, value);
                             }
                           },
                           maxLines: 1,
@@ -592,7 +816,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                         child: TextFormField(
                           onChanged: (value) {
                             if (index != 0) {
-                              changC(index, value);
+                              changC3(index, value);
                             }
                           },
                           maxLines: 1,
@@ -671,7 +895,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                         child: TextFormField(
                           onChanged: (value) {
                             if (index != 0) {
-                              changC(index, value);
+                              changC4(index, value);
                             }
                           },
                           maxLines: 1,
@@ -724,6 +948,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                           )
                   ],
                 ),
+                checkGear5 ? Divider(height: 1, color: AppTheme.colorGrey) : new Container(width: 0,height: 0,)
               ],
             ),
           );
@@ -742,6 +967,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
               children: [
                 Row(
                   children: [
+
                     Expanded(
                       flex: 60,
                       child: Container(
@@ -749,7 +975,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                         child: TextFormField(
                           onChanged: (value) {
                             if (index != 0) {
-                              changC(index, value);
+                              changC5(index, value);
                             }
                           },
                           maxLines: 1,
@@ -800,6 +1026,85 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                             width: 0.0,
                             height: 0.0,
                           )
+                  ],
+                ),
+                checkGear6 ? Divider(height: 1, color: AppTheme.colorGrey) : new Container(width: 0,height: 0,)
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget buildGear6(BuildContext content, AppStyle appStyle) {
+    return GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5, childAspectRatio: 1.4, crossAxisSpacing: 1, mainAxisSpacing: 1),
+        itemCount: 5,
+        itemBuilder: (BuildContext ctx, index) {
+          return Container(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 60,
+                      child: Container(
+                        height: appStyle.getHeight(percent: 6),
+                        child: TextFormField(
+                          onChanged: (value) {
+                            if (index != 0) {
+                              changC6(index, value);
+                            }
+                          },
+                          maxLines: 1,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'กรุณากรอกขนาดลูก';
+                            }
+                            return null;
+                          },
+                          decoration: new InputDecoration(
+                            isCollapsed: false,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(4.0),
+                              borderSide: new BorderSide(
+                                color: AppTheme.colorBackgroundWhite,
+                                width: appStyle.getWidth(percent: 0.25),
+                              ),
+                            ),
+//                      enabledBorder: OutlineInputBorder(
+//                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+//                        borderSide: BorderSide(color: AppTheme.colorRed, width: appStyle.getWidth(percent: 0.25)),
+//                      ),
+                          ),
+                          controller: index == 0
+                              ? txtRPM6
+                              : index == 1
+                              ? txtM6
+                              : index == 2
+                              ? txtC6
+                              : index == 3
+                              ? txtCM6
+                              : txtDiff5,
+                          keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
+                          style: appStyle.getTextStyle('smallGrey'),
+                        ),
+                      ),
+                    ),
+                    index != 4
+                        ? Expanded(
+                      flex: 1,
+                      child: Container(
+                        height: appStyle.getHeight(percent: 6),
+                        color: AppTheme.colorGrey,
+                      ),
+                    )
+                        : new Container(
+                      width: 0.0,
+                      height: 0.0,
+                    )
                   ],
                 ),
               ],
@@ -963,7 +1268,12 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
                   await calculatorGear2();
                   await calculatorGear3();
                   await calculatorGear4();
-                  await calculatorGear5();
+                  if(checkGear5){
+                    await calculatorGear5();
+                  }
+                  if(checkGear6){
+                    await calculatorGear6();
+                  }
                   await calculatorDiff();
                 },
                 shape: new RoundedRectangleBorder(
@@ -1530,24 +1840,60 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
     var equation6 = equation2 / equation5;
 
     print('Gear1 =>');
-    if (countGear == 5) {
+    if (checkGear5) {
       setState(() {
         answerAll[4] = equation6.toStringAsFixed(3);
       });
     }
   }
 
+  calculatorGear6() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    double tempRpm1 = double.parse(txtRPM6.text); //TODO รอบ
+    var tempL1 = double.parse(txtL.text); //TODO รอบยางหลัง
+    var tempRp1 = double.parse(txtRP.text) / double.parse(txtRP0.text); //TODO อัราทดเกียร์
+    var tempM1 = double.parse(txtM6.text); //TODO M
+    var tempC1 = double.parse(txtC6.text); //TODO C
+    var tempFR = double.parse(txtFR.text); //TODO FR
+    var tempRR = double.parse(txtRR.text);
+    var equation1 = (tempRpm1 * 60) / 1000;
+    var equation2 = equation1 * tempL1;
+
+    var equation3 = tempC1 / tempM1;
+
+    var equation4 = tempRR / tempFR;
+
+    var equation5 = tempRp1 * equation3 * equation4;
+
+    var equation6 = equation2 / equation5;
+
+    print('Gear1 =>');
+    if (checkGear6) {
+      setState(() {
+        answerAll[5] = equation6.toStringAsFixed(3);
+      });
+    }
+  }
+
   calculatorDiff() async {
-    var diff1 = double.parse(answerAll[1]) - double.parse(answerAll[0]);
-    var diff2 = double.parse(answerAll[2]) - double.parse(answerAll[1]);
-    var diff3 = double.parse(answerAll[3]) - double.parse(answerAll[2]);
+    var diff1 = double.parse(txtCM1.text) - double.parse(txtCM2.text);
+    var diff2 = double.parse(txtCM2.text) - double.parse(txtCM3.text);
+    var diff3 = double.parse(txtCM3.text) - double.parse(txtCM4.text);
     var diff4;
-    if (countGear == 5) {
-      diff4 = double.parse(answerAll[4]) - double.parse(answerAll[3]);
+    if (checkGear5) {
+      diff4 = double.parse(txtCM4.text) - double.parse(txtCM5.text);
       setState(() {
         txtDiff4.text = diff4.toStringAsFixed(2);
       });
     }
+    var diff5;
+    if (checkGear6) {
+      diff5 = double.parse(txtCM5.text) - double.parse(txtCM6.text);
+      setState(() {
+        txtDiff5.text = diff5.toStringAsFixed(2);
+      });
+    }
+
     setState(() {
       txtDiff1.text = diff1.toStringAsFixed(2);
       txtDiff2.text = diff2.toStringAsFixed(2);
@@ -1631,6 +1977,22 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
       }
       setState(() {
         txtCM5.text = C.toStringAsFixed(3).toString();
+      });
+    }
+  }
+
+  changC6(int index, value) {
+    print(index);
+    print(value);
+    var C;
+    if (value != "") {
+      if (index == 1) {
+        C = double.parse(txtC6.text) / double.parse(value);
+      } else {
+        C = double.parse(value) / double.parse(txtM6.text);
+      }
+      setState(() {
+        txtCM6.text = C.toStringAsFixed(3).toString();
       });
     }
   }

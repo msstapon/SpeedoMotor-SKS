@@ -9,86 +9,36 @@ import 'package:th.go.sks.racing_2/utilities/utilities.dart';
 import 'package:th.go.sks.racing_2/widgets/dialog/confirm.dialog.widget.dart';
 import 'package:kbt_flutter_package/utilities/shared.preferences.util.dart';
 
-class CollectionHonda extends StatefulWidget {
+class CollectionSuzukiGear extends StatefulWidget {
   final String type;
   final String step;
   final String brand;
-  CollectionHonda({Key key, @required this.type, @required this.step, this.brand}) : super(key: key);
+  CollectionSuzukiGear({Key key, @required this.type, @required this.step, this.brand}) : super(key: key);
   @override
-  _CollectionHondaState createState() => _CollectionHondaState();
+  _CollectionSuzukiGearState createState() => _CollectionSuzukiGearState();
 }
 
-class _CollectionHondaState extends State<CollectionHonda> {
+class _CollectionSuzukiGearState extends State<CollectionSuzukiGear> {
   List<String> nameCar = [
-    'W110i',
-    'Sonic',
-    'W125i',
-    'W125iบังลม',
-    'W100',
-    'Dream',
-    'CT125',
-    'PCX',
-    'MSXsf',
-    'Forza300',
-    'CBR250rr',
-    'CBR300',
+    'Raider150',
+    'RC'
+
   ];
 
   List<String> cc = [
-    '109.17',
-    '124.7',
-    '124.89',
-    '124.8',
-    '79.1',
-    '109.1',
-    '124',
-    '124.7',
-    '124.9',
-    '279',
-    '249.60',
-    '286',
+    '124.5',
   ];
   List<String> peroid = [
     '9.3',
-    '11',
-    '9.3',
-    '9.3',
-    '9.0',
-    '9.0',
-    '9.3',
-    '11',
-    '9.3',
-    '10.5',
-    '10.7',
-    '10.7',
+
   ];
   List<String> input1 = [
-    '50',
-    '58',
-    '52.4',
-    '52.4',
-    '50',
-    '50',
-    '52.4',
-    '58',
-    '52.4',
-    '72',
-    '76',
-    '76',
+    '57.5',
+
   ];
   List<String> input2 = [
-    '55.597',
-    '47.2',
-    '57.913',
-    '57.9',
-    '49.5',
-    '55.6',
-    '57.9',
-    '47.2',
-    '57.9',
-    '68.6',
-    '55',
-    '63',
+    '48.8',
+
   ];
 
 
@@ -103,7 +53,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
             height: appStyle.getHeight100(),
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("lib/images/collection_motor/new_icon/sks-page-08-118.png"),
+                image: AssetImage("lib/images/collection_motor/new_icon/sks-page-18-259.png"),
                 fit: BoxFit.fill,
               ),
             ),
@@ -116,7 +66,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
                     // profile, change pin , logout
                     InkWell(
                         onTap: (){
-                            Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                         child: new Container(
                           margin: appStyle.getEdgeInsetsFromRatio(top: 6,left: 5),
@@ -148,40 +98,23 @@ class _CollectionHondaState extends State<CollectionHonda> {
             Radius.circular(25.0) //                 <--- border radius here
         ),
         border: Border.all(color : Colors.white, width: 0.5,),
-        ),
+      ),
       child: Container(
         margin: appStyle.getEdgeInsetsFromRatio(top: 2,bottom: 2),
         child: Column(
-          children: List.generate(widget.type == "4" ?  3 : nameCar.length,(index) {
+          children: List.generate(nameCar.length,(index) {
             return  InkWell(
               onTap: () async {
-                if (widget.type == '1') {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AppTheme(
-                        child: CalculatorCCPage(
-                          input1: input1[index],
-                          input2: input2[index],
-                          peroid: peroid[index],
-                          cc: cc[index],
-                          nameCar: nameCar[index],
-                        ),
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AppTheme(
+                      child: CalculatorGearPage(
+                        nameCar: nameCar[index],
                       ),
                     ),
-                  );
-                } else if (widget.type == '4') {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AppTheme(
-                        child: CalculatorGearPage(
-                          nameCar: nameCar[index],
-                        ),
-                      ),
-                    ),
-                  );
-                }
+                  ),
+                );
               },
               child: Container(
                 margin: appStyle.getEdgeInsetsFromRatio(bottom: 3,),
@@ -212,14 +145,6 @@ class _CollectionHondaState extends State<CollectionHonda> {
               ),
             );
           }),
-//          [
-
-//            Container(
-//              height: appStyle.getHeight(percent: 0.1),
-//              width: appStyle.getWidth100(),
-//              color: AppTheme.colorBackgroundWhite,
-//            ),
-//          ],
         ),
       ),
     );

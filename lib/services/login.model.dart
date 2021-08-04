@@ -3,7 +3,7 @@ import 'dart:developer';
 class LoginModel{
   int status;
   String message;
-  // DataLoginService data;
+
 
   LoginModel({this.status, this.message});
 

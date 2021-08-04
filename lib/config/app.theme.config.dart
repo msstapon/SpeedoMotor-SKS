@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.size.config.dart';
+import 'package:th.go.sks.racing_2/config/app.size.config.dart';
 
 class AppTheme extends StatelessWidget {
   final Widget child;
@@ -39,6 +39,7 @@ class AppTheme extends StatelessWidget {
   static const Color colorCardGreen = const Color(0xFFddffdd);
   static const Color toolbarIconColor = const Color(0xFF004da7);
 
+  static const Color colorGreen2 = Colors.lightGreenAccent;
   static const Color colorGreen = const Color(0xFF28a745);
   static const Color colorRed = const Color(0xFFdc3545);
   static const Color colorYellow = const Color(0xFFffc107);

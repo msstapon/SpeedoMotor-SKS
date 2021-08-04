@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-cc/calculator.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/calculator_gear.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/collection.motor.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/old-collection/collection.yamaha.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.honda.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.kawazaki.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.suzuki.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.vespa.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.yamaha.page.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/dialog/message.dialog.widget.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-cc/calculator.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/calculator_gear.page.dart';
+import 'package:th.go.sks.racing_2/pages/collection.motor.page.dart';
+import 'package:th.go.sks.racing_2/pages/old-collection/collection.yamaha.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.honda.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.kawazaki.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.suzuki.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.vespa.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.yamaha.page.dart';
+import 'package:th.go.sks.racing_2/widgets/dialog/message.dialog.widget.dart';
 
 class CollectionBrand extends StatefulWidget {
   final String type;

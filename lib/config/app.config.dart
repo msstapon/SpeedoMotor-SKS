@@ -7,7 +7,7 @@ class AppConfig{
   static const int httpTimeOut = 30;
 
   static const List<Map<String, dynamic>> envMaster = [
-    {"ENV": 'PRD',"VERSION": '1.0.2', 'BUILD': '20210112'},
+    {"ENV": 'PRD',"VERSION": '1.0.4', 'BUILD': '20210804'},
     // https://demo.kabintech.co.th/pmttms/login
     // {"ENV": 'PRD', "VERSION": '1.0'}
   ];
@@ -24,7 +24,7 @@ class AppConfig{
   static final String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
 
   // static final String hostApi = 'https://canceranywhere.com/tcbplus/';
-  static final String hostApi = 'http://68.183.100.100/api/';
+  static final String hostApi = 'http://139.5.147.234/sks-motospeed-api/api/';
   // static final String hostApi = 'http://202.139.197.33/tcbplus/';
 
   static const String keyCustomeAES = "0243BBD2F73512DF4A163663D2DC16D004F866D4092C87F4B4B0EDD5E9954356";

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-cc/calculator.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/calculator_gear.page.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-cc/calculator.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/calculator_gear.page.dart';
 
 class CollectionMotor extends StatefulWidget {
   final String type;

@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/new_menu_gear.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/camshaft/camshaft.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/collection.brand.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/collection.motor.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/gps.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/setting/setting.page.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/new_menu_gear.page.dart';
+import 'package:th.go.sks.racing_2/pages/camshaft/camshaft.page.dart';
+import 'package:th.go.sks.racing_2/pages/collection.brand.page.dart';
+import 'package:th.go.sks.racing_2/pages/collection.motor.page.dart';
+import 'package:th.go.sks.racing_2/pages/gps.page.dart';
+import 'package:th.go.sks.racing_2/pages/setting/setting.page.dart';
 
 class HomePage extends StatefulWidget {
   @override

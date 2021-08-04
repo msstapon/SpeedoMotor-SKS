@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:th.go.dms.cancer.anywhere/config/app.config.dart';
-import 'package:th.go.dms.cancer.anywhere/services/login.model.dart';
+import 'package:th.go.sks.racing_2/config/app.config.dart';
+import 'package:th.go.sks.racing_2/services/login.model.dart';
 import 'dart:convert';
 import 'dart:async';
 
@@ -29,12 +29,12 @@ class LoginServices{
       );
         if(response.statusCode == 200){
           resData = utf8.decode(response.bodyBytes);
-          // log('login services '+resData);
           var result = LoginModel.fromJson(json.decode(resData));
-          log('data '+result.toString());
+          log('data1 '+result.toString());
           return LoginModel.fromJson(json.decode(resData));
         }else{
           log('code ${response.statusCode}');
+          return null;
         }
     // }catch(error){
     //   log('error in login $error' );

@@ -1,6 +1,7 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
 
 enum TypeMessageDialog { info, warning, error, success }
 
@@ -11,7 +12,12 @@ class MessageDialogWidget extends StatelessWidget {
   static const double avatarRadius = 66.0;
   final Function btnOkOnPress;
 
-  MessageDialogWidget({@required this.title, @required this.message, this.buttonText, this.typeDialog, this.btnOkOnPress});
+  MessageDialogWidget(
+      {@required this.title,
+        @required this.message,
+        this.buttonText,
+        @required this.typeDialog,
+        this.btnOkOnPress});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +38,10 @@ class MessageDialogWidget extends StatelessWidget {
         barrierDismissible: false);
   }
 
-  _buildAlert(AppStyle appStyle, BuildContext context){
+  _buildAlert(AppStyle appStyle, BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16.0))),
       content: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -45,11 +52,11 @@ class MessageDialogWidget extends StatelessWidget {
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Icon(
-                  //   getIconButtonAction(typeDialog),
-                  //   color: AppTheme.colorPrimaryDark,
-                  //   size: appStyle.getWidth(percent: 5),
-                  // ),
+                  Icon(
+                    getIconButtonAction(typeDialog),
+                    color: AppTheme.colorPrimaryDark,
+                    size: appStyle.getWidth(percent: 6),
+                  ),
                   // new Container(width: 10,),
                   new Text(
                     title,
@@ -78,7 +85,7 @@ class MessageDialogWidget extends StatelessWidget {
               height: appStyle.getHeight(percent: 2),
             ),
             new Container(
-              margin: appStyle.getEdgeInsetsFromRatio(left: 3,right: 3),
+              margin: appStyle.getEdgeInsetsFromRatio(left: 3, right: 3),
               height: appStyle.getHeight(percent: 5),
 //              padding: appStyle.getEdgeInsetsFromRatio(left: 22, right: 22),
               // EdgeInsets.only(top: 10.0, bottom: 0.0, left: 100.0, right: 100.0),
@@ -96,22 +103,24 @@ class MessageDialogWidget extends StatelessWidget {
                     else
                       Navigator.of(context).pop();
                   },
-                  color: AppTheme.colorPrimaryDark,
-                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0))),
+                  color: getButtonColorAction(typeDialog),
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(8.0))),
             ),
           ],
         ),
       ),
     );
   }
+
   Map<String, dynamic> customStyle = new Map<String, dynamic>();
+
   _buildCustomStyle(BuildContext context) {
     customStyle['title'] = TextStyle(
         fontSize: Theme.of(context).textTheme.headline6.fontSize,
-        fontWeight:FontWeight.normal,
-        fontFamily: Theme.of(context).textTheme.headline6.fontFamily,
-        color: AppTheme.colorFontBlack
-    );
+        fontWeight: FontWeight.normal,
+        fontFamily: "Kanit",
+        color: AppTheme.colorFontBlack);
   }
 
   Color getButtonColorAction(TypeMessageDialog typeDialog) {

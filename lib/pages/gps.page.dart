@@ -6,18 +6,25 @@ import 'package:intl/intl.dart';
 import 'package:duration/duration.dart';
 
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.size.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/config/app.size.config.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:speedometer/speedometer.dart';
-import 'package:th.go.dms.cancer.anywhere/getGPS.dart' as durationGPS;
-import 'package:th.go.dms.cancer.anywhere/pages/home.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/speed.range.page.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/other/loading.widget.dart';
+import 'package:th.go.sks.racing_2/getGPS.dart' as durationGPS;
+import 'package:th.go.sks.racing_2/models/user.model.dart';
+import 'package:th.go.sks.racing_2/pages/history.page.dart';
+import 'package:th.go.sks.racing_2/pages/home.page.dart';
+import 'package:th.go.sks.racing_2/pages/speed.range.page.dart';
+import 'package:th.go.sks.racing_2/services/gps.service.dart';
+import 'package:th.go.sks.racing_2/utilities/utilities.dart';
+import 'package:th.go.sks.racing_2/widgets/other/loading.widget.dart';
 import 'package:dio/dio.dart';
+import 'package:connectivity/connectivity.dart' as connectNet;
+import 'package:th.go.sks.racing_2/config/app.sharedpreferences.config.dart';
+
 
 class GPSPage extends StatefulWidget {
   @override
@@ -150,14 +157,23 @@ class _GPSPageState extends State<GPSPage> {
   StreamController<double> _velocityUpdatedStreamController = StreamController<double>();
   StreamController<double> _velocityUpdatedStreamController2 = StreamController<double>();
   StreamController<double> _velocityUpdatedStreamController3 = StreamController<double>();
-  StreamController<double> _velocityUpdatedStreamController4 = StreamController<double>();
-  StreamController<double> _velocityUpdatedStreamController5 = StreamController<double>();
   LocationPermission permission;
   bool checkRefresh = false;
+
+  int userKey;
+
+  getUser() async{
+    var dataUser =  await GpsServices().getUser();
+    setState(() {
+      userKey = dataUser.userKey;
+    });
+  }
+
 
   @override
   void initState() {
     super.initState();
+    getUser();
     _velocity = 0;
     _highestVelocity = 0.0;
 //    startCountOnTime();
@@ -171,7 +187,7 @@ class _GPSPageState extends State<GPSPage> {
   }
 
   void startCountOnTime() async {
-    const oneSec = const Duration(seconds: 1);
+    const oneSec = const Duration(milliseconds: 900);
     _timer2 = new Timer.periodic(
       oneSec,
       (Timer timer) {
@@ -196,9 +212,6 @@ class _GPSPageState extends State<GPSPage> {
 
   @override
   void dispose() {
-    _velocityUpdatedStreamController.done;
-    _velocityUpdatedStreamController2.done;
-    _velocityUpdatedStreamController3.done;
     _velocityUpdatedStreamController.close();
     _velocityUpdatedStreamController2.close();
     _velocityUpdatedStreamController3.close();
@@ -233,34 +246,12 @@ class _GPSPageState extends State<GPSPage> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
     return Scaffold(
-//      appBar: AppBar(
-//        backgroundColor: AppTheme.colorBlack,
-//        centerTitle: true,
-//        title: Text(
-//            'SPEEDOMETER',
-//          style: appStyle.getTextStyle('titleText'),),
-//        actions: [
-//          Container(
-//            // margin: appStyle.getEdgeInsetsFromRatio(right: 1.5, top: 0.5, bottom: 0.5),
-//            child: Image.asset(
-//              'lib/images/collection_motor/logo.png',
-//              fit: BoxFit.fill,
-//            ),
-//          )
-//        ],f
-//      ),
-
-//      appBar: AppBar(
-//        centerTitle: true,
-//        title: Text(
-//          'SKS RACING',
-//          style: appStyle.getTextStyle('newTitle'),
-//        ),
-//      ),
         body: SingleChildScrollView(
       child: Stack(
         children: [
@@ -300,10 +291,19 @@ class _GPSPageState extends State<GPSPage> {
                     ],
                   ),
                 ),
-                !checkStartSpeedTest
-                    ? Container(
+
+                new Container(
+                  color: Colors.black,
+                  margin: appStyle.getEdgeInsetsFromRatio(right: 3,left: 2),
+                  child:  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      new Container(width: appStyle.getWidth(percent: 20),),
+                      !checkStartSpeedTest
+                          ? Container(
                         color: Colors.black,
-                        width: appStyle.getWidth(percent: 100),
+//                        width: appStyle.getWidth(percent: 100),
                         height: appStyle.getHeight(percent: 8),
                         child: InkWell(
                           onTap: () {
@@ -317,90 +317,120 @@ class _GPSPageState extends State<GPSPage> {
                           ),
                         ),
                       )
-                    : checkRefresh
-                        ? Container(
-                            color: Colors.black,
-                            width: appStyle.getWidth(percent: 100),
-                            height: appStyle.getHeight(percent: 8),
-                            margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                            child: FlatButton(
-                              color: AppTheme.colorBlack,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: appStyle.getWidth(percent: 27),
-                                    height: appStyle.getHeight(percent: 5),
-                                    alignment: Alignment.center,
-                                    child: new Text(
-                                      'Refresh',
-                                      style:
-                                          TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorRed),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.colorBlack,
-                                      borderRadius: BorderRadius.all(Radius.circular(4.0) //                 <--- border radius here
-                                          ),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 0.5,
-                                      ),
-                                    ),
+                          : checkRefresh
+                          ? Container(
+                        color: Colors.black,
+//                        width: appStyle.getWidth(percent: 100),
+                        height: appStyle.getHeight(percent: 8),
+                        margin: appStyle.getEdgeInsetsFromRatio(top: 1),
+                        child: FlatButton(
+                          color: AppTheme.colorBlack,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: appStyle.getWidth(percent: 27),
+                                height: appStyle.getHeight(percent: 5),
+                                alignment: Alignment.center,
+                                child: new Text(
+                                  'Refresh',
+                                  style:
+                                  TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorRed),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.colorBlack,
+                                  borderRadius: BorderRadius.all(Radius.circular(4.0) //                 <--- border radius here
                                   ),
-                                ],
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 0.5,
+                                  ),
+                                ),
                               ),
-                              onPressed: () async {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AppTheme(
-                                      child: HomePage(),
-                                    ),
-                                  ),
-                                );
+                            ],
+                          ),
+                          onPressed: () async {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppTheme(
+                                  child: HomePage(),
+                                ),
+                              ),
+                            );
 //                                setState(() {
 //                                  checkStartSpeedTest = false;
 //                                });
-                              },
-                            ),
-                          )
-                        : Container(
-                            color: Colors.black,
-                            width: appStyle.getWidth(percent: 100),
-                            height: appStyle.getHeight(percent: 8),
-                            margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                            child: FlatButton(
-                              color: AppTheme.colorBlack,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: appStyle.getWidth(percent: 27),
-                                    height: appStyle.getHeight(percent: 5),
-                                    padding: appStyle.getEdgeInsetsFromRatio(left: 1),
-                                    alignment: Alignment.center,
-                                    child: new Text(
-                                      'STOP',
-                                      style: TextStyle(
-                                          fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3condital', color: AppTheme.colorRed),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.colorBlack,
-                                      borderRadius: BorderRadius.all(Radius.circular(4.0) //                 <--- border radius here
-                                          ),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 0.5,
-                                      ),
-                                    ),
+                          },
+                        ),
+                      )
+                          : Container(
+                        color: Colors.black,
+//                        width: appStyle.getWidth(percent: 100),
+                        height: appStyle.getHeight(percent: 8),
+                        margin: appStyle.getEdgeInsetsFromRatio(top: 1),
+                        child: FlatButton(
+                          color: AppTheme.colorBlack,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: appStyle.getWidth(percent: 27),
+                                height: appStyle.getHeight(percent: 5),
+                                padding: appStyle.getEdgeInsetsFromRatio(left: 1),
+                                alignment: Alignment.center,
+                                child: new Text(
+                                  'STOP',
+                                  style: TextStyle(
+                                      fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3condital', color: AppTheme.colorRed),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.colorBlack,
+                                  borderRadius: BorderRadius.all(Radius.circular(4.0) //                 <--- border radius here
                                   ),
-                                ],
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 0.5,
+                                  ),
+                                ),
                               ),
-                              onPressed: () async {
-                                calculatorDistance();
-                              },
-                            ),
+                            ],
                           ),
+                          onPressed: () async {
+                            calculatorDistance();
+                          },
+                        ),
+                      ),
+    !checkStartSpeedTest ?
+                      Container(
+                        color: Colors.black,
+                        height: appStyle.getHeight(percent: 8),
+                        margin: appStyle.getEdgeInsetsFromRatio(top: 1),
+                        child: FlatButton(
+                          color: AppTheme.colorBlack,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              new Image.asset(
+                                'lib/images/collection_motor/new_icon/sks-page-01-14.png',
+                                height: appStyle.getHeight(percent: 5),
+                              ),
+                            ],
+                          ),
+                          onPressed: () async {
+                            if(!checkStartSpeedTest){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_)=>HistoryPage(userKey: userKey,)
+                                  )
+                              );
+                            }
+                          },
+                        ),
+                      ) : new Container(width: appStyle.getWidth(percent: 20),height: 0,)
+                    ],
+                  ),
+                ),
                 new Container(
                   color: Colors.black,
                   child: Column(
@@ -425,15 +455,28 @@ class _GPSPageState extends State<GPSPage> {
                             StreamBuilder<Object>(
                                 stream: _velocityUpdatedStreamController.stream,
                                 builder: (context, snapshot) {
-                                  return Container(
-                                    child: Text(
-                                      ' ${mpstokmph(_velocity).toStringAsFixed(2)}',
-                                      style: TextStyle(
-                                          fontSize: appStyle.getWidth(percent: 13),
-                                          fontFamily: 'spyagency3cond',
-                                          color: AppTheme.colorBackgroundWhite),
-                                    ),
-                                  );
+                                  if(snapshot.hasData){
+                                    return Container(
+                                      child: Text(
+                                        ' ${mpstokmph(_velocity).toStringAsFixed(2)}',
+                                        style: TextStyle(
+                                            fontSize: appStyle.getWidth(percent: 13),
+                                            fontFamily: 'spyagency3cond',
+                                            color: AppTheme.colorBackgroundWhite),
+                                      ),
+                                    );
+                                  }else{
+                                    return Container(
+                                      child: Text(
+                                        '0.00',
+                                        style: TextStyle(
+                                            fontSize: appStyle.getWidth(percent: 13),
+                                            fontFamily: 'spyagency3cond',
+                                            color: AppTheme.colorBackgroundWhite),
+                                      ),
+                                    );
+                                  }
+
                                 }),
                             Container(
                               height: appStyle.getHeight(percent: 4),
@@ -605,7 +648,7 @@ class _GPSPageState extends State<GPSPage> {
             margin: EdgeInsets.only(left: 0, top: 20),
             child: Text(
               "${this._start2}",
-              style: TextStyle(fontSize: appStyle.getWidth(percent: 13), fontFamily: 'spyagency3condital', color: AppTheme.colorBlack),
+              style: TextStyle(fontSize: appStyle.getWidth(percent: 13), fontFamily: 'spyagency3condital', color: this._start2  == "Go" ? AppTheme.colorGreen2  : AppTheme.colorBlack),
             )),
       ])),
       color: Colors.white.withOpacity(0.6),
@@ -613,40 +656,48 @@ class _GPSPageState extends State<GPSPage> {
   }
 
   void startTimer() async {
-    setState(() {
-      isProcess = true;
-    });
-    const oneSec = const Duration(seconds: 1);
-    _timerForStart = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (timer.tick == 5) {
-          _timerForStart.cancel();
-          setState(() {
-            _start = 3;
-            isProcess = false;
-          });
-        } else if (timer.tick == 4) {
-//          getSpeed();
-          setState(() {
-            checkStartSpeedTest = true;
-          });
-          startCountOnTime();
-          countOnPosition();
-        } else {
-          if (_start == 0) {
+    try{
+      setState(() {
+        isProcess = true;
+      });
+
+      const oneSec = const Duration(seconds: 1);
+      _timerForStart = new Timer.periodic(
+        oneSec,
+            (Timer timer) {
+          if (timer.tick == 4) {
+            _timerForStart.cancel();
             setState(() {
-              _start2 = "Go";
+              _start = 3;
+              isProcess = false;
             });
-          } else {
             setState(() {
-              _start--;
-              _start2 = _start.toString();
+              checkStartSpeedTest = true;
             });
+            countOnPosition();
+          }  else {
+
+            if(timer.tick == 3){
+              startCountOnTime();
+              setState(() {
+                _start2 = "Go";
+              });
+            }else{
+              setState(() {
+                _start--;
+                _start2 = _start.toString();
+              });
+            }
           }
-        }
-      },
-    );
+        },
+      );
+    }catch(error){
+      Utilities.defaultHandler(error, context);
+      setState(() {
+      isProcess = false;
+    });
+    }
+
   }
 
   void countOnTime() async {
@@ -666,6 +717,9 @@ class _GPSPageState extends State<GPSPage> {
 
   void calculatorDistance() async {
     try {
+      setState(() {
+        isProcess = true;
+      });
       print("int");
 //      _timeSet.isActive ? _timeSet.cancel() : print('out2');
       _timerSpeedTest == null ? print('out22') : _timerSpeedTest.cancel();
@@ -676,12 +730,71 @@ class _GPSPageState extends State<GPSPage> {
 //      _timerSpeedTest.cancel();
 //      _timeDistance.cancel();
       print("sixtyFeetTime ${this.sixtyFeetTime}");
+     await GpsServices().saveSpeedTest(
+       userKey: this.userKey,
+       speed100m: this.sixtyFeetTime,
+       time100m: this.sixtyFeetTime1,
+        speed200m: this.twoHundredTime,
+        time200m: this.twoHundredTime1,
+        speed300m: this.threeHundredTime,
+        time300m: this.threeHundredTime,
+        speed400m: this.fourHundredTime,
+        time400m: this.fourHundredTime1,
+        speed500m: this.fiveHundredTime,
+        time500m: this.fiveHundredTime1,
+        speed600m: this.sixHundredTime,
+        time600m: this.sixHundredTime1,
+        speed700m: this.sevenHundredTime,
+        time700m: this.sixHundredTime1,
+
+        speed800m: this.eightHundredTime,
+        time800m: this.eightHundredTime1,
+
+        speed900m: this.nineHundredTime,
+        time900m: this.nineHundredTime1,
+
+        speed1000m: this.oneThousandTime,
+        time1000m: this.oneThousandTime1,
+
+        speed1100m: this.oneThousand1Time,
+        time1100m: this.oneThousand1Time1,
+
+        speed1200m: this.oneThousand2Time,
+        time1200m: this.oneThousand2Time1,
+
+        speed1300m: this.oneThousand3Time,
+        time1300m: this.oneThousand3Time1,
+
+        speed1400m: this.oneThousand4Time,
+        time1400m: this.oneThousand4Time1,
+
+        speed1500m: this.oneThousand5Time,
+        time1500m: this.oneThousand5Time1,
+
+        speed1600m: this.oneThousand6Time,
+        time1600m: this.oneThousand6Time1,
+
+        speed1700m: this.oneThousand7Time,
+        time1700m: this.oneThousand7Time,
+
+        speed1800m: this.oneThousand8Time,
+        time1800m: this.oneThousand8Time1,
+
+        speed1900m: this.oneThousand9Time,
+        time1900m: this.oneThousand9Time1,
+
+        speed2000m: this.twoThousandTime,
+        time2000m: this.twoThousandTime1,
+        total: this.countDistance.toStringAsFixed(2),
+        average: this.avgSpeed.toStringAsFixed(2),
+        maxSpeed:mpstokmph(_highestVelocity).toStringAsFixed(2),
+      );
       setState(() {
         checkRefresh = true;
         countTimeDuration = null;
         countDistance = 0.0;
+        isProcess = false;
       });
-
 
 //      await Navigator.pushReplacement(
 //        context,
@@ -1025,7 +1138,7 @@ class _GPSPageState extends State<GPSPage> {
         } else if (mpstokmph(_velocity) > 200) {
           eventObservable.add(mpstokmph(_velocity));
         } else {
-          eventObservable.add(mpstokmph(_velocity) - 16.5);
+          eventObservable.add(mpstokmph(_velocity) - 10);
         }
       },
     );

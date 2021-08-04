@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:th.go.dms.cancer.anywhere/config/app.sharedpreferences.config.dart';
+import 'package:th.go.sks.racing_2/config/app.sharedpreferences.config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:kbt_flutter_package/utilities/shared.preferences.util.dart';
-//import 'package:th.go.dms.cancer.anywhere/services/ authentication.service.api.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/dialog/message.dialog.widget.dart';
+//import 'package:th.go.sks.racing_2/services/ authentication.service.api.dart';
+import 'package:th.go.sks.racing_2/widgets/dialog/message.dialog.widget.dart';
 
 class Utilities {
   static Future<Map<String, String>> getHeaderAuthorization() async {

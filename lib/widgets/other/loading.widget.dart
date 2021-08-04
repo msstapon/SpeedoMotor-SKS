@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.size.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/config/app.size.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
 
 class LoadingWidget extends StatelessWidget {
   showLoadingDialogs(BuildContext context) async {

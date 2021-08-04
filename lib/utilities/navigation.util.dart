@@ -1,10 +1,10 @@
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/home.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/login/login.page.dart';
-//import 'package:th.go.dms.cancer.anywhere/pages/login/condition.page.dart';
-//import 'package:th.go.dms.cancer.anywhere/pages/otp/otp.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/pincode/pincode.page.dart';
+import 'package:th.go.sks.racing_2/pages/home.page.dart';
+import 'package:th.go.sks.racing_2/pages/login/login.page.dart';
+//import 'package:th.go.sks.racing_2/pages/login/condition.page.dart';
+//import 'package:th.go.sks.racing_2/pages/otp/otp.page.dart';
+import 'package:th.go.sks.racing_2/pages/pincode/pincode.page.dart';
 
 class NavigationUtils{
   static onGenerateRoute(RouteSettings routeSettings){

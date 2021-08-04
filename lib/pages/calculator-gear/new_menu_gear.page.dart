@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-cc/calculator.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/calculator_gear.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/collection.motor.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/old-collection/collection.yamaha.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.honda.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.kawazaki.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.suzuki.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.vespa.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/new_collection/new_collection.yamaha.page.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/dialog/message.dialog.widget.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-cc/calculator.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/calculator_gear.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/new_collection.honda.gear.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/new_collection.kawazaki.gear.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/new_collection.suzuki.gear.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/new_collection.yamaha.gear.page.dart';
+import 'package:th.go.sks.racing_2/pages/collection.motor.page.dart';
+import 'package:th.go.sks.racing_2/pages/old-collection/collection.yamaha.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.honda.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.kawazaki.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.suzuki.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.vespa.page.dart';
+import 'package:th.go.sks.racing_2/pages/new_collection/new_collection.yamaha.page.dart';
+import 'package:th.go.sks.racing_2/widgets/dialog/message.dialog.widget.dart';
 
 class MenuGear extends StatefulWidget {
   final String type;
@@ -113,11 +117,11 @@ class _MenuGearState extends State<MenuGear> {
   setFirstText() async {
     setState(() {
       myProducts = List.generate(
-          1,
+          4,
               (index) => {
             "id": index,
-            "name": nameCar[1],
-            "image": image[1],
+            "name": nameCar[index],
+            "image": image[index],
           }).toList();
     });
   }
@@ -145,18 +149,50 @@ class _MenuGearState extends State<MenuGear> {
                 child: GridView.builder(
                     gridDelegate:
                     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 1, crossAxisSpacing: 1, mainAxisSpacing: 1),
-                    itemCount: 1,
+                    itemCount: 4,
                     itemBuilder: (BuildContext ctx, index) {
                       return InkWell(
                         onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AppTheme(
-                                child: CollectionHonda(type: widget.type,),
+                          if(index == 0){
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppTheme(
+                                  child: CollectionYamahaGear(type: widget.type,),
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }else if(index == 1){
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppTheme(
+                                  child: CollectionHondaGear(type: widget.type,),
+                                ),
+                              ),
+                            );
+                          }else if(index == 2){
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppTheme(
+                                  child: CollectionKawazakiGear(type: widget.type,),
+                                ),
+                              ),
+                            );
+
+                          }else if(index == 3){
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppTheme(
+                                  child: CollectionSuzukiGear(type: widget.type,),
+                                ),
+                              ),
+                            );
+
+                          }
+
                         },
                         child: Container(
 //                          height: appStyle.getHeight(percent: 30),
@@ -168,7 +204,7 @@ class _MenuGearState extends State<MenuGear> {
                               children: [
                                 Container(
                                   child: Image.asset(
-                                    'lib/images/collection_motor/Artboard_2.png',
+                                    'lib/images/collection_motor/Artboard_${index+1}.png',
                                     width: appStyle.getWidth(percent: 26),
                                     fit: BoxFit.fill,
                                   ),

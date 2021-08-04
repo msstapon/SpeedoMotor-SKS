@@ -1,10 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/bar_chart/samples/bar_chart_sample2.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
 import "package:intl/intl.dart";
-import 'package:th.go.dms.cancer.anywhere/widgets/other/loading.widget.dart';
+import 'package:th.go.sks.racing_2/widgets/other/loading.widget.dart';
 
 class CalculatorCCPage extends StatefulWidget {
   final String input1;

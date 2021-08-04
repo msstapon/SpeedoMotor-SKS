@@ -1,12 +1,12 @@
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-cc/calculator.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/calculator_gear.page.dart';
-import 'package:th.go.dms.cancer.anywhere/utilities/utilities.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/dialog/confirm.dialog.widget.dart';
+import 'package:th.go.sks.racing_2/config/app.config.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-cc/calculator.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/calculator_gear.page.dart';
+import 'package:th.go.sks.racing_2/utilities/utilities.dart';
+import 'package:th.go.sks.racing_2/widgets/dialog/confirm.dialog.widget.dart';
 import 'package:kbt_flutter_package/utilities/shared.preferences.util.dart';
 
 class NewCollectionYamaha extends StatefulWidget {
@@ -25,7 +25,7 @@ class _NewCollectionYamahaState extends State<NewCollectionYamaha> {
     'Mio115i',
     'Nmax',
     'Xmax',
-    'Exciter',
+    'Exciter150',
     'Qbix',
     'R15',
     'Arrox',
@@ -44,14 +44,14 @@ class _NewCollectionYamahaState extends State<NewCollectionYamaha> {
 
   ];
   List<String> peroid = [
+    '8.8',
+    '11',
+    '11.6',
     '10.9',
-    '11',
-    '9.3',
-    '9.3',
-    '9.0',
-    '9.0',
-    '9.3',
-    '11',
+    '10.4',
+    '9.5',
+    '11.6',
+    '10.5',
   ];
   List<String> input1 = [
     '50',

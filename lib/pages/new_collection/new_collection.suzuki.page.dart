@@ -1,12 +1,12 @@
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.theme.config.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-cc/calculator.page.dart';
-import 'package:th.go.dms.cancer.anywhere/pages/calculator-gear/calculator_gear.page.dart';
-import 'package:th.go.dms.cancer.anywhere/utilities/utilities.dart';
-import 'package:th.go.dms.cancer.anywhere/widgets/dialog/confirm.dialog.widget.dart';
+import 'package:th.go.sks.racing_2/config/app.config.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-cc/calculator.page.dart';
+import 'package:th.go.sks.racing_2/pages/calculator-gear/calculator_gear.page.dart';
+import 'package:th.go.sks.racing_2/utilities/utilities.dart';
+import 'package:th.go.sks.racing_2/widgets/dialog/confirm.dialog.widget.dart';
 import 'package:kbt_flutter_package/utilities/shared.preferences.util.dart';
 
 class CollectionSuzuki extends StatefulWidget {

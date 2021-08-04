@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:th.go.dms.cancer.anywhere/config/app.style.config.dart';
+import 'package:th.go.sks.racing_2/config/app.style.config.dart';
 
 class CardHandleWidget extends StatelessWidget {
   @override
