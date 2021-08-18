@@ -32,7 +32,12 @@ class ConfirmDialogWidget /*extends StatelessWidget*/ {
                     height: appStyle.getHeight(percent: 4),
                     child: new Text(
                       title,
-                      style: appStyle.getTextStyle('smallBlack'),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 4),
+                          color: AppTheme.colorBlack,
+                          fontFamily: 'Kanit',
+                          fontWeight: FontWeight.bold
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -47,7 +52,12 @@ class ConfirmDialogWidget /*extends StatelessWidget*/ {
                     padding:appStyle.getEdgeInsetsFromRatio(all: 0),
                     child: new Text(
                         message,
-                        style: appStyle.getTextStyle('smallBlack'),
+                        style: TextStyle(
+                            fontSize: appStyle.getWidth(percent: 4),
+                            color: AppTheme.colorBlack,
+                            fontFamily: 'Kanit',
+                            fontWeight: FontWeight.normal
+                        ),
                         textAlign: TextAlign.left
                     ),
                   ),
@@ -70,7 +80,13 @@ class ConfirmDialogWidget /*extends StatelessWidget*/ {
                                     // ),
                                     // new Container(width: appStyle.getWidth100(),),
                                     new Text(buttonOkText != null ? buttonOkText: 'ตกลง',
-                                        style: appStyle.getTextStyle('smallWhite2')),
+                                        style: TextStyle(
+                                            fontSize: appStyle.getWidth(percent: 4),
+                                            color: AppTheme.colorBlack,
+                                            fontFamily: 'Kanit',
+                                            fontWeight: FontWeight.normal
+                                        ),
+                                    ),
                                   ],
                                 ),
                                 onPressed: () {
@@ -98,7 +114,13 @@ class ConfirmDialogWidget /*extends StatelessWidget*/ {
                                     // ),
                                     // new Container(width: appStyle.getWidth100(),),
                                     new Text(buttonCancelText != null ? buttonCancelText: 'ยกเลิก',
-                                        style: appStyle.getTextStyle('smallWhite2')),
+                                        style: TextStyle(
+                                            fontSize: appStyle.getWidth(percent: 4),
+                                            color: AppTheme.colorBackgroundWhite,
+                                            fontFamily: 'Kanit',
+                                            fontWeight: FontWeight.normal
+                                        ),
+                                    ),
                                   ],
                                 ),
                                 onPressed: () {
@@ -130,7 +152,13 @@ class ConfirmDialogWidget /*extends StatelessWidget*/ {
                                     // ),
                                     // new Container(width: appStyle.getWidth100(),),
                                     new Text(buttonCancelText != null ? buttonCancelText: 'ยกเลิก',
-                                        style: appStyle.getTextStyle('smallWhite2')),
+                                        style: TextStyle(
+                                            fontSize: appStyle.getWidth(percent: 4),
+                                            color: AppTheme.colorBackgroundWhite,
+                                            fontFamily: 'Kanit',
+                                            fontWeight: FontWeight.normal
+                                        ),
+                                    ),
                                   ],
                                 ),
                                 onPressed: () {
@@ -138,7 +166,7 @@ class ConfirmDialogWidget /*extends StatelessWidget*/ {
                                     btnCancelOnPress();
                                   else Navigator.of(context).pop();
                                 },
-                                color: AppTheme.colorGrey,
+                                color: AppTheme.colorCard,
                                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0))
                             ),
                           ),
@@ -158,7 +186,12 @@ class ConfirmDialogWidget /*extends StatelessWidget*/ {
                                     // ),
                                     // new Container(width: appStyle.getWidth100(),),
                                     new Text(buttonOkText != null ? buttonOkText: 'ตกลง',
-                                        style: appStyle.getTextStyle('smallWhite2')),
+                                        style: TextStyle(
+                                            fontSize: appStyle.getWidth(percent: 4),
+                                            color: AppTheme.colorBlack,
+                                            fontFamily: 'Kanit',
+                                            fontWeight: FontWeight.normal
+                                        ),),
                                   ],
                                 ),
                                 onPressed: () {

@@ -1,3 +1,5 @@
+import 'package:kbt_flutter_package/utilities/date.format.util.dart';
+
 class HistoryModel {
   int status;
   String message;
@@ -10,9 +12,25 @@ class HistoryModel {
     message = json['message'];
     if (json['data'] != null) {
       data = new List<Data>();
+//      json['data']['createDt']
       json['data'].forEach((v) {
+
         data.add(new Data.fromJson(v));
       });
+
+
+//      data.sort((a, b) => b.createdDt.compareTo(a.createdDt));
+      data.sort((a,b){
+        int result = b.createdDt.compareTo(a.createdDt);
+        return result;
+//        if (result != 0) {
+//          return result;
+//        } else {
+//          return a.createdDate.compareTo(b.createdDate);
+//        }
+      });
+
+
     }
   }
 
@@ -73,6 +91,7 @@ class Data {
   String total;
   String average;
   String maxSpeed;
+  DateTime createdDt;
 
   Data(
       {this.speedTestKey,
@@ -119,9 +138,12 @@ class Data {
         this.time2000m,
         this.total,
         this.average,
-        this.maxSpeed});
+        this.maxSpeed,
+      this.createdDt
+      });
 
   Data.fromJson(Map<String, dynamic> json) {
+    DateFormatUtil dateFormatUtil = new DateFormatUtil();
     speedTestKey = json['speedTestKey'];
     userKey = json['userKey'];
     speed100m = json['speed100m'];
@@ -167,6 +189,7 @@ class Data {
     total = json['total'];
     average = json['average'];
     maxSpeed = json['maxSpeed'];
+    createdDt = dateFormatUtil.stringJsonToDateTime(json['createdDt']);
   }
 
   Map<String, dynamic> toJson() {
@@ -216,6 +239,7 @@ class Data {
     data['total'] = this.total;
     data['average'] = this.average;
     data['maxSpeed'] = this.maxSpeed;
+    data['createdDt'] = this.createdDt;
     return data;
   }
 }

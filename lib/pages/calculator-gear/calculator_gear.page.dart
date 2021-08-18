@@ -165,6 +165,34 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
         txtRR.text = '25';
         txtDiff0.text = '0.00';
       });
+    }else if(widget.nameCar == "MSX Monkey"){
+      rom = '9300';
+      C1 = 37;
+      C2 = 32;
+      C3 = 25;
+      C4 = 30;
+      C5 = 27;
+
+      M1 = 13;
+      M2 = 18;
+      M3 = 19;
+      M4 = 29;
+      M5 = 32;
+//    อัตตราทดครัช 25/76
+      setState(() {
+        checkGear5 = true;
+        countGear= 5;
+        answerAll.add('0');
+        txtRP.text = "76";
+        txtRP0.text = "25";
+      });
+
+      setState(() {
+        txtL.text = "1.670";
+        txtFR.text = "14";
+        txtRR.text = '25';
+        txtDiff0.text = '0.00';
+      });
     } else if (widget.nameCar == 'Sonic') {
       rom = '10500';
       C1 = 37;

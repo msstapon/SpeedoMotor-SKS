@@ -183,9 +183,35 @@ class GpsServices{
     }
   }
 
+//  /User/{userKey}/SpeedTest/{speedTestKey}
+  Future<ResponseUploadModelApi> deleteSpeedTest({int userKey,
+    int speedTestKey,
+  }) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var username =  pref.getString(AppSharedPreferences.username);
+    var password =  pref.get(AppSharedPreferences.password);
+    final String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    final response = await http.delete(Uri.parse("http://139.5.147.234/sks-motospeed-api"+"/User/${userKey.toString()}/SpeedTest/${speedTestKey.toString()}"),
+        headers: {
+          'Authorization' : basicAuth,
+          "Content-Type": "application/json",
+        },
+    );
+    if(response.statusCode == 200){
+      String bodyData = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> json = jsonDecode(bodyData);
+      return ResponseUploadModelApi(
+          isSucces: json['status'] == 200 ? true : false,
+          status: json['status'],
+          message: json['message']);
+    }else{
+      return null;
+    }
+  }
 
   static Future<HistoryModel> getHistory({int userKey}) async {
     try{
+      log("userKEy $userKey");
       SharedPreferences pref = await SharedPreferences.getInstance();
       var username =  pref.getString(AppSharedPreferences.username);
       var password =  pref.get(AppSharedPreferences.password);

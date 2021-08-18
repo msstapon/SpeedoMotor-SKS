@@ -39,7 +39,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '124.7',
     '124.89',
     '124.8',
-    '79.1',
+    '97.1',
     '109.1',
     '124',
     '124.7',

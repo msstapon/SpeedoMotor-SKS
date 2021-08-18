@@ -52,15 +52,23 @@ class MessageDialogWidget extends StatelessWidget {
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    getIconButtonAction(typeDialog),
-                    color: AppTheme.colorPrimaryDark,
-                    size: appStyle.getWidth(percent: 6),
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                    child: Icon(
+                      getIconButtonAction(typeDialog),
+                      color: getButtonColorAction(typeDialog),
+                      size: appStyle.getWidth(percent: 6),
+                    ),
                   ),
                   // new Container(width: 10,),
                   new Text(
                     title,
-                    style: appStyle.getTextStyle('smallBlack'),
+                    style: TextStyle(
+                        fontSize: appStyle.getWidth(percent: 4),
+                        color: AppTheme.colorBlack,
+                        fontFamily: 'Kanit',
+                        fontWeight: FontWeight.bold
+                    ),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -77,7 +85,12 @@ class MessageDialogWidget extends StatelessWidget {
               padding: appStyle.getEdgeInsetsFromRatio(all: 0),
               child: new Text(
                 message,
-                style: appStyle.getTextStyle('smallBlack'),
+                style: TextStyle(
+                    fontSize: appStyle.getWidth(percent: 4),
+                    color: AppTheme.colorBlack,
+                    fontFamily: 'Kanit',
+                    fontWeight: FontWeight.normal
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -94,7 +107,13 @@ class MessageDialogWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       new Text(buttonText != null ? buttonText : 'ตกลง',
-                          style: appStyle.getTextStyle('smallWhite2')),
+                          style: TextStyle(
+                              fontSize: appStyle.getWidth(percent: 4),
+                              color: AppTheme.colorBackgroundWhite,
+                              fontFamily: 'Kanit',
+                              fontWeight: FontWeight.normal
+                          ),
+                      ),
                     ],
                   ),
                   onPressed: () {

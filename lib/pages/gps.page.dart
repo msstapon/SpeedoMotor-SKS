@@ -484,7 +484,7 @@ class _GPSPageState extends State<GPSPage> {
                               child: Text(
                                 ' KM/H.',
                                 style:
-                                    TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3condital', color: AppTheme.colorGrey),
+                                    TextStyle(fontSize: appStyle.getWidth(percent: 3), fontFamily: 'spyagency3condital', color: AppTheme.colorGrey),
                               ),
                             ),
                           ],
@@ -737,7 +737,7 @@ class _GPSPageState extends State<GPSPage> {
         speed200m: this.twoHundredTime,
         time200m: this.twoHundredTime1,
         speed300m: this.threeHundredTime,
-        time300m: this.threeHundredTime,
+        time300m: this.threeHundredTime1,
         speed400m: this.fourHundredTime,
         time400m: this.fourHundredTime1,
         speed500m: this.fiveHundredTime,
@@ -775,7 +775,7 @@ class _GPSPageState extends State<GPSPage> {
         time1600m: this.oneThousand6Time1,
 
         speed1700m: this.oneThousand7Time,
-        time1700m: this.oneThousand7Time,
+        time1700m: this.oneThousand7Time1,
 
         speed1800m: this.oneThousand8Time,
         time1800m: this.oneThousand8Time1,
@@ -1119,16 +1119,16 @@ class _GPSPageState extends State<GPSPage> {
 
 
   void _onAccelerate(double speed) {
-    print("Speed ${speed.toString()}");
     locator.getCurrentPosition().then(
       (Position updatedPosition) {
         _velocity = (speed + updatedPosition.speed) / 2;
-        if (_velocity > 3) {
-          _velocity = _velocity - 0.6;
-        }
+//        if (_velocity > 3) {
+//          _velocity = _velocity += 45;
+//        }
         if (_velocity > _highestVelocity) {
           _highestVelocity = _velocity;
         }
+
         _velocityUpdatedStreamController.add(_velocity);
         _velocityUpdatedStreamController2.add(_velocity);
         _velocityUpdatedStreamController3.add(_velocity);
@@ -1137,8 +1137,13 @@ class _GPSPageState extends State<GPSPage> {
           eventObservable.add(mpstokmph(_velocity) + 30);
         } else if (mpstokmph(_velocity) > 200) {
           eventObservable.add(mpstokmph(_velocity));
-        } else {
+        }else if(mpstokmph(_velocity) > 140){
+          eventObservable.add(mpstokmph(_velocity) - 3);
+        }else if(mpstokmph(_velocity) > 90){
           eventObservable.add(mpstokmph(_velocity) - 10);
+        }
+        else {
+          eventObservable.add(mpstokmph(_velocity) - 16.5);
         }
       },
     );

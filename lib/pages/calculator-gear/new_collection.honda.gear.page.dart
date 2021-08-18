@@ -23,7 +23,8 @@ class _CollectionHondaGearState extends State<CollectionHondaGear> {
     'W110i',
     'Sonic',
     'W125i',
-    'Dream2021'
+    'Dream2021',
+    'MSX Monkey'
   ];
 
   List<String> cc = [

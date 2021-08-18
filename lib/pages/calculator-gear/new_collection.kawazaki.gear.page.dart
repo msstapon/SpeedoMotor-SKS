@@ -21,7 +21,6 @@ class CollectionKawazakiGear extends StatefulWidget {
 class _CollectionKawazakiGearState extends State<CollectionKawazakiGear> {
   List<String> nameCar = [
     'KR150',
-
   ];
 
   List<String> cc = [

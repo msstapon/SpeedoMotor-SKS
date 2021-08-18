@@ -592,7 +592,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
   void onChangeWater(value) {
     if (value != "") {
       var water = double.parse(value);
-      var water1 = water + double.parse(answerCC);
+      var water1 = (water - 1)  + double.parse(answerCC);
       var water2 = water1 / water;
       setState(() {
         answerAll = water2.toStringAsFixed(2);
