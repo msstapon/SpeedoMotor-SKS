@@ -28,6 +28,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
   TextEditingController txtFR = new TextEditingController();
   TextEditingController txtRR = new TextEditingController();
   TextEditingController txtControllerService = new TextEditingController();
+  TextEditingController txtControllerAnswerAll = new TextEditingController();
   FocusNode myFocusNode;
   bool focus = true;
   String input1Stand = "";
@@ -53,6 +54,7 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
       tempInput1 = widget.input1;
       tempInput2 = widget.input2;
       answerAll = widget.peroid;
+      txtControllerAnswerAll.text = widget.peroid;
       answerCC = widget.cc;
     });
   }
@@ -321,6 +323,10 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
                 Container(
                   height: appStyle.getHeight(percent: 1),
                 ),
+                buildContent3(context, appStyle),
+                Container(
+                  height: appStyle.getHeight(percent: 1),
+                ),
                 Container(
                   margin: appStyle.getEdgeInsetsFromRatio(
                     right: 2,
@@ -369,10 +375,10 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
 
   Widget buildContent2(BuildContext context, AppStyle appStyle) {
     return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(
-        right: 3,
-        left: 3,
-      ),
+      // margin: appStyle.getEdgeInsetsFromRatio(
+      //   // right: 3,
+      //   // left: 3,
+      // ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -431,6 +437,112 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
                               ),
                             ),
                             controller: txtFR,
+                            keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
+                            style: appStyle.getTextStyle('smallGrey'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+//          Expanded(
+//            flex: 1,
+//            child: InkWell(
+//              onTap: () {
+//                calculatorCC();
+//              },
+//              child: Container(
+//                margin: appStyle.getEdgeInsetsFromRatio(
+//                  left: 1,
+//                  right: 1,
+//                ),
+//                height: appStyle.getHeight(percent: 6),
+//                decoration: BoxDecoration(
+//                  color: AppTheme.colorFont,
+//                  borderRadius: BorderRadius.circular(6),
+//                ),
+//                alignment: Alignment.center,
+//                child: Text(
+//                  'ผลลัพธ์',
+//                  style: appStyle.getTextStyle('normalText'),
+//                ),
+//              ),
+//            ),
+//          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget buildContent3(BuildContext context, AppStyle appStyle) {
+    return Container(
+      // margin: appStyle.getEdgeInsetsFromRatio(
+      //   right: 3,
+      //   left: 3,
+      // ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: RichText(
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(text: 'อัตราส่วนกําลังอัด ต่อ 1', style: appStyle.getTextStyle('normalText')),
+                        TextSpan(text: ' *', style: appStyle.getTextStyle('normalText')),
+                      ]),
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: appStyle.getHeight(percent: 6),
+                          margin: appStyle.getEdgeInsetsFromRatio(left: 2, right: 2),
+                          child: TextFormField(
+                            onChanged: (value) {
+                              compression(value);
+                              // onChangeWater(value);
+                            },
+                            maxLines: 1,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return '';
+                              }
+                              return null;
+                            },
+                            decoration: new InputDecoration(
+                              isCollapsed: false,
+                              hintStyle: appStyle.getTextStyle('normalText'),
+                              labelStyle: appStyle.getTextStyle('smallGrey'),
+                              fillColor: AppTheme.colorBlack,
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0),
+                                borderSide: new BorderSide(
+                                  color: AppTheme.colorBackgroundWhite,
+                                  width: appStyle.getWidth(percent: 0.25),
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                borderSide: BorderSide(color: AppTheme.colorBackgroundWhite, width: appStyle.getWidth(percent: 0.25)),
+                              ),
+                            ),
+                            controller: txtControllerAnswerAll,
                             keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
                             style: appStyle.getTextStyle('smallGrey'),
                           ),
@@ -592,15 +704,37 @@ class _CalculatorCCPageState extends State<CalculatorCCPage> {
   void onChangeWater(value) {
     if (value != "") {
       var water = double.parse(value);
-      var water1 = (water - 1)  + double.parse(answerCC);
+      var water1 = (water)  + double.parse(answerCC);
       var water2 = water1 / water;
       setState(() {
+        txtControllerAnswerAll.text =  water2.toStringAsFixed(2);
         answerAll = water2.toStringAsFixed(2);
       });
     } else {
       setState(() {
+        txtControllerAnswerAll.text = widget.peroid;
         answerAll = widget.peroid;
       });
     }
   }
+
+  void compression(value){
+    if(value != ""){
+      setState(() {
+        answerAll = double.parse(value).toStringAsFixed(2);
+      });
+      var paramCompression = double.parse(value);
+      var paramAnswer = double.parse(answerCC) / paramCompression;
+      var param = paramAnswer +1;
+      setState(() {
+        txtFR.text = param.round().toString();
+      });
+    }else{
+      setState(() {
+        txtFR.text = "";
+        answerAll = widget.peroid;
+      });
+    }
+  }
+
 }

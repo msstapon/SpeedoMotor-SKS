@@ -54,6 +54,7 @@ dependency_overrides:
   dio: ^4.0.0
   url_launcher: ^5.0.3
   connectivity: 3.0.6
+#  clippy_flutter: 1.1.1
 
   speedometer:
     path: speedometer
@@ -134,7 +135,9 @@ flutter:
     - family: spyagency3condital
       fonts:
         - asset: ./lib/fonts/spyagency3condital.ttf
-
+    - family: iannnnnPDF_2008
+      fonts:
+        - asset: ./lib/fonts/iannnnnPDF_2008.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

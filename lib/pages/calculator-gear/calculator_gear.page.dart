@@ -165,7 +165,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
         txtRR.text = '25';
         txtDiff0.text = '0.00';
       });
-    }else if(widget.nameCar == "MSX Monkey"){
+    }else if(widget.nameCar == "MSX GROM Monkey"){
       rom = '9300';
       C1 = 37;
       C2 = 32;
@@ -183,14 +183,70 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
         checkGear5 = true;
         countGear= 5;
         answerAll.add('0');
-        txtRP.text = "76";
-        txtRP0.text = "25";
+        txtRP.text = "67";
+        txtRP0.text = "20";
       });
 
       setState(() {
-        txtL.text = "1.670";
+        txtL.text = "1.500";
         txtFR.text = "14";
-        txtRR.text = '25';
+        txtRR.text = '28';
+        txtDiff0.text = '0.00';
+      });
+    }else if(widget.nameCar == "W125/MSX ชุดเกียร์ Takegawa"){
+      rom = '9300';
+      C1 = 34;
+      C2 = 32;
+      C3 = 28;
+      C4 = 26;
+      C5 = 24;
+
+      M1 = 15;
+      M2 = 19;
+      M3 = 22;
+      M4 = 25;
+      M5 = 26;
+//    อัตตราทดครัช 25/76
+      setState(() {
+        checkGear5 = true;
+        countGear= 5;
+        answerAll.add('0');
+        txtRP.text = "67";
+        txtRP0.text = "20";
+      });
+
+      setState(() {
+        txtL.text = "1.500";
+        txtFR.text = "14";
+        txtRR.text = '28';
+        txtDiff0.text = '0.00';
+      });
+    }else if(widget.nameCar == "W125/MSX ชุดเกียร์ Kitaco"){
+      rom = '9300';
+      C1 = 36;
+      C2 = 31;
+      C3 = 28;
+      C4 = 26;
+      C5 = 25;
+
+      M1 = 14;
+      M2 = 18;
+      M3 = 21;
+      M4 = 23;
+      M5 = 25;
+//    อัตตราทดครัช 25/76
+      setState(() {
+        checkGear5 = true;
+        countGear= 5;
+        answerAll.add('0');
+        txtRP.text = "67";
+        txtRP0.text = "20";
+      });
+
+      setState(() {
+        txtL.text = "1.500";
+        txtFR.text = "14";
+        txtRR.text = '28';
         txtDiff0.text = '0.00';
       });
     } else if (widget.nameCar == 'Sonic') {

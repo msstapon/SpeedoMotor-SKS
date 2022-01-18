@@ -15,5 +15,9 @@ class AppSharedPreferences {
   static const String token = 'token';
   static const String qrCode = 'qrCode';
   static const String login = 'login';
-
+  static const String distance2  = 'distance2';
+  static const String distance3  = 'distance3';
+  static const String distance4  = 'distance4';
+  static const String distance5  = 'distance5';
+  static const String distance6  = 'distance6';
 }

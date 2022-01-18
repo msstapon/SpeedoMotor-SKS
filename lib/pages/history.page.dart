@@ -27,7 +27,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
   submitDeleteSpeedTest({int userKey, int speedTestKey}) async {
     try {
-      Navigator.of(context);
+      Navigator.of(context, rootNavigator: true).pop();
       ResponseUploadModelApi result = await GpsServices().deleteSpeedTest(userKey: userKey, speedTestKey: speedTestKey);
       if (result.isSucces) {
         MessageDialogWidget(
@@ -52,7 +52,7 @@ class _HistoryPageState extends State<HistoryPage> {
       key: _scaffoldKey,
       backgroundColor: AppTheme.colorBlack,
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         leading: BackButton(color: Colors.white),
         backgroundColor: AppTheme.colorBlack,
         title: Text(
@@ -60,6 +60,15 @@ class _HistoryPageState extends State<HistoryPage> {
           style: TextStyle(
               fontSize: appStyle.getWidth(percent: 6), color: AppTheme.colorBackgroundWhite, fontFamily: 'Kanit', fontWeight: FontWeight.normal),
         ),
+        actions: [
+          Container(
+            // margin: appStyle.getEdgeInsetsFromRatio(right: 1.5, top: 0.5, bottom: 0.5),
+            child: Image.asset(
+              'lib/images/collection_motor/logo.png',
+              fit: BoxFit.fill,
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -296,7 +305,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                         ),
                                       ),
                                       onTap: () {
-                                        Navigator.pushReplacement(
+                                        Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => AppTheme(

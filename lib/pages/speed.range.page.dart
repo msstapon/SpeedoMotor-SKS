@@ -161,14 +161,7 @@ class _SpeedRangState extends State<SpeedRang> {
                         children: [
                           InkWell(
                               onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AppTheme(
-                                      child: HomePage(),
-                                    ),
-                                  ),
-                                );
+                                Navigator.of(context, rootNavigator: true).pop();
                               },
                               child: new Container(
                                 margin: appStyle.getEdgeInsetsFromRatio(top: 6, left: 5),

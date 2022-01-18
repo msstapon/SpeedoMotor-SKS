@@ -521,7 +521,6 @@ class CamshaftPageState extends State<CamshaftPage> {
           ],
         ),
     );
-
   }
 
   Widget buildInputExhaust(BuildContext context, AppStyle appStyle) {

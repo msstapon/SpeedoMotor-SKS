@@ -32,6 +32,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
     'Forza300',
     'CBR250rr',
     'CBR300',
+    'MSX GROM Monkey'
   ];
 
   List<String> cc = [
@@ -47,6 +48,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '279',
     '249.60',
     '286',
+    '124.9'
   ];
   List<String> peroid = [
     '9.3',
@@ -61,6 +63,10 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '10.5',
     '10.7',
     '10.7',
+    '10.0'
+//  ลูก50 ชัก63.121
+//  อัตราส่วน :1
+
   ];
   List<String> input1 = [
     '50',
@@ -75,6 +81,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '72',
     '76',
     '76',
+    '50'
   ];
   List<String> input2 = [
     '55.597',
@@ -89,6 +96,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '68.6',
     '55',
     '63',
+    '63.121'
   ];
 
 

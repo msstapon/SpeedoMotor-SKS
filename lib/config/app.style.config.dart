@@ -110,10 +110,12 @@ class AppStyle {
         color: AppTheme.colorFontBlack);
 
     _textStyle['normalText'] = TextStyle(
-        fontSize: getWidth(percent: 4.5),
+        fontSize: getWidth(percent: 3.5),
         fontWeight: Theme.of(_context).textTheme.bodyText1.fontWeight,
-        fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
-        color: AppTheme.colorFontWhite);
+        fontFamily: 'Kanit',
+        color: AppTheme.colorFontWhite,
+
+    );
 
     _textStyle['normalText2'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.bodyText1.fontSize,
@@ -124,55 +126,55 @@ class AppStyle {
     _textStyle['normalBlack'] = TextStyle(
        fontSize: getWidth(percent: 4.5),
         fontWeight: Theme.of(_context).textTheme.bodyText1.fontWeight,
-        fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorFontBlack);
 
     _textStyle['normalTextBold'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.bodyText1.fontSize,
         fontWeight:FontWeight.bold,
-        fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorFontWhite);
 
     _textStyle['normalBlackBold'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.bodyText1.fontSize,
         fontWeight:FontWeight.bold,
-        fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorFontBlack);
 
     _textStyle['normalPrimary'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.bodyText1.fontSize,
         fontWeight: Theme.of(_context).textTheme.bodyText1.fontWeight,
-        fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorPrimaryDark);
 
     _textStyle['normalPrimaryBold'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.bodyText1.fontSize,
         fontWeight: FontWeight.bold,
-        fontFamily: Theme.of(_context).textTheme.bodyText1.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorPrimaryDark);
 
     _textStyle['normalBadge'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.caption.fontSize,
         fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorPrimaryDark);
 
     _textStyle['normalBadgeGray'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.caption.fontSize,
         fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorBlack);
 
     _textStyle['normalWhiteBadge'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.caption.fontSize,
         fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorFontWhite);
 
     _textStyle['normalTitle'] = TextStyle(
         fontSize: Theme.of(_context).textTheme.bodyText1.fontSize,
         fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
+        fontFamily: 'Kanit',
         color: AppTheme.colorGrey);
 
     _textStyle['newTitle'] = TextStyle(
@@ -188,10 +190,11 @@ class AppStyle {
         color: AppTheme.colorBackgroundWhite);
 
     _textStyle['smallGrey'] = TextStyle(
-        fontSize: getWidth(percent: 5),
+        fontSize: getWidth(percent: 3.5),
         fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorGrey);
+        fontFamily: 'Kanit',
+        color: AppTheme.colorGrey,
+    );
 
     _textStyle['smallGrey2'] = TextStyle(
         fontSize: getWidth(percent: 1.3),
@@ -200,167 +203,6 @@ class AppStyle {
         color: AppTheme.colorGrey);
 
 
-  }
-
-
-  newBuildCustomTextStyle() {
-    _textStyle['titleText'] = TextStyle(
-        fontSize: getWidth(percent: 1.7),
-        fontWeight: Theme.of(_context).textTheme.bodyText2.fontWeight,
-        fontFamily: Theme.of(_context).textTheme.bodyText2.fontFamily,
-        color: AppTheme.colorFontWhite);
-
-    _textStyle['titleTextBlack'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.headline6.fontSize,
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.bodyText2.fontFamily,
-        color: AppTheme.colorFontBlack);
-
-    _textStyle['normalText'] = TextStyle(
-        fontSize: getWidth(percent: 3),
-        fontWeight: Theme.of(_context).textTheme.bodyText2.fontWeight,
-        fontFamily: Theme.of(_context).textTheme.bodyText2.fontFamily,
-        color: AppTheme.colorFontWhite);
-
-    _textStyle['normalBlack'] = TextStyle(
-        fontSize: getWidth(percent: 2),
-        fontWeight: Theme.of(_context).textTheme.bodyText2.fontWeight,
-        fontFamily: Theme.of(_context).textTheme.bodyText2.fontFamily,
-        color: AppTheme.colorFontBlack);
-
-    _textStyle['normalTextBold'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.bodyText2.fontSize,
-        fontWeight:FontWeight.bold,
-        fontFamily: Theme.of(_context).textTheme.bodyText2.fontFamily,
-        color: AppTheme.colorFontWhite);
-
-    _textStyle['normalBlackBold'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.bodyText2.fontSize,
-        fontWeight:FontWeight.bold,
-        fontFamily: Theme.of(_context).textTheme.bodyText2.fontFamily,
-        color: AppTheme.colorFontBlack);
-
-    _textStyle['normalPrimary'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.bodyText2.fontSize,
-        fontWeight: Theme.of(_context).textTheme.bodyText2.fontWeight,
-        fontFamily: Theme.of(_context).textTheme.bodyText2.fontFamily,
-        color: AppTheme.colorPrimaryLight);
-
-    _textStyle['normalPrimaryBold'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.bodyText2.fontSize,
-        fontWeight: FontWeight.bold,
-        fontFamily: Theme.of(_context).textTheme.bodyText2.fontFamily,
-        color: AppTheme.colorPrimaryLight);
-
-    _textStyle['normalBadge'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.caption.fontSize,
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorPrimaryLight);
-
-    _textStyle['normalWhiteBadge'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.caption.fontSize,
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorFontWhite);
-
-
-    _textStyle['normalBlackBadge'] = TextStyle(
-        fontSize: Theme.of(_context).textTheme.caption.fontSize,
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorBlack);
-
-    _textStyle['smallBlack'] = TextStyle(
-        fontSize: getWidth(percent: 1.6),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorBlack);
-
-    _textStyle['smallPrimary2'] = TextStyle(
-        fontSize: getWidth(percent: 1.5),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorPrimaryLight);
-
-    _textStyle['smallBlackBold'] = TextStyle(
-        fontSize: getWidth(percent: 1.5),
-        fontWeight: FontWeight.bold,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorBlack);
-
-    _textStyle['smallBlack3'] = TextStyle(
-        fontSize: getWidth(percent: 1.3),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorBlack);
-
-    _textStyle['smallBlack2'] = TextStyle(
-        fontSize: getWidth(percent: 2),
-        fontWeight: FontWeight.bold,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorBlack);
-
-    _textStyle['smallRed'] = TextStyle(
-        fontSize: getWidth(percent: 1.5),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorRed);
-
-    _textStyle['smallGreen'] = TextStyle(
-        fontSize: getWidth(percent: 1.5),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorGreen);
-
-    _textStyle['smallYellow'] = TextStyle(
-        fontSize: getWidth(percent: 1.5),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorYellow);
-
-    _textStyle['smallGrey'] = TextStyle(
-        fontSize: getWidth(percent: 1.5),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorGrey);
-
-    _textStyle['smallGrey2'] = TextStyle(
-        fontSize: getWidth(percent: 1.3),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorGrey);
-
-    _textStyle['smallWhite'] = TextStyle(
-        fontSize:  getWidth(percent: 1.5),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorFontWhite);
-
-    _textStyle['smallWhite3'] = TextStyle(
-        fontSize: getWidth(percent: 2),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorFontWhite);
-
-    _textStyle['smallWhite2'] = TextStyle(
-        fontSize: getWidth(percent: 1.5),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorFontWhite);
-
-
-    _textStyle['smallPrimary'] = TextStyle(
-        fontSize: getWidth(percent: 1.8),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorPrimaryLight);
-
-    _textStyle['smallRedCard'] = TextStyle(
-        fontSize: getWidth(percent: 1.5),
-        fontWeight: FontWeight.normal,
-        fontFamily: Theme.of(_context).textTheme.caption.fontFamily,
-        color: AppTheme.colorCard);
   }
 
   _buildCustomButtonStyle() {}

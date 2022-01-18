@@ -24,7 +24,9 @@ class _CollectionHondaGearState extends State<CollectionHondaGear> {
     'Sonic',
     'W125i',
     'Dream2021',
-    'MSX Monkey'
+    'MSX GROM Monkey',
+    'W125/MSX ชุดเกียร์ Takegawa',
+    'W125/MSX ชุดเกียร์ Kitaco'
   ];
 
   List<String> cc = [
