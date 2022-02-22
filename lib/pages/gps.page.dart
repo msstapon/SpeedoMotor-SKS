@@ -12,19 +12,27 @@ import 'package:th.go.sks.racing_2/config/app.theme.config.dart';
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:speedometer/speedometer.dart';
 import 'package:th.go.sks.racing_2/getGPS.dart' as durationGPS;
 import 'package:th.go.sks.racing_2/models/user.model.dart';
 import 'package:th.go.sks.racing_2/pages/history.page.dart';
 import 'package:th.go.sks.racing_2/pages/home.page.dart';
+import 'package:th.go.sks.racing_2/pages/setting/setting.page.dart';
 import 'package:th.go.sks.racing_2/pages/speed.range.page.dart';
+import 'package:th.go.sks.racing_2/pages/weather/weather.page.dart';
 import 'package:th.go.sks.racing_2/services/gps.service.dart';
+import 'package:th.go.sks.racing_2/services/weather.dart';
+import 'package:th.go.sks.racing_2/utilities/constants.dart';
 import 'package:th.go.sks.racing_2/utilities/utilities.dart';
+import 'package:th.go.sks.racing_2/widgets/dialog/message.dialog.widget.dart';
 import 'package:th.go.sks.racing_2/widgets/other/loading.widget.dart';
 import 'package:dio/dio.dart';
 import 'package:connectivity/connectivity.dart' as connectNet;
 import 'package:th.go.sks.racing_2/config/app.sharedpreferences.config.dart';
 
+
+
+
+import 'package:kbt_flutter_package/utilities/shared.preferences.util.dart';
 
 class GPSPage extends StatefulWidget {
   @override
@@ -137,10 +145,41 @@ class _GPSPageState extends State<GPSPage> {
   StreamSubscription<Position> positionStream2;
   StreamSubscription<Position> positionStream3;
 
+  double distance2;
+  double distance3;
+  double distance4;
+  double distance5;
+  double distance6;
+
+  List<String>listDistance1 = ["-"];
+  List<String>listDistance2 = ["-"];
+  List<String>listDistance3 = ["-"];
+  List<String>listDistance4 = ["-"];
+  List<String>listDistance5 = ["-"];
+  List<String>listDistance6 = ["-"];
+
+  String timeDistance1  = '-';
+  String timeDistance2  = '-';
+  String timeDistance3  = '-';
+  String timeDistance4  = '-';
+  String timeDistance5  = '-';
+  String timeDistance6  = '-';
+
+  String speedDistance1 =  '-';
+  String speedDistance2 =  '-';
+  String speedDistance3 =  '-';
+  String speedDistance4 =  '-';
+  String speedDistance5 =  '-';
+  String speedDistance6 =  '-';
+  String speedDistance7 =  '-';
+
+
+
+
+
 //  StreamSubscription<Position> locator;
   // ignore: close_sinks
   PublishSubject<double> eventObservable = new PublishSubject();
-
   /// Geolocator is used to find velocity
   GeolocatorPlatform locator = GeolocatorPlatform.instance;
   double _velocity;
@@ -154,21 +193,23 @@ class _GPSPageState extends State<GPSPage> {
   double avgSpeed = 0.0;
   Timer _timer2;
 
-  StreamController<double> _velocityUpdatedStreamController = StreamController<double>();
-  StreamController<double> _velocityUpdatedStreamController2 = StreamController<double>();
-  StreamController<double> _velocityUpdatedStreamController3 = StreamController<double>();
+  StreamController<double> _velocityUpdatedStreamController =
+      StreamController<double>();
+  StreamController<double> _velocityUpdatedStreamController2 =
+      StreamController<double>();
+  StreamController<double> _velocityUpdatedStreamController3 =
+      StreamController<double>();
   LocationPermission permission;
   bool checkRefresh = false;
 
   int userKey;
 
-  getUser() async{
-    var dataUser =  await GpsServices().getUser();
+  getUser() async {
+    var dataUser = await GpsServices().getUser();
     setState(() {
       userKey = dataUser.userKey;
     });
   }
-
 
   @override
   void initState() {
@@ -176,13 +217,16 @@ class _GPSPageState extends State<GPSPage> {
     getUser();
     _velocity = 0;
     _highestVelocity = 0.0;
-//    startCountOnTime();
     setState(() {
 //      _velocityUpdatedStreamController = BehaviorSubject();
 //      _velocityUpdatedStreamController2 = BehaviorSubject();
-      somTheme = new ThemeData(primaryColor: Colors.blue, accentColor: Colors.black, backgroundColor: Colors.grey);
+      somTheme = new ThemeData(
+          primaryColor: Colors.blue,
+          accentColor: Colors.black,
+          backgroundColor: Colors.grey);
     });
     checkPermissionGPS();
+    setDataDistance();
 //    setData();
   }
 
@@ -210,13 +254,37 @@ class _GPSPageState extends State<GPSPage> {
     );
   }
 
+  void setDataDistance() async {
+    double paramDistance2 =
+    await SharedPreferencesUtil.getDouble(AppSharedPreferences.distance2);
+    double paramDistance3 =
+    await SharedPreferencesUtil.getDouble(AppSharedPreferences.distance3);
+    double paramDistance4 =
+    await SharedPreferencesUtil.getDouble(AppSharedPreferences.distance4);
+    double paramDistance5 =
+    await SharedPreferencesUtil.getDouble(AppSharedPreferences.distance5);
+    double paramDistance6 =
+    await SharedPreferencesUtil.getDouble(AppSharedPreferences.distance6);
+    setState(() {
+      distance2 = paramDistance2;
+      distance3 = paramDistance3;
+      distance4 = paramDistance4;
+      distance5 = paramDistance5;
+      distance6 = paramDistance6;
+    });
+}
+  // @override
+  // void setState(fn) {
+  //   if(mounted) {
+  //     super.setState(fn);
+  //   }
+  // }
   @override
   void dispose() {
     _velocityUpdatedStreamController.close();
     _velocityUpdatedStreamController2.close();
     _velocityUpdatedStreamController3.close();
     positionStream2.cancel();
-
 
 //    _timeSet.isActive ? _timeSet.cancel() : print('out');
     _timerSpeedTest == null ? print('out2') : _timerSpeedTest.cancel();
@@ -225,6 +293,7 @@ class _GPSPageState extends State<GPSPage> {
 
     super.dispose();
   }
+
 
   checkPermissionGPS() async {
     permission = await Geolocator.checkPermission();
@@ -246,395 +315,570 @@ class _GPSPageState extends State<GPSPage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     AppStyle appStyle = new AppStyle(context);
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage("lib/images/collection_motor/new_icon/sks-page-01-04.png"),
-            )),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage("lib/images/collection_motor/new_icon/sks-page-01-05.png"),
-                    ),
-                  ),
-                  margin: appStyle.getEdgeInsetsFromRatio(top: 13),
-                  child: new Column(
-//                  mainAxisAlignment : MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      new Padding(
-                          padding: new EdgeInsets.all(40.0),
-                          child: StreamBuilder<Object>(
-                              stream: _velocityUpdatedStreamController3.stream,
-                              builder: (context, snapshot) {
-                                return new SpeedOMeter(
-                                    start: start,
-                                    end: end,
-                                    themeData: somTheme,
-                                    highlightStart: (0),
-                                    highlightEnd: (0),
-                                    eventObservable: this.eventObservable);
-                              })),
-                    ],
-                  ),
-                ),
-
-                new Container(
-                  color: Colors.black,
-                  margin: appStyle.getEdgeInsetsFromRatio(right: 3,left: 2),
-                  child:  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      new Container(width: appStyle.getWidth(percent: 20),),
-                      !checkStartSpeedTest
-                          ? Container(
-                        color: Colors.black,
-//                        width: appStyle.getWidth(percent: 100),
-                        height: appStyle.getHeight(percent: 8),
-                        child: InkWell(
-                          onTap: () {
-                            startTimer();
-                          },
-                          child: Container(
-                            child: Image.asset(
-                              "lib/images/collection_motor/new_icon/sks-page-01-07.png",
-                              width: appStyle.getWidth(percent: 30),
+        body: Stack(
+          children: [
+            Container(
+              height: appStyle.getHeight100(),
+              width: appStyle.getWidth100(),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage(
+                        "lib/images/collection_motor/new_icon/sks-page-01-04.png"),
+                  )
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Container(
+                    //   margin: appStyle.getEdgeInsetsFromRatio(top: 15),
+                    //   child: Text(
+                    //     'GPS',
+                    //     style: TextStyle(
+                    //         fontSize: appStyle.getWidth(percent: 10),
+                    //         color: AppTheme.colorBackgroundWhite,
+                    //         fontFamily: 'spyagency3condital',
+                    //         fontWeight: FontWeight.normal),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: appStyle.getEdgeInsetsFromRatio(
+                    //     top: 2,
+                    //     left: 5,
+                    //     right: 5,
+                    //   ),
+                    //   width: appStyle.getWidth(percent: 95),
+                    //   decoration: BoxDecoration(
+                    //     image: DecorationImage(
+                    //       fit: BoxFit.fill,
+                    //       image: AssetImage(
+                    //           "lib/images/collection_motor/new_icon/bg_gps.png"),
+                    //     ),
+                    //   ),
+                    //   child:
+                    //
+                    //   Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     mainAxisAlignment: MainAxisAlignment.start,
+                    //     children: [
+                    //       Container(
+                    //         height: appStyle.getHeight(percent: 5),
+                    //         margin: appStyle.getEdgeInsetsFromRatio(
+                    //           top: 2,
+                    //           left: 20,
+                    //           right: 5,
+                    //         ),
+                    //         alignment: Alignment.topLeft,
+                    //         child: Text(
+                    //           ' ${convertTimeCount(countTimeDuration == null ? "0" : countTimeDuration)}',
+                    //           style: TextStyle(
+                    //               fontSize: appStyle.getWidth(percent: 8),
+                    //               fontFamily: 'iannnnnPDF_2008',
+                    //               color: AppTheme.colorFontWhite),
+                    //         ),
+                    //       ),
+                    //       Container(
+                    //         alignment: Alignment.topCenter,
+                    //         margin: appStyle.getEdgeInsetsFromRatio(left: 10,top: 13,bottom: 2),
+                    //         child: StreamBuilder<Object>(
+                    //             stream: _velocityUpdatedStreamController.stream,
+                    //             builder: (context, snapshot) {
+                    //               if (snapshot.hasData) {
+                    //                 return Container(
+                    //                   child: Text(
+                    //                     '${mpstokmph(_velocity).toStringAsFixed(1)}',
+                    //                     style: TextStyle(
+                    //                         height: 0,
+                    //                         fontSize: appStyle.getWidth(percent: 25),
+                    //                         fontFamily: 'iannnnnPDF_2008',
+                    //                         color: AppTheme.colorBackgroundWhite),
+                    //                   ),
+                    //                 );
+                    //               } else {
+                    //                 return Container(
+                    //                   child: Text(
+                    //                     '0.00',
+                    //                     style: TextStyle(
+                    //                         height: 0,
+                    //                         fontSize: appStyle.getWidth(percent: 25),
+                    //                         fontFamily: 'iannnnnPDF_2008',
+                    //                         color: AppTheme.colorBackgroundWhite),
+                    //                   ),
+                    //                 );
+                    //               }
+                    //             }),
+                    //       ),
+                    //       Row(
+                    //         children: [
+                    //           Container(
+                    //             margin: appStyle.getEdgeInsetsFromRatio(
+                    //               left: 15,
+                    //             ),
+                    //             alignment: Alignment.bottomLeft,
+                    //             child: Text(
+                    //               'KM/h',
+                    //               style: TextStyle(
+                    //                   fontSize: appStyle.getWidth(percent: 11),
+                    //                   fontFamily: 'iannnnnPDF_2008',
+                    //                   color: AppTheme.colorFontWhite),
+                    //             ),
+                    //           ),
+                    //           Container(
+                    //             width: appStyle.getWidth(percent: 47),
+                    //             height: appStyle.getHeight(percent: 10),
+                    //             alignment: Alignment.topCenter,
+                    //             decoration: BoxDecoration(
+                    //               // color: AppTheme.colorRed,
+                    //                 image: DecorationImage(
+                    //                   fit: BoxFit.cover,
+                    //                   image: AssetImage('lib/images/collection_motor/new_icon/ico_mile.png'),
+                    //                 )
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+//                   child:
+                    new Container(
+                      color: Colors.black,
+                      margin: appStyle.getEdgeInsetsFromRatio(right: 3, left: 2),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          !checkStartSpeedTest
+                              ? Container(
+                            color: Colors.black,
+                            height: appStyle.getHeight(percent: 8),
+                            margin: appStyle.getEdgeInsetsFromRatio(top: 1),
+                            child: FlatButton(
+                              color: AppTheme.colorBlack,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.cloud_circle_outlined,
+                                    color: AppTheme.colorError,
+                                    size: appStyle.getWidth(percent: 10),
+                                  ),
+                                  FlatButton(
+                                      onPressed: () {
+                                        if (!checkStartSpeedTest) {
+                                          settingDistance();
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.settings,
+                                        color: AppTheme.colorError,
+                                        size: appStyle.getWidth(percent: 10),
+                                      ))
+                                ],
+                              ),
+                              onPressed: () async {
+                                if (!checkStartSpeedTest) {
+                                  _getUserWeatherData();
+                                }
+                              },
                             ),
+                          )
+                              : new Container(
+                            width: appStyle.getWidth(percent: 20),
+                            height: 0,
                           ),
-                        ),
-                      )
-                          : checkRefresh
-                          ? Container(
-                        color: Colors.black,
+                          !checkStartSpeedTest
+                              ? Container(
+                            color: Colors.black,
 //                        width: appStyle.getWidth(percent: 100),
-                        height: appStyle.getHeight(percent: 8),
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                        child: FlatButton(
-                          color: AppTheme.colorBlack,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: appStyle.getWidth(percent: 27),
-                                height: appStyle.getHeight(percent: 5),
-                                alignment: Alignment.center,
-                                child: new Text(
-                                  'Refresh',
-                                  style:
-                                  TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorRed),
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.colorBlack,
-                                  borderRadius: BorderRadius.all(Radius.circular(4.0) //                 <--- border radius here
-                                  ),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 0.5,
-                                  ),
+                            height: appStyle.getHeight(percent: 8),
+                            child: InkWell(
+                              onTap: () {
+                                startTimer();
+                                //TODO START IS HERE
+                              },
+                              child: Container(
+                                child: Image.asset(
+                                  "lib/images/collection_motor/new_icon/sks-page-01-07.png",
+                                  width: appStyle.getWidth(percent: 30),
                                 ),
                               ),
-                            ],
-                          ),
-                          onPressed: () async {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AppTheme(
-                                  child: HomePage(),
-                                ),
+                            ),
+                          )
+                              : checkRefresh
+                              ? Container(
+                            color: Colors.black,
+//                        width: appStyle.getWidth(percent: 100),
+                            height: appStyle.getHeight(percent: 8),
+                            margin:
+                            appStyle.getEdgeInsetsFromRatio(top: 1),
+                            child: FlatButton(
+                              color: AppTheme.colorBlack,
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: appStyle.getWidth(percent: 27),
+                                    height:
+                                    appStyle.getHeight(percent: 5),
+                                    alignment: Alignment.center,
+                                    child: new Text(
+                                      'Refresh',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(
+                                              percent: 5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorRed),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.colorBlack,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              4.0) //                 <--- border radius here
+                                      ),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 0.5,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            );
+                              onPressed: () async {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AppTheme(
+                                      child: HomePage(),
+                                    ),
+                                  ),
+                                );
 //                                setState(() {
 //                                  checkStartSpeedTest = false;
 //                                });
-                          },
-                        ),
-                      )
-                          : Container(
-                        color: Colors.black,
+                              },
+                            ),
+                          )
+                              : Container(
+                            color: Colors.black,
 //                        width: appStyle.getWidth(percent: 100),
-                        height: appStyle.getHeight(percent: 8),
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                        child: FlatButton(
-                          color: AppTheme.colorBlack,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: appStyle.getWidth(percent: 27),
-                                height: appStyle.getHeight(percent: 5),
-                                padding: appStyle.getEdgeInsetsFromRatio(left: 1),
-                                alignment: Alignment.center,
-                                child: new Text(
-                                  'STOP',
-                                  style: TextStyle(
-                                      fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3condital', color: AppTheme.colorRed),
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.colorBlack,
-                                  borderRadius: BorderRadius.all(Radius.circular(4.0) //                 <--- border radius here
+                            height: appStyle.getHeight(percent: 8),
+                            margin:
+                            appStyle.getEdgeInsetsFromRatio(top: 1),
+                            child: FlatButton(
+                              color: AppTheme.colorBlack,
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: appStyle.getWidth(percent: 27),
+                                    height:
+                                    appStyle.getHeight(percent: 5),
+                                    padding: appStyle
+                                        .getEdgeInsetsFromRatio(left: 1),
+                                    alignment: Alignment.center,
+                                    child: new Text(
+                                      'STOP',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(
+                                              percent: 5),
+                                          fontFamily:
+                                          'spyagency3condital',
+                                          color: AppTheme.colorRed),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.colorBlack,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              4.0) //                 <--- border radius here
+                                      ),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 0.5,
+                                      ),
+                                    ),
                                   ),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 0.5,
-                                  ),
-                                ),
+                                ],
                               ),
-                            ],
+                              onPressed: () async {
+                                calculatorDistance();
+                              },
+                            ),
                           ),
-                          onPressed: () async {
-                            calculatorDistance();
-                          },
-                        ),
-                      ),
-    !checkStartSpeedTest ?
-                      Container(
-                        color: Colors.black,
-                        height: appStyle.getHeight(percent: 8),
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1),
-                        child: FlatButton(
-                          color: AppTheme.colorBlack,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              new Image.asset(
-                                'lib/images/collection_motor/new_icon/sks-page-01-14.png',
-                                height: appStyle.getHeight(percent: 5),
-                              ),
-                            ],
-                          ),
-                          onPressed: () async {
-                            if(!checkStartSpeedTest){
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (_)=>HistoryPage(userKey: userKey,)
+                          !checkStartSpeedTest
+                              ? Container(
+                            color: Colors.black,
+                            height: appStyle.getHeight(percent: 8),
+                            margin: appStyle.getEdgeInsetsFromRatio(top: 0),
+                            child: FlatButton(
+                              color: AppTheme.colorBlack,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.history,
+                                    color: AppTheme.colorError,
+                                    size: appStyle.getWidth(percent: 10),
                                   )
-                              );
-                            }
-                          },
-                        ),
-                      ) : new Container(width: appStyle.getWidth(percent: 20),height: 0,)
-                    ],
-                  ),
-                ),
-                new Container(
-                  color: Colors.black,
-                  child: Column(
-                    children: [
-                      Container(
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
+                                ],
+                              ),
+                              onPressed: () async {
+                                if (!checkStartSpeedTest) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => AppTheme(
+                                              child: HistoryPage(
+                                                userKey: userKey,
+                                              ))));
+                                }
+                              },
+                            ),
+                          )
+                              : new Container(
+                            width: appStyle.getWidth(percent: 20),
+                            height: 0,
+                          )
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      color: Colors.black,
+                      child: Column(
+                        children: [
+                          Container(
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      height: appStyle.getHeight(percent: 5),
+                                      alignment: Alignment.bottomCenter,
+                                      child: Text(
+                                        ' ${convertTimeCount(countTimeDuration == null ? "0" : countTimeDuration)}',
+                                        style: TextStyle(
+                                            fontSize: appStyle.getWidth(percent: 5),
+                                            fontFamily: 'spyagency3cond',
+                                            color: AppTheme.colorGrey),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                StreamBuilder<Object>(
+                                    stream: _velocityUpdatedStreamController.stream,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Container(
+                                          child: Text(
+                                            ' ${mpstokmph(_velocity).toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    appStyle.getWidth(percent: 13),
+                                                fontFamily: 'spyagency3cond',
+                                                color:
+                                                    AppTheme.colorBackgroundWhite),
+                                          ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          child: Text(
+                                            '0.00',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    appStyle.getWidth(percent: 13),
+                                                fontFamily: 'spyagency3cond',
+                                                color:
+                                                    AppTheme.colorBackgroundWhite),
+                                          ),
+                                        );
+                                      }
+                                    }),
                                 Container(
-                                  height: appStyle.getHeight(percent: 5),
+                                  height: appStyle.getHeight(percent: 4),
                                   alignment: Alignment.bottomCenter,
                                   child: Text(
-                                    ' ${convertTimeCount(countTimeDuration == null ? "0" : countTimeDuration)}',
-                                    style:
-                                        TextStyle(fontSize: appStyle.getWidth(percent: 5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
+                                    ' KM/H.',
+                                    style: TextStyle(
+                                        fontSize: appStyle.getWidth(percent: 3),
+                                        fontFamily: 'spyagency3condital',
+                                        color: AppTheme.colorGrey),
                                   ),
                                 ),
                               ],
                             ),
-                            StreamBuilder<Object>(
-                                stream: _velocityUpdatedStreamController.stream,
-                                builder: (context, snapshot) {
-                                  if(snapshot.hasData){
-                                    return Container(
-                                      child: Text(
-                                        ' ${mpstokmph(_velocity).toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                            fontSize: appStyle.getWidth(percent: 13),
-                                            fontFamily: 'spyagency3cond',
-                                            color: AppTheme.colorBackgroundWhite),
-                                      ),
-                                    );
-                                  }else{
-                                    return Container(
-                                      child: Text(
-                                        '0.00',
-                                        style: TextStyle(
-                                            fontSize: appStyle.getWidth(percent: 13),
-                                            fontFamily: 'spyagency3cond',
-                                            color: AppTheme.colorBackgroundWhite),
-                                      ),
-                                    );
-                                  }
-
-                                }),
-                            Container(
-                              height: appStyle.getHeight(percent: 4),
-                              alignment: Alignment.bottomCenter,
-                              child: Text(
-                                ' KM/H.',
-                                style:
-                                    TextStyle(fontSize: appStyle.getWidth(percent: 3), fontFamily: 'spyagency3condital', color: AppTheme.colorGrey),
-                              ),
+                          ),
+                          Container(
+                            color: Colors.black,
+                            margin:
+                            appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
+                            child: new Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    child: Text(
+                                      'MAX.SPEED ',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(percent: 4.5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorGrey),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: StreamBuilder<Object>(
+                                      stream:
+                                      _velocityUpdatedStreamController2.stream,
+                                      builder: (context, snapshot) {
+                                        return Container(
+                                          alignment: Alignment.bottomRight,
+                                          child: Text(
+                                            '${mpstokmph(_highestVelocity).toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                                fontSize:
+                                                appStyle.getWidth(percent: 4.5),
+                                                fontFamily: 'spyagency3cond',
+                                                color: AppTheme.colorAccent),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    child: Text(
+                                      ' KM/H',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(percent: 4.5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorGrey),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          Container(
+                            margin:
+                            appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
+                            child: new Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    child: Text(
+                                      'AVG.SPEED ',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(percent: 4.5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorGrey),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      '${avgSpeed.toStringAsFixed(2)}',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(percent: 4.5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorAccent),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    child: Text(
+                                      ' KM/H',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(percent: 4.5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorGrey),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin:
+                            appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
+                            child: new Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    child: Text(
+                                      'TOTAL ',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(percent: 4.5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorGrey),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      '${countDistance.toStringAsFixed(2)}',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(percent: 4.5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorAccent),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    child: Text(
+                                      ' KM    ',
+                                      style: TextStyle(
+                                          fontSize: appStyle.getWidth(percent: 4.5),
+                                          fontFamily: 'spyagency3cond',
+                                          color: AppTheme.colorGrey),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-
-                      Container(
-                        color: Colors.black,
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
-                        child: new Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  'MAX.SPEED ',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: StreamBuilder<Object>(
-                                  stream: _velocityUpdatedStreamController2.stream,
-                                  builder: (context, snapshot) {
-                                    return Container(
-                                      alignment: Alignment.bottomRight,
-//                            decoration: BoxDecoration(
-//                              color: AppTheme.colorPrimaryDark,
-//                              borderRadius: BorderRadius.all(
-//                                  Radius.circular(3.0)),
-//                            ),
-                                      child: Text(
-                                        '${mpstokmph(_highestVelocity).toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                            fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorAccent),
-                                      ),
-                                    );
-                                  }),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  ' KM/H',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
-                        child: new Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  'AVG.SPEED ',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                child: Text(
-                                  '${avgSpeed.toStringAsFixed(2)}',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorAccent),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  ' KM/H',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: appStyle.getEdgeInsetsFromRatio(top: 1, left: 15),
-                        child: new Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  'TOTAL ',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                child: Text(
-                                  '${countDistance.toStringAsFixed(2)}',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorAccent),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                child: Text(
-                                  ' KM    ',
-                                  style:
-                                      TextStyle(fontSize: appStyle.getWidth(percent: 4.5), fontFamily: 'spyagency3cond', color: AppTheme.colorGrey),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    checkStartSpeedTest
+                        ? buildDistance(context, appStyle)
+                        : new Container()
+                  ],
                 ),
-                checkStartSpeedTest ? buildDistance(context, appStyle) : new Container()
-              ],
+              ),
             ),
-          ),
-          Positioned(
-            width: appStyle.getWidth100(),
-            height: appStyle.getHeight100(),
-            child: isProcess
-                ? createLoadingDialog(context)
-                : Container(
-              width: 0.0,
-              height: 0.0,
+            Positioned(
+              width: appStyle.getWidth100(),
+              height: appStyle.getHeight100(),
+              child: isProcess
+                  ? createLoadingDialog(context)
+                  : Container(
+                width: 0.0,
+                height: 0.0,
+              ),
             ),
-          ),
-        ],
-      ),
-    ));
+          ],
+        ),
+    );
   }
 
   Widget createLoadingDialog(BuildContext context) {
@@ -643,12 +887,19 @@ class _GPSPageState extends State<GPSPage> {
     return Container(
       child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.colorBackgroundWhite)),
+        CircularProgressIndicator(
+            valueColor:
+                AlwaysStoppedAnimation<Color>(AppTheme.colorBackgroundWhite)),
         Container(
             margin: EdgeInsets.only(left: 0, top: 20),
             child: Text(
               "${this._start2}",
-              style: TextStyle(fontSize: appStyle.getWidth(percent: 13), fontFamily: 'spyagency3condital', color: this._start2  == "Go" ? AppTheme.colorGreen2  : AppTheme.colorBlack),
+              style: TextStyle(
+                  fontSize: appStyle.getWidth(percent: 13),
+                  fontFamily: 'spyagency3condital',
+                  color: this._start2 == "Go"
+                      ? AppTheme.colorGreen2
+                      : AppTheme.colorBlack),
             )),
       ])),
       color: Colors.white.withOpacity(0.6),
@@ -656,48 +907,65 @@ class _GPSPageState extends State<GPSPage> {
   }
 
   void startTimer() async {
-    try{
-      setState(() {
-        isProcess = true;
-      });
+    try {
+      double paramDistance2 =
+          await SharedPreferencesUtil.getDouble(AppSharedPreferences.distance2);
+      if (paramDistance2 == null || paramDistance2.toString() == "null") {
+        MessageDialogWidget(
+          title: 'แจ้งเตือน',
+          message: 'ยังไม่มีการตั้งค่าระยะทาง \nเราจะนำท่านไปที่ตั้งค่า',
+          typeDialog: TypeMessageDialog.warning,
+          btnOkOnPress: () {
+            Navigator.pop(context);
+            settingDistance();
+          },
+        ).showMessageDialog(context);
+      } else {
+        setState(() {
+          // _start = 3;
+          isProcess = false;
+        });
+        setState(() {
+          checkStartSpeedTest = true;
+        });
+        countOnPosition();
+        // c();
 
-      const oneSec = const Duration(seconds: 1);
-      _timerForStart = new Timer.periodic(
-        oneSec,
-            (Timer timer) {
-          if (timer.tick == 4) {
-            _timerForStart.cancel();
-            setState(() {
-              _start = 3;
-              isProcess = false;
-            });
-            setState(() {
-              checkStartSpeedTest = true;
-            });
-            countOnPosition();
-          }  else {
-
-            if(timer.tick == 3){
-              startCountOnTime();
-              setState(() {
-                _start2 = "Go";
-              });
-            }else{
-              setState(() {
-                _start--;
-                _start2 = _start.toString();
-              });
-            }
-          }
-        },
-      );
-    }catch(error){
+        // const oneSec = const Duration(seconds: 1);
+        // _timerForStart = new Timer.periodic(
+        //   oneSec,
+        //       (Timer timer) {
+        //     if (timer.tick == 4) {
+        //       _timerForStart.cancel();
+        //       setState(() {
+        //         _start = 3;
+        //         isProcess = false;
+        //       });
+        //       setState(() {
+        //         checkStartSpeedTest = true;
+        //       });
+        //       countOnPosition();
+        //     } else {
+        //       if (timer.tick == 3) {
+        //         setState(() {
+        //           _start2 = "Go";
+        //         });
+        //       } else {
+        //         setState(() {
+        //           _start--;
+        //           _start2 = _start.toString();
+        //         });
+        //       }
+        //     }
+        //   },
+        // );
+      }
+    } catch (error) {
       Utilities.defaultHandler(error, context);
       setState(() {
-      isProcess = false;
-    });
+        isProcess = false;
+      });
     }
-
   }
 
   void countOnTime() async {
@@ -724,71 +992,61 @@ class _GPSPageState extends State<GPSPage> {
 //      _timeSet.isActive ? _timeSet.cancel() : print('out2');
       _timerSpeedTest == null ? print('out22') : _timerSpeedTest.cancel();
       _timer != null ? _timer.cancel() : print('out3');
-      _timeDistance != null ? _timeDistance.cancel() : print("out4");
+       _timeDistance.cancel();
 //      positionStream.cancel();
       positionStream2.cancel();
+      _velocityUpdatedStreamController.close();
+      _velocityUpdatedStreamController2.close();
 //      _timerSpeedTest.cancel();
 //      _timeDistance.cancel();
       print("sixtyFeetTime ${this.sixtyFeetTime}");
-     await GpsServices().saveSpeedTest(
-       userKey: this.userKey,
-       speed100m: this.sixtyFeetTime,
-       time100m: this.sixtyFeetTime1,
-        speed200m: this.twoHundredTime,
-        time200m: this.twoHundredTime1,
-        speed300m: this.threeHundredTime,
-        time300m: this.threeHundredTime1,
-        speed400m: this.fourHundredTime,
-        time400m: this.fourHundredTime1,
-        speed500m: this.fiveHundredTime,
-        time500m: this.fiveHundredTime1,
-        speed600m: this.sixHundredTime,
-        time600m: this.sixHundredTime1,
-        speed700m: this.sevenHundredTime,
-        time700m: this.sixHundredTime1,
-
-        speed800m: this.eightHundredTime,
-        time800m: this.eightHundredTime1,
-
-        speed900m: this.nineHundredTime,
-        time900m: this.nineHundredTime1,
-
-        speed1000m: this.oneThousandTime,
-        time1000m: this.oneThousandTime1,
-
-        speed1100m: this.oneThousand1Time,
-        time1100m: this.oneThousand1Time1,
-
-        speed1200m: this.oneThousand2Time,
-        time1200m: this.oneThousand2Time1,
-
-        speed1300m: this.oneThousand3Time,
-        time1300m: this.oneThousand3Time1,
-
-        speed1400m: this.oneThousand4Time,
-        time1400m: this.oneThousand4Time1,
-
-        speed1500m: this.oneThousand5Time,
-        time1500m: this.oneThousand5Time1,
-
-        speed1600m: this.oneThousand6Time,
-        time1600m: this.oneThousand6Time1,
-
-        speed1700m: this.oneThousand7Time,
-        time1700m: this.oneThousand7Time1,
-
-        speed1800m: this.oneThousand8Time,
-        time1800m: this.oneThousand8Time1,
-
-        speed1900m: this.oneThousand9Time,
-        time1900m: this.oneThousand9Time1,
-
-        speed2000m: this.twoThousandTime,
-        time2000m: this.twoThousandTime1,
-        total: this.countDistance.toStringAsFixed(2),
-        average: this.avgSpeed.toStringAsFixed(2),
-        maxSpeed:mpstokmph(_highestVelocity).toStringAsFixed(2),
-      );
+      //TODO ปิด SERVICE ไปก่อน
+      // await GpsServices().saveSpeedTest(
+      //   userKey: this.userKey,
+      //   speed100m: this.sixtyFeetTime,
+      //   time100m: this.sixtyFeetTime1,
+      //   speed200m: this.twoHundredTime,
+      //   time200m: this.twoHundredTime1,
+      //   speed300m: this.threeHundredTime,
+      //   time300m: this.threeHundredTime1,
+      //   speed400m: this.fourHundredTime,
+      //   time400m: this.fourHundredTime1,
+      //   speed500m: this.fiveHundredTime,
+      //   time500m: this.fiveHundredTime1,
+      //   speed600m: this.sixHundredTime,
+      //   time600m: this.sixHundredTime1,
+      //   speed700m: this.sevenHundredTime,
+      //   time700m: this.sevenHundredTime1,
+      //   speed800m: this.eightHundredTime,
+      //   time800m: this.eightHundredTime1,
+      //   speed900m: this.nineHundredTime,
+      //   time900m: this.nineHundredTime1,
+      //   speed1000m: this.oneThousandTime,
+      //   time1000m: this.oneThousandTime1,
+      //   speed1100m: this.oneThousand1Time,
+      //   time1100m: this.oneThousand1Time1,
+      //   speed1200m: this.oneThousand2Time,
+      //   time1200m: this.oneThousand2Time1,
+      //   speed1300m: this.oneThousand3Time,
+      //   time1300m: this.oneThousand3Time1,
+      //   speed1400m: this.oneThousand4Time,
+      //   time1400m: this.oneThousand4Time1,
+      //   speed1500m: this.oneThousand5Time,
+      //   time1500m: this.oneThousand5Time1,
+      //   speed1600m: this.oneThousand6Time,
+      //   time1600m: this.oneThousand6Time1,
+      //   speed1700m: this.oneThousand7Time,
+      //   time1700m: this.oneThousand7Time1,
+      //   speed1800m: this.oneThousand8Time,
+      //   time1800m: this.oneThousand8Time1,
+      //   speed1900m: this.oneThousand9Time,
+      //   time1900m: this.oneThousand9Time1,
+      //   speed2000m: this.twoThousandTime,
+      //   time2000m: this.twoThousandTime1,
+      //   total: this.countDistance.toStringAsFixed(2),
+      //   average: this.avgSpeed.toStringAsFixed(2),
+      //   maxSpeed: mpstokmph(_highestVelocity).toStringAsFixed(2),
+      // );
       setState(() {
         checkRefresh = true;
         countTimeDuration = null;
@@ -796,58 +1054,6 @@ class _GPSPageState extends State<GPSPage> {
         isProcess = false;
       });
 
-//      await Navigator.pushReplacement(
-//        context,
-//        MaterialPageRoute(
-//          builder: (context) => AppTheme(
-//            child: SpeedRang(
-//              sixtyFeetTime: this.sixtyFeetTime,
-//              twoHundredTime: this.twoHundredTime,
-//              threeHundredTime: this.threeHundredTime,
-//              fourHundredTime: this.fourHundredTime,
-//              fiveHundredTime: this.fiveHundredTime,
-//              sixHundredTime: this.sixHundredTime,
-//              sevenHundredTime: this.sevenHundredTime,
-//              eightHundredTime: this.eightHundredTime,
-//              oneThousandTime: this.oneThousandTime,
-//              twoThousandTime: this.twoThousandTime,
-//              sixtyFeetTime1: this.sixtyFeetTime1,
-//              twoHundredTime1: this.twoHundredTime1,
-//              threeHundredTime1: this.threeHundredTime1,
-//              fourHundredTime1: this.fourHundredTime1,
-//              fiveHundredTime1: this.fiveHundredTime1,
-//              sixHundredTime1: this.sixHundredTime1,
-//              sevenHundredTime1: this.sevenHundredTime1,
-//              eightHundredTime1: this.eightHundredTime1,
-//              nineHundredTime: this.nineHundredTime,
-//              oneThousandTime1: this.oneThousandTime1,
-//              oneThousand1Time1: this.oneThousand1Time1,
-//              oneThousand2Time1: this.oneThousand2Time1,
-//              oneThousand3Time1: this.oneThousand3Time1,
-//              oneThousand4Time1: this.oneThousand4Time1,
-//              oneThousand5Time1: this.oneThousand5Time1,
-//              oneThousand6Time1: this.oneThousand6Time1,
-//              oneThousand7Time1: this.oneThousand7Time1,
-//              oneThousand8Time1: this.oneThousand8Time1,
-//              oneThousand9Time1: this.oneThousand9Time1,
-//              twoThousandTime1: this.twoThousandTime1,
-//                oneThousand1Time : this.oneThousand1Time,
-//              oneThousand2Time : this.oneThousand2Time,
-//              oneThousand3Time : this.oneThousand3Time,
-//              oneThousand4Time : this.oneThousand4Time,
-//              oneThousand5Time : this.oneThousand5Time,
-//              oneThousand6Time : this.oneThousand6Time,
-//              oneThousand7Time : this.oneThousand7Time,
-//              oneThousand8Time : this.oneThousand8Time,
-//              oneThousand9Time : this.oneThousand9Time,
-//                nineHundredTime1 : this.nineHundredTime1,
-//              maxSpeed: mpstokmph(_highestVelocity).toStringAsFixed(2),
-//              avgSpeed: this.avgSpeed.toStringAsFixed(2),
-//              totalKm: this.countDistance.toStringAsFixed(2),
-//            ),
-//          ),
-//        ),
-//      );
     } catch (error) {}
   }
 
@@ -862,17 +1068,61 @@ class _GPSPageState extends State<GPSPage> {
         );
   }
 
-//  getDistance() async {
-////    positionStream3 =  locator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation)
-//    const oneSec = const Duration(seconds: 1);
-//    _timeDistance2 = new Timer.periodic(
-//      oneSec,
-//          (Timer timer) async {
-//            Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-//            _velocityUpdatedStreamController3.add(position.latitude);
-//      },
-//    );
-//  }
+  void _getUserWeatherData() async {
+    //Checking Internet Connection
+    if (await kInternetConnectivityChecker() == true) {
+      //getting weather data on basis of City Name
+//        Weather weather1 = new WeatherService();
+      var lat;
+      var long;
+      final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      lat = position.latitude;
+      long = position.longitude;
+      //หา ละ ลอง
+      print(lat);
+      print(long);
+      print("what");
+
+      dynamic weatherData = await WeatherService()
+          .getLocationWeatherCurrentData(latitude: lat, longitude: long);
+      if (weatherData == 404) {
+        MessageDialogWidget(
+          title: 'แจ้งเตือน !!!',
+          message: 'ไม่พบข้อมูลที่ สภาพอากาศ',
+          typeDialog: TypeMessageDialog.warning,
+          btnOkOnPress: () {
+            Navigator.pop(context);
+          },
+        ).showMessageDialog(context);
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => AppTheme(
+                        child: Weather(
+                      weatherData: weatherData,
+                      firstLat: lat.toString(),
+                      firstLong: long.toString(),
+//                                                  userKey: userKey,
+                    ))));
+      }
+    } else {
+      MessageDialogWidget(
+        title: 'แจ้งเตือน !!!',
+        message: 'กรุณาเชื่อมต่ออินเตอร์เน็ต',
+        typeDialog: TypeMessageDialog.warning,
+        btnOkOnPress: () {
+          Navigator.pop(context);
+        },
+      ).showMessageDialog(context);
+    }
+  }
+
+  void settingDistance() async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => AppTheme(child: Setting())));
+  }
 
   void countOnPosition() async {
     const oneSec = const Duration(milliseconds: 500);
@@ -880,32 +1130,36 @@ class _GPSPageState extends State<GPSPage> {
       oneSec,
       (Timer timer) async {
         if (timer.tick % 2 != 0) {
-          final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          final position = await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high);
           print("position1 ${position.toJson()}");
           setState(() {
             firstLat = position.latitude;
             firstLongitude = position.longitude;
           });
         } else {
-          final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          final position = await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high);
           print("position2 ${position.toJson()}");
           setState(() {
             lastLat = position.latitude;
             lastLongitude = position.longitude;
           });
         }
-        _onDistance();
+        // _onDistance();
+        _onDistanceNew();
+
       },
     );
   }
 
   void _onDistance() async {
 //    13.5732539,100.3572538 แถวบ้าน
-
 //    13.5898637,100.779927 โรงงานพี่ตั้ม
-  //  13.5722651,100.373688 บ้านมอส
+    //  13.5722651,100.373688 บ้านมอส
     if (lastLat != 0.0) {
-      double distanceInMeters = Geolocator.distanceBetween(firstLat, firstLongitude, lastLat, lastLongitude);
+      double distanceInMeters = Geolocator.distanceBetween(
+          firstLat, firstLongitude, lastLat, lastLongitude);
       double avg1 = double.parse(countTimeDuration) / 1000;
       var a1 = distanceInMeters / 1000.00;
       var a2 = a1 + countDistance;
@@ -928,187 +1182,256 @@ class _GPSPageState extends State<GPSPage> {
       if (this.countDistance > 0.09 && this.countDistance < 0.19) {
         print("int");
         sixtyFeetTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(sixtyFeetTime == "-"){
+        if (sixtyFeetTime == "-") {
           setState(() {
             this.sixtyFeetTime = convertTimeCount(countTimeDuration);
             this.sixtyFeetTime1 = sixtyFeetTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.19 && this.countDistance < 0.29) {
         twoHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(twoHundredTime == "-"){
+        if (twoHundredTime == "-") {
           setState(() {
             this.twoHundredTime = convertTimeCount(countTimeDuration);
             this.twoHundredTime1 = twoHundredTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.29 && this.countDistance < 0.39) {
         threeHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(threeHundredTime == "-"){
+        if (threeHundredTime == "-") {
           setState(() {
             this.threeHundredTime = convertTimeCount(countTimeDuration);
             this.threeHundredTime1 = threeHundredTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.39 && this.countDistance < 0.49) {
         fourHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(fourHundredTime == "-"){
+        if (fourHundredTime == "-") {
           setState(() {
             this.fourHundredTime = convertTimeCount(countTimeDuration);
             this.fourHundredTime1 = fourHundredTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.49 && this.countDistance < 0.59) {
         fiveHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(fiveHundredTime == "-"){
+        if (fiveHundredTime == "-") {
           setState(() {
             this.fiveHundredTime = convertTimeCount(countTimeDuration);
             this.fiveHundredTime1 = fiveHundredTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.59 && this.countDistance < 0.69) {
         sixHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(sixHundredTime == "-"){
+        if (sixHundredTime == "-") {
           setState(() {
             this.sixHundredTime = convertTimeCount(countTimeDuration);
             this.sixHundredTime1 = sixHundredTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.69 && this.countDistance < 0.79) {
         sevenHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(sevenHundredTime == "-"){
+        if (sevenHundredTime == "-") {
           setState(() {
             this.sevenHundredTime = convertTimeCount(countTimeDuration);
             this.sevenHundredTime1 = sevenHundredTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.79 && this.countDistance < 0.89) {
         eightHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(eightHundredTime == "-"){
+        if (eightHundredTime == "-") {
           setState(() {
             this.eightHundredTime = convertTimeCount(countTimeDuration);
             this.eightHundredTime1 = eightHundredTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.89 && this.countDistance < 0.99) {
         nineHundredTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(nineHundredTime == "-"){
+        if (nineHundredTime == "-") {
           setState(() {
             this.nineHundredTime = convertTimeCount(countTimeDuration);
             this.nineHundredTime1 = nineHundredTimeList[1];
           });
         }
-
       } else if (this.countDistance > 0.99 && this.countDistance < 1.09) {
         oneThousandTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousandTime == "-"){
+        if (oneThousandTime == "-") {
           setState(() {
             this.oneThousandTime = convertTimeCount(countTimeDuration);
             this.oneThousandTime1 = oneThousandTimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.09 && this.countDistance < 1.19) {
         oneThousand1TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand1Time == "-"){
+        if (oneThousand1Time == "-") {
           setState(() {
             this.oneThousand1Time = convertTimeCount(countTimeDuration);
             this.oneThousand1Time1 = oneThousand1TimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.19 && this.countDistance < 1.29) {
         oneThousand2TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand2Time == "-"){
+        if (oneThousand2Time == "-") {
           setState(() {
             this.oneThousand2Time = convertTimeCount(countTimeDuration);
             this.oneThousand2Time1 = oneThousand2TimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.29 && this.countDistance < 1.39) {
         oneThousand3TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand3Time == "-"){
+        if (oneThousand3Time == "-") {
           setState(() {
             this.oneThousand3Time = convertTimeCount(countTimeDuration);
             this.oneThousand3Time1 = oneThousand3TimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.39 && this.countDistance < 1.49) {
         oneThousand4TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand4Time == "-"){
+        if (oneThousand4Time == "-") {
           setState(() {
             this.oneThousand4Time = convertTimeCount(countTimeDuration);
             this.oneThousand4Time1 = oneThousand4TimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.49 && this.countDistance < 1.59999) {
         oneThousand5TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand5Time == "-"){
+        if (oneThousand5Time == "-") {
           setState(() {
             this.oneThousand5Time = convertTimeCount(countTimeDuration);
             this.oneThousand5Time1 = oneThousand5TimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.59 && this.countDistance < 1.69) {
         oneThousand6TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand6Time == "-"){
+        if (oneThousand6Time == "-") {
           setState(() {
             this.oneThousand6Time = convertTimeCount(countTimeDuration);
             this.oneThousand6Time1 = oneThousand6TimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.69 && this.countDistance < 1.79) {
         oneThousand7TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand7Time == "-"){
-            setState(() {
-              this.oneThousand7Time = convertTimeCount(countTimeDuration);
-              this.oneThousand7Time1 = oneThousand7TimeList[1];
-            });
+        if (oneThousand7Time == "-") {
+          setState(() {
+            this.oneThousand7Time = convertTimeCount(countTimeDuration);
+            this.oneThousand7Time1 = oneThousand7TimeList[1];
+          });
         }
-
       } else if (this.countDistance > 1.79 && this.countDistance < 1.89) {
         oneThousand8TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand8Time == "-"){
+        if (oneThousand8Time == "-") {
           setState(() {
             this.oneThousand8Time = convertTimeCount(countTimeDuration);
             this.oneThousand8Time1 = oneThousand8TimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.89 && this.countDistance < 1.99999) {
         oneThousand9TimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-        if(oneThousand9Time == "-"){
+        if (oneThousand9Time == "-") {
           setState(() {
             this.oneThousand9Time = convertTimeCount(countTimeDuration);
             this.oneThousand9Time1 = oneThousand9TimeList[1];
           });
         }
-
       } else if (this.countDistance > 1.9999 && this.countDistance < 2.99999) {
-          twoThousandTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
-          if (twoThousandTime == "-") {
-            setState(() {
-              this.twoThousandTime = convertTimeCount(countTimeDuration);
-              this.twoThousandTime1 = twoThousandTimeList[1];
-            });
-          }
+        twoThousandTimeList.add(mpstokmph(_velocity).toStringAsFixed(2));
+        if (twoThousandTime == "-") {
+          setState(() {
+            this.twoThousandTime = convertTimeCount(countTimeDuration);
+            this.twoThousandTime1 = twoThousandTimeList[1];
+          });
         }
-
       }
     }
+  }
+
+  void _onDistanceNew() async {
+//    13.5732539,100.3572538 แถวบ้าน
+//    13.5898637,100.779927 โรงงานพี่ตั้ม
+    //  13.5722651,100.373688 บ้านมอส
+    if (lastLat != 0.0) {
+      print("lastLat ${lastLat}");
+      double distanceInMeters = Geolocator.distanceBetween(
+          firstLat, firstLongitude, this.lastLat, this.lastLongitude);
+      // double avg1 = double.parse(countTimeDuration) / 1000;
+      var a1 = distanceInMeters / 1000.00;
+      var a2 = a1 + countDistance;
+      setState(() {
+        countDistance = a2;
+      });
+
+      if(countDistance > 0.01 && this._timer == null){
+        print("iFFF");
+        countOnTime();
+      }else{
+        double avg1 = double.parse(countTimeDuration) / 1000;
+        var avg2 = avg1 * 0.000277777777778;
+        var avg3 = a2 / avg2;
+        var avg4 = 0.0;
+        if (avg3 > 500.0) {
+          avg4 = 0.0;
+        } else {
+          avg4 = avg3;
+        }
+        setState(() {
+          avgSpeed = avg4;
+        });
+      }
+
+      if (this.countDistance > 0.02 && this.countDistance < 0.04) {
+        listDistance1.add(mpstokmph(_velocity).toStringAsFixed(2));
+        if (timeDistance1 == "-") {
+          setState(() {
+            this.timeDistance1 = convertTimeCount(timeDistance1);
+            this.speedDistance1 = listDistance1[1];
+          });
+        }
+      } else if (distance2.toString() != "null" && this.countDistance > distance2  && this.countDistance < distance2 + 0.02) {
+        listDistance2.add(mpstokmph(_velocity).toStringAsFixed(2));
+        if (timeDistance2 == "-") {
+          setState(() {
+            this.timeDistance2 = convertTimeCount(timeDistance2);
+            this.speedDistance2 = listDistance2[1];
+          });
+        }
+      } else if (distance3.toString() != "null" && this.countDistance > distance3  && this.countDistance < distance3 + 0.02) {
+        listDistance3.add(mpstokmph(_velocity).toStringAsFixed(2));
+        if (timeDistance3 == "-") {
+          setState(() {
+            this.timeDistance3 = convertTimeCount(timeDistance3);
+            this.speedDistance3 = listDistance3[1];
+          });
+        }
+      } else if (distance4.toString() != "null" && this.countDistance > distance4  && this.countDistance < distance4 + 0.02) {
+        listDistance4.add(mpstokmph(_velocity).toStringAsFixed(2));
+        if (timeDistance4 == "-") {
+          setState(() {
+            this.timeDistance4 = convertTimeCount(timeDistance4);
+            this.speedDistance4 = listDistance4[1];
+          });
+        }
+      } else if (distance5.toString() != "null" && this.countDistance > distance5  && this.countDistance < distance5 + 0.02) {
+        listDistance5.add(mpstokmph(_velocity).toStringAsFixed(2));
+        if (timeDistance5 == "-") {
+          setState(() {
+            this.timeDistance5 = convertTimeCount(timeDistance5);
+            this.speedDistance5 = listDistance5[1];
+          });
+        }
+      } else if (distance6.toString() != "null" && this.countDistance > distance6  && this.countDistance < distance6 + 0.02) {
+        listDistance6.add(mpstokmph(_velocity).toStringAsFixed(2));
+        if (timeDistance6 == "-") {
+          setState(() {
+            this.timeDistance6 = convertTimeCount(timeDistance6);
+            this.speedDistance6 = listDistance6[1];
+          });
+        }
+      }
+    }else{
+      print("_onDistanceNew $lastLat");
+    }
+  }
+
+
 
   String convertTimeCount(String isTime) {
     var a1 = Duration(milliseconds: int.parse(isTime)).toString();
@@ -1116,14 +1439,12 @@ class _GPSPageState extends State<GPSPage> {
     return a2;
   }
 
-
-
   void _onAccelerate(double speed) {
     locator.getCurrentPosition().then(
       (Position updatedPosition) {
         _velocity = (speed + updatedPosition.speed) / 2;
 //        if (_velocity > 3) {
-//          _velocity = _velocity += 45;
+//          _velocity = _velocity += 65;
 //        }
         if (_velocity > _highestVelocity) {
           _highestVelocity = _velocity;
@@ -1135,14 +1456,13 @@ class _GPSPageState extends State<GPSPage> {
 
         if (mpstokmph(_velocity) > 280) {
           eventObservable.add(mpstokmph(_velocity) + 30);
-        } else if (mpstokmph(_velocity) > 200) {
-          eventObservable.add(mpstokmph(_velocity));
-        }else if(mpstokmph(_velocity) > 140){
+        } else if (mpstokmph(_velocity) > 190) {
+          eventObservable.add(mpstokmph(_velocity) + 4);
+        } else if (mpstokmph(_velocity) > 140) {
           eventObservable.add(mpstokmph(_velocity) - 3);
-        }else if(mpstokmph(_velocity) > 90){
+        } else if (mpstokmph(_velocity) > 90) {
           eventObservable.add(mpstokmph(_velocity) - 10);
-        }
-        else {
+        } else {
           eventObservable.add(mpstokmph(_velocity) - 16.5);
         }
       },
@@ -1152,11 +1472,13 @@ class _GPSPageState extends State<GPSPage> {
 
   Widget buildDistance(BuildContext context, AppStyle appStyle) {
     return Container(
-      margin: appStyle.getEdgeInsetsFromRatio(right: 2, left: 2, top: 1, bottom: 10),
+      margin: appStyle.getEdgeInsetsFromRatio(
+          right: 2, left: 2, top: 1, bottom: 10),
 //      color: AppTheme.colorBlack,
       decoration: BoxDecoration(
         color: AppTheme.colorBlack,
-        borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+        borderRadius: BorderRadius.all(
+            Radius.circular(5.0) //                 <--- border radius here
             ),
         border: Border.all(
           color: Colors.grey,
@@ -1167,31 +1489,536 @@ class _GPSPageState extends State<GPSPage> {
         margin: appStyle.getEdgeInsetsFromRatio(top: 2, bottom: 2),
         child: Column(
           children: [
-            build60FT(context, appStyle),
-            build200(context, appStyle),
-            build300(context, appStyle),
-            build400(context, appStyle),
-            build500(context, appStyle),
-            build600(context, appStyle),
-            build700(context, appStyle),
-            build800(context, appStyle),
-            build900(context, appStyle),
-            build1000(context, appStyle),
-            build1100(context, appStyle),
-            build1200(context, appStyle),
-            build1300(context, appStyle),
-            build1400(context, appStyle),
-            build1500(context, appStyle),
-            build1600(context, appStyle),
-            build1700(context, appStyle),
-            build1800(context, appStyle),
-            build1900(context, appStyle),
-            build2000(context, appStyle),
+            build60FTNew(context, appStyle),
+            buildDistance2(context, appStyle),
+            buildDistance3(context, appStyle),
+            buildDistance4(context, appStyle),
+            buildDistance5(context, appStyle),
+            buildDistance6(context, appStyle),
+
+            // build200(context, appStyle),
+            // build300(context, appStyle),
+            // build400(context, appStyle),
+            // build500(context, appStyle),
+            // build600(context, appStyle),
+            // build700(context, appStyle),
+            // build800(context, appStyle),
+            // build900(context, appStyle),
+            // build1000(context, appStyle),
+            // build1100(context, appStyle),
+            // build1200(context, appStyle),
+            // build1300(context, appStyle),
+            // build1400(context, appStyle),
+            // build1500(context, appStyle),
+            // build1600(context, appStyle),
+            // build1700(context, appStyle),
+            // build1800(context, appStyle),
+            // build1900(context, appStyle),
+            // build2000(context, appStyle),
           ],
         ),
       ),
     );
   }
+
+  Widget build60FTNew(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(
+        bottom: 3,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            //                   <--- left side
+            color: Colors.grey,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Container(
+        margin: appStyle.getEdgeInsetsFromRatio(left: 3, right: 3),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '60FT',
+              style: TextStyle(
+                  fontSize: appStyle.getWidth(percent: 5),
+                  fontFamily: 'iannnnnPDF_2008',
+                  color: AppTheme.colorFontWhite),
+            ),
+            Container(
+              width: appStyle.getWidth(percent: 45),
+              height: appStyle.getHeight(percent: 5),
+              margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
+              decoration: BoxDecoration(
+                color: AppTheme.colorBlack,
+                borderRadius: BorderRadius.all(Radius.circular(
+                    5.0) //                 <--- border radius here
+                ),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                    child: Text(
+                      '${this.timeDistance1}',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${this.speedDistance1}',
+                  style: appStyle.getTextStyle('normalText'),
+                ),
+                Container(
+                  margin: appStyle.getEdgeInsetsFromRatio(left: 1),
+                  child: Text(
+                    'km/h',
+                    style: TextStyle(
+                        fontSize: appStyle.getWidth(percent: 4),
+                        fontFamily: 'iannnnnPDF_2008',
+                        color: AppTheme.colorGrey)
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildDistance2(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(
+        bottom: 3,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            //                   <--- left side
+            color: Colors.grey,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Container(
+        margin: appStyle.getEdgeInsetsFromRatio(left: 3, right: 3),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '${distance2.toString()}',
+              style: TextStyle(
+                  fontSize: appStyle.getWidth(percent: 5),
+                  fontFamily: 'iannnnnPDF_2008',
+                  color: AppTheme.colorFontWhite),
+            ),
+            Container(
+              width: appStyle.getWidth(percent: 45),
+              height: appStyle.getHeight(percent: 5),
+              margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
+              decoration: BoxDecoration(
+                color: AppTheme.colorBlack,
+                borderRadius: BorderRadius.all(Radius.circular(
+                    5.0) //                 <--- border radius here
+                ),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                    child: Text(
+                      '${this.timeDistance2}',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${this.speedDistance2}',
+                  style: appStyle.getTextStyle('normalText'),
+                ),
+                Container(
+                  margin: appStyle.getEdgeInsetsFromRatio(left: 1),
+                  child: Text(
+                      'km/h',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 4),
+                          fontFamily: 'iannnnnPDF_2008',
+                          color: AppTheme.colorGrey)
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildDistance3(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(
+        bottom: 3,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            //                   <--- left side
+            color: Colors.grey,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Container(
+        margin: appStyle.getEdgeInsetsFromRatio(left: 3, right: 3),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: appStyle.getWidth(percent: 13),
+              child: Text(
+                '${distance3.toString() != "null" ? distance3.toString()  : "-"}',
+                style: TextStyle(
+                    fontSize: appStyle.getWidth(percent: 5),
+                    fontFamily: 'iannnnnPDF_2008',
+                    color: AppTheme.colorFontWhite),
+              ),
+            ),
+            Container(
+              width: appStyle.getWidth(percent: 45),
+              height: appStyle.getHeight(percent: 5),
+              margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
+              decoration: BoxDecoration(
+                color: AppTheme.colorBlack,
+                borderRadius: BorderRadius.all(Radius.circular(
+                    5.0) //                 <--- border radius here
+                ),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                    child: Text(
+                      '${this.timeDistance3}',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${this.speedDistance3}',
+                  style: appStyle.getTextStyle('normalText'),
+                ),
+                Container(
+                  margin: appStyle.getEdgeInsetsFromRatio(left: 1),
+                  child: Text(
+                      'km/h',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 4),
+                          fontFamily: 'iannnnnPDF_2008',
+                          color: AppTheme.colorGrey)
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildDistance4(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(
+        bottom: 3,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            //                   <--- left side
+            color: Colors.grey,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Container(
+        margin: appStyle.getEdgeInsetsFromRatio(left: 3, right: 3),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: appStyle.getWidth(percent: 13),
+              child: Text(
+                '${distance4.toString() != "null" ? distance4.toString()  : "-"}',
+                style: TextStyle(
+                    fontSize: appStyle.getWidth(percent: 5),
+                    fontFamily: 'iannnnnPDF_2008',
+                    color: AppTheme.colorFontWhite),
+              ),
+            ),
+            Container(
+              width: appStyle.getWidth(percent: 45),
+              height: appStyle.getHeight(percent: 5),
+              margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
+              decoration: BoxDecoration(
+                color: AppTheme.colorBlack,
+                borderRadius: BorderRadius.all(Radius.circular(
+                    5.0) //                 <--- border radius here
+                ),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                    child: Text(
+                      '${this.timeDistance4}',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${this.speedDistance4}',
+                  style: appStyle.getTextStyle('normalText'),
+                ),
+                Container(
+                  margin: appStyle.getEdgeInsetsFromRatio(left: 1),
+                  child: Text(
+                      'km/h',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 4),
+                          fontFamily: 'iannnnnPDF_2008',
+                          color: AppTheme.colorGrey)
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildDistance5(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(
+        bottom: 3,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            //                   <--- left side
+            color: Colors.grey,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Container(
+        margin: appStyle.getEdgeInsetsFromRatio(left: 3, right: 3),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+                width: appStyle.getWidth(percent: 13),
+              child: Text(
+                '${distance5.toString() != "null" ? distance5.toString()  : "-"}',
+                style: TextStyle(
+                    fontSize: appStyle.getWidth(percent: 5),
+                    fontFamily: 'iannnnnPDF_2008',
+                    color: AppTheme.colorFontWhite),
+              ),
+            ),
+            Container(
+              width: appStyle.getWidth(percent: 45),
+              height: appStyle.getHeight(percent: 5),
+              margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
+              decoration: BoxDecoration(
+                color: AppTheme.colorBlack,
+                borderRadius: BorderRadius.all(Radius.circular(
+                    5.0) //                 <--- border radius here
+                ),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                    child: Text(
+                      '${this.timeDistance5}',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${this.speedDistance5}',
+                  style: appStyle.getTextStyle('normalText'),
+                ),
+                Container(
+                  margin: appStyle.getEdgeInsetsFromRatio(left: 1),
+                  child: Text(
+                      'km/h',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 4),
+                          fontFamily: 'iannnnnPDF_2008',
+                          color: AppTheme.colorGrey)
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildDistance6(BuildContext context, AppStyle appStyle) {
+    return Container(
+      margin: appStyle.getEdgeInsetsFromRatio(
+        bottom: 3,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            //                   <--- left side
+            color: Colors.grey,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Container(
+        margin: appStyle.getEdgeInsetsFromRatio(left: 3, right: 3),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: appStyle.getWidth(percent: 13),
+              child: Text(
+                '${distance6.toString() != "null" ? distance6.toString()  : "-"}',
+                style: TextStyle(
+                    fontSize: appStyle.getWidth(percent: 5),
+                    fontFamily: 'iannnnnPDF_2008',
+                    color: AppTheme.colorFontWhite),
+              ),
+            ),
+            Container(
+              width: appStyle.getWidth(percent: 45),
+              height: appStyle.getHeight(percent: 5),
+              margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
+              decoration: BoxDecoration(
+                color: AppTheme.colorBlack,
+                borderRadius: BorderRadius.all(Radius.circular(
+                    5.0) //                 <--- border radius here
+                ),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: appStyle.getEdgeInsetsFromRatio(right: 2),
+                    child: Text(
+                      '${this.timeDistance6}',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${this.speedDistance6}',
+                  style: appStyle.getTextStyle('normalText'),
+                ),
+                Container(
+                  margin: appStyle.getEdgeInsetsFromRatio(left: 1),
+                  child: Text(
+                      'km/h',
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 4),
+                          fontFamily: 'iannnnnPDF_2008',
+                          color: AppTheme.colorGrey)
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 
   Widget build60FT(BuildContext context, AppStyle appStyle) {
     return Container(
@@ -1222,7 +2049,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1237,7 +2065,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.sixtyFeetTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1293,7 +2124,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1308,7 +2140,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.twoHundredTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1364,7 +2199,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1379,7 +2215,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.threeHundredTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1435,7 +2274,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1450,7 +2290,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.fourHundredTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1506,7 +2349,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1521,7 +2365,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.fiveHundredTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1577,7 +2424,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1592,7 +2440,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.sixHundredTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1648,7 +2499,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1663,7 +2515,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.sevenHundredTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1719,7 +2574,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1734,7 +2590,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.eightHundredTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1790,7 +2649,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1805,7 +2665,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.nineHundredTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1861,7 +2724,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1876,7 +2740,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousandTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -1932,7 +2799,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -1947,7 +2815,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand1Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2003,7 +2874,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2018,7 +2890,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand2Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2074,7 +2949,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2089,7 +2965,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand3Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2145,7 +3024,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2160,7 +3040,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand4Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2216,7 +3099,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2231,7 +3115,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand5Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2287,7 +3174,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2302,7 +3190,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand6Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2358,7 +3249,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2373,7 +3265,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand7Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2429,7 +3324,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2444,7 +3340,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand8Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2500,7 +3399,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2515,7 +3415,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.oneThousand9Time}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],
@@ -2571,7 +3474,8 @@ class _GPSPageState extends State<GPSPage> {
               margin: appStyle.getEdgeInsetsFromRatio(bottom: 1),
               decoration: BoxDecoration(
                 color: AppTheme.colorBlack,
-                borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
                     ),
                 border: Border.all(
                   color: Colors.white,
@@ -2586,7 +3490,10 @@ class _GPSPageState extends State<GPSPage> {
                     margin: appStyle.getEdgeInsetsFromRatio(right: 2),
                     child: Text(
                       '${this.twoThousandTime}',
-                      style: TextStyle(fontSize: appStyle.getWidth(percent: 6), fontFamily: 'spyagency3cond', color: AppTheme.colorInfo),
+                      style: TextStyle(
+                          fontSize: appStyle.getWidth(percent: 6),
+                          fontFamily: 'spyagency3cond',
+                          color: AppTheme.colorInfo),
                     ),
                   ),
                 ],

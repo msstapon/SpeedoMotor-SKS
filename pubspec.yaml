@@ -54,13 +54,15 @@ dependency_overrides:
   dio: ^4.0.0
   url_launcher: ^5.0.3
   connectivity: 3.0.6
+  rxdart: 0.27.3
 #  clippy_flutter: 1.1.1
-
-  speedometer:
-    path: speedometer
+#  speed_ometer:
+#    path: ./speed_ometer
   kbt_flutter_package:
-    git:
-      url: https://git.kabintech.co.th/KabinTech/KBT-Flutter-Package.git
+    path: ./../KBT-Flutter-Package
+#  kbt_flutter_package:
+#    git:
+#      url: http://103.74.255.179/KabinTech/KBT-Flutter-Package.git
 
 dev_dependencies:
   flutter_test:

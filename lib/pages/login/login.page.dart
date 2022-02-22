@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   final keyForm = new GlobalKey<FormState>();
   TextEditingController txtUserName = new TextEditingController();
   TextEditingController txtPassword = new TextEditingController();
-  String urlLine = "https://liff.line.me/1645278921-kWRPP32q?accountId=114kvwfg&openerPlatform=native&openerKey=talkroom%3Aheader#mst_challenge=XBfBIRGuWXAdZ8BSljT0JD3xJ3C_VPmr0IkWQcmDNeY";
+  String urlLine = "https://linevoom.line.me/user/_dTPdC9XMYliW6bYcltMkzuDSdmIXnRZ1_PDMdTA?utm_medium=osx&utm_source=desktop&utm_campaign=OA_Profile";
 
   void loginFunction() async {
     String username = txtUserName.text.trim().toString();

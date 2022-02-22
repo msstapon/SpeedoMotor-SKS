@@ -30,9 +30,10 @@ class _CollectionHondaState extends State<CollectionHonda> {
     'PCX',
     'MSXsf',
     'Forza300',
+    'Forza350',
     'CBR250rr',
     'CBR300',
-    'MSX GROM Monkey'
+    'GROM Monkey 2021'
   ];
 
   List<String> cc = [
@@ -46,6 +47,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '124.7',
     '124.9',
     '279',
+    '330',
     '249.60',
     '286',
     '124.9'
@@ -60,6 +62,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '9.3',
     '11',
     '9.3',
+    '10.5',
     '10.5',
     '10.7',
     '10.7',
@@ -79,6 +82,7 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '58',
     '52.4',
     '72',
+    '77',
     '76',
     '76',
     '50'
@@ -93,11 +97,13 @@ class _CollectionHondaState extends State<CollectionHonda> {
     '57.9',
     '47.2',
     '57.9',
-    '68.6',
+    '70.7',
+    '70.7',
     '55',
     '63',
     '63.121'
   ];
+  
 
 
 

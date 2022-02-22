@@ -7,14 +7,14 @@ packages:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.0"
+    version: "2.3.0"
   asn1lib:
     dependency: transitive
     description:
       name: asn1lib
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.1"
+    version: "1.0.3"
   async:
     dependency: transitive
     description:
@@ -28,7 +28,7 @@ packages:
       name: basic_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.1"
+    version: "3.8.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -105,7 +105,7 @@ packages:
       name: convert
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "3.0.1"
   country_pickers:
     dependency: transitive
     description:
@@ -119,7 +119,7 @@ packages:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "3.0.1"
   cupertino_icons:
     dependency: "direct overridden"
     description:
@@ -182,7 +182,7 @@ packages:
       name: encrypt
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "5.0.1"
   equatable:
     dependency: transitive
     description:
@@ -398,15 +398,13 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.1"
+    version: "4.0.1"
   kbt_flutter_package:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "8f4e8a29e091e1c1f2ba25871e08590224086f00"
-      url: "https://git.kabintech.co.th/KabinTech/KBT-Flutter-Package.git"
-    source: git
+      path: "../KBT-Flutter-Package"
+      relative: true
+    source: path
     version: "0.0.2"
   logging:
     dependency: transitive
@@ -414,7 +412,7 @@ packages:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.4"
+    version: "1.0.2"
   matcher:
     dependency: transitive
     description:
@@ -526,7 +524,7 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "3.5.0"
   process:
     dependency: transitive
     description:
@@ -540,7 +538,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "3.0.1+1"
   random_string:
     dependency: transitive
     description:
@@ -556,12 +554,12 @@ packages:
     source: hosted
     version: "0.2.0"
   rxdart:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.26.0"
+    version: "0.27.3"
   shared_preferences:
     dependency: "direct overridden"
     description:
@@ -623,13 +621,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  speedometer:
-    dependency: "direct overridden"
-    description:
-      path: speedometer
-      relative: true
-    source: path
-    version: "1.0.8"
   sqflite:
     dependency: transitive
     description:
@@ -692,7 +683,7 @@ packages:
       name: tuple
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "2.0.0"
   typed_data:
     dependency: transitive
     description:
@@ -769,7 +760,7 @@ packages:
       name: vin_decoder
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.3"
+    version: "0.1.4"
   win32:
     dependency: transitive
     description:

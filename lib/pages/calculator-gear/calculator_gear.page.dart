@@ -165,7 +165,7 @@ class _CalculatorGearPageState extends State<CalculatorGearPage> {
         txtRR.text = '25';
         txtDiff0.text = '0.00';
       });
-    }else if(widget.nameCar == "MSX GROM Monkey"){
+    }else if(widget.nameCar == "GROM Monkey 2021"){
       rom = '9300';
       C1 = 37;
       C2 = 32;
